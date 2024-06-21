@@ -1,0 +1,114 @@
+[
+  {
+    "tableName": "Images",
+    "tableStructure": ["ImageID(pk)", "UserID(fk)", "ImageName", "ImageDescription", "UploadDate", "LastUpdated", "ImageURL"]
+  },
+  {
+    "tableName": "Users",
+    "tableStructure": ["UserID(pk)", "FirstName", "LastName", "UserName(UNIQUE)", "Email(UNIQUE)", "HashedPassword", "CreatedDate"]
+  },
+  {
+    "tableName": "Categories",
+    "tableStructure": ["CategoryID(pk)", "CategoryName(UNIQUE)"]
+  },
+  {
+    "tableName": "ImageCategories",
+    "tableStructure": ["ImageCategoryID(pk)", "ImageID(fk)", "CategoryID(fk)"]
+  },
+  {
+    "tableName": "Tags",
+    "tableStructure": ["TagID(pk)", "TagName(UNIQUE)"]
+  },
+  {
+    "tableName": "ImageTags",
+    "tableStructure": ["ImageTagID(pk)", "ImageID(fk)", "TagID(fk)"]
+  },
+  {
+    "tableName": "Likes",
+    "tableStructure": ["LikeID(pk)", "ImageID(fk)", "UserID(fk)", "LikeDate"]
+  },
+  {
+    "tableName": "Comments",
+    "tableStructure": ["CommentID(pk)", "ImageID(fk)", "UserID(fk)", "CommentContent", "CommentDate", "LastUpdate", "IsEdited"]
+  }
+]
+
+
+
+
+
+
+=======
+
+keep in mind this table structure
+
+[
+  {
+    "tableName": "Images",
+    "tableStructure": ["ImageID(pk)", "UserID(fk)", "ImageName", "ImageDescription", "UploadDate", "LastUpdated", "ImageURL"]
+  },
+  {
+    "tableName": "Users",
+    "tableStructure": ["UserID(pk)", "FirstName", "LastName", "UserName(UNIQUE)", "Email(UNIQUE)", "HashedPassword", "CreatedDate"]
+  },
+  {
+    "tableName": "Categories",
+    "tableStructure": ["CategoryID(pk)", "CategoryName(UNIQUE)"]
+  },
+  {
+    "tableName": "ImageCategories",
+    "tableStructure": ["ImageCategoryID(pk)", "ImageID(fk)", "CategoryID(fk)"]
+  },
+  {
+    "tableName": "Tags",
+    "tableStructure": ["TagID(pk)", "TagName(UNIQUE)"]
+  },
+  {
+    "tableName": "ImageTags",
+    "tableStructure": ["ImageTagID(pk)", "ImageID(fk)", "TagID(fk)"]
+  },
+  {
+    "tableName": "Likes",
+    "tableStructure": ["LikeID(pk)", "ImageID(fk)", "UserID(fk)", "LikeDate"]
+  },
+  {
+    "tableName": "Comments",
+    "tableStructure": ["CommentID(pk)", "ImageID(fk)", "UserID(fk)", "CommentContent", "CommentDate", "LastUpdate", "IsEdited"]
+  }
+]
+
+as well as an AppUser table that has all the user information.
+
+also consider this folder structure - general idea of how things are laid out
+
+- Controllers
+  - CommentController.cs
+  - ImageController.cs
+  - AccountController.cs
+  ...
+- DTOs
+  - Comment
+    - GetCommentDTO.cs
+    - CreateCommentDTO.cs
+    - UpdateCommentDTO.cs
+  - Post
+    - GetPostDTO.cs
+    - CreatePostDTO.cs
+    - UpdatePostDTO.cs
+  - Account
+    - GetUserDTO.cs
+    - RegisterDTO.cs
+    - LoginDTO.cs
+    - UpdateUserDTO
+  ...
+- Models
+  - Comment.cs
+  - Images.cs
+  - AppUser.cs
+  ...
+- Services
+  ...
+- Repositories
+  ...
+- Program.cs
+...
