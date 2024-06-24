@@ -1,13 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.DTOs.Category;
 using api.DTOs.Comment;
 using api.DTOs.Tag;
-
-
-
 
 namespace api.DTOs.Image
 {
@@ -26,5 +21,4 @@ namespace api.DTOs.Image
         public int LikesCount { get; set; }
         public List<GetCommentDTO> Comments { get; set; } // List of comments
     }
-
 }

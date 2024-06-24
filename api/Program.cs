@@ -1,6 +1,8 @@
 using api.Data;
 using api.interfaces;
+using api.Interfaces;
 using api.Models;
+using api.Repositories;
 using api.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -13,7 +15,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 builder.Services.AddSwaggerGen(option =>
 {
@@ -87,6 +88,8 @@ builder.Services.AddAuthentication(options =>{
 
 //dependency injection for the Interfaces, Services and Repositories
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IImageRepository, ImageRepository>();
+
 
 var app = builder.Build();
 

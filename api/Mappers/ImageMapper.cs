@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using api.DTOs.Image;
 using api.Models;
 
@@ -12,7 +9,9 @@ namespace api.Mappers
         public static GetImageDTO ToGetImageDTO(this Image imageModel)
         {
             if (imageModel == null)
-            {return null;}
+            {
+                return null;
+            }
 
             return new GetImageDTO
             {
@@ -24,6 +23,7 @@ namespace api.Mappers
                 LastUpdated = imageModel.LastUpdated,
                 ImageURL = imageModel.ImageURL,
                 Comments = imageModel.Comments.Select(x => x.ToGetCommentDTO()).ToList()
+                // Populate other properties as needed
             };
         }
     }

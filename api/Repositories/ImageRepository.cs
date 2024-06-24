@@ -32,7 +32,15 @@ namespace api.Repositories
         public async Task<Image?> GetImageByIdAsync(int id)
         {
            var image = await _dbContext.Images.Include(x => x.Comments).FirstOrDefaultAsync(i => i.ImageID == id);
-           
+           // Include Tags
+           // Include Categories
+
+            if (image == null)
+            {
+                return null;
+            }
+
+            return image;
         }
 
         public Task<Image?> PostImageAsync(Image imageModel)
