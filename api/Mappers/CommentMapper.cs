@@ -23,7 +23,7 @@ namespace api.Mappers
                 CommentDate = commentModel.CommentDate,
                 LastUpdate = commentModel.LastUpdate,
                 IsEdited = commentModel.IsEdited,
-                FullName = commentModel.AppUser.FullName
+                UserName = commentModel.AppUser.UserName
             };
         }
     }

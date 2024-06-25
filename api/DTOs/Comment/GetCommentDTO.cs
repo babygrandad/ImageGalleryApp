@@ -14,7 +14,7 @@ namespace api.DTOs.Comment
         public DateTime CommentDate { get; set; }
         public DateTime? LastUpdate { get; set; }
         public bool IsEdited { get; set; }
-        public string FullName { get; set; } 
+        public string UserName { get; set; } 
         // Other properties as needed
     }
 }

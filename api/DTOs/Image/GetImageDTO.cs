@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using api.DTOs.Category;
 using api.DTOs.Comment;
 using api.DTOs.Tag;

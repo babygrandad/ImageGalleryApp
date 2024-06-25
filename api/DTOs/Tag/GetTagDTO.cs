@@ -7,6 +7,6 @@ namespace api.DTOs.Tag
 {
     public class GetTagDTO
     {
-        
+        public string TagName { get; set; }
     }
 }

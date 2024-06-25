@@ -7,6 +7,6 @@ namespace api.DTOs.Category
 {
     public class GetCategoryDTO
     {
-        
+        public string CAtegoryName { get; set; }
     }
 }
