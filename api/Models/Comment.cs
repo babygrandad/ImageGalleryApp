@@ -15,7 +15,7 @@ namespace api.Models
         public string CommentContent { get; set; } = string.Empty;
         public DateTime CommentDate { get; set; } = DateTime.Now;
         public DateTime LastUpdate { get; set; } = DateTime.Now;
-        public bool IsEdited { get; set; }
+        public bool IsEdited { get; set; } = false;
 
         public Image Image { get; set; }
         public AppUser AppUser { get; set; }

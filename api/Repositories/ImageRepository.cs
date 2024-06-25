@@ -31,8 +31,14 @@ namespace api.Repositories
 
         public async Task<Image?> GetImageByIdAsync(int id)
         {
-           var image = await _dbContext.Images.Include(x => x.Comments).FirstOrDefaultAsync(i => i.ImageID == id);
-           // Include Tags
+           ///var image = await _dbContext.Images.Include(x => x.Comments).FirstOrDefaultAsync(i => i.ImageID == id);
+            var image = await _dbContext.Images
+    .Include(i => i.Comments)
+    .Include(i => i.ImageTags) // Assuming Image has a collection of ImageTags
+        .ThenInclude(it => it.Tag) // Then include Tag from ImageTags
+    .Include(i => i.ImageCategories) // Assuming Image has a collection of ImageCategories
+        .ThenInclude(ic => ic.Category) // Then include Category from ImageCategories
+    .FirstOrDefaultAsync(i => i.ImageID == id);
            // Include Categories
 
             if (image == null)

@@ -109,5 +109,18 @@ namespace api.Controllers
                 }
             );
         }
+
+
+        // work on this when you find a way to send the forgot email email.
+        [HttpPost("forgotPassword")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDTO forgotPasswordDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return  null;
+        }
     }
 }

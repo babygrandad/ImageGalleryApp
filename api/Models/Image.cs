@@ -8,6 +8,7 @@ namespace api.Models
     public class Image
     {
         public int ImageID { get; set; }
+        public string FullName { get; set; }
         public string UserID { get; set; } // Foreign Key to User
         public string ImageName { get; set; }
         public string ImageDescription { get; set; }

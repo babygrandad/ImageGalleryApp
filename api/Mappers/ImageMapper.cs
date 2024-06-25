@@ -22,6 +22,7 @@ namespace api.Mappers
                 UploadDate = imageModel.UploadDate,
                 LastUpdated = imageModel.LastUpdated,
                 ImageURL = imageModel.ImageURL,
+                FullName = imageModel.FullName,
                 Comments = imageModel.Comments.Select(x => x.ToGetCommentDTO()).ToList()
                 // Populate other properties as needed
             };
