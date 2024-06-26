@@ -18,7 +18,7 @@
 <details> <summary>Image Controller Checklist</summary>
 
 - [ ] Upload image (POST)
-<details> 
+<details> <sammary> Upload Criteria </summary>
 	- [ ] compress image
 	- [ ] convert image
 	- [ ] extract exif data
