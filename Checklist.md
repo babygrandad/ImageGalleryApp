@@ -6,6 +6,7 @@
 ### 	[ ] Post ("login")
 			- [x] 
 </details>
+
 ### 	- [ ] Post ("register")
 			- [x] User can register and get jwt token
 			- [ ] User can confirm registration email
