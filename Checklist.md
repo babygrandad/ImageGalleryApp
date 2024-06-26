@@ -2,7 +2,7 @@
 
 
 ### AccountController
-<details><summary></summary>
+<details><summary>Something</summary>
 - [ ] Login (POST)
 - [ ] Logout (POST)
 - [ ] forgotPassword (POST)
@@ -14,7 +14,7 @@
 
 
 ### ImageController
-<details><summary></summary>
+<details><summary>else</summary>
 - [ ] Upload Image
 -	*	[ ] Compress Image
 -	*	[ ] convert Image
