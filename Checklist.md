@@ -18,14 +18,8 @@
 <details> <summary>Image Controller Checklist</summary>
 
 - [ ] Upload image (POST)
-
-	<details> <sammary> Upload Criteria </summary>
-
-	- [ ] compress image
-	- [ ] convert image
-	- [ ] extract exif data
-	- [ ] save pic locally
-
+	<details> <summary> Upload Criteria </summary>
+		something
 	</details>
 
 </details>
