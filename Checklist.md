@@ -1,7 +1,7 @@
 # Image Gallery App
 
 
-## AccountController
+### AccountController
 <details> <summary> Account Controller Checklist </summary>
 
 	- [] Login (POST)
@@ -11,5 +11,29 @@
 	- [] viewProfile (GET)
 	- [] changePassword (POST)
 	- [] verifyEmail (GET)
+
+</details>
+
+### ImageController
+<details> <summary> Image Controller Checklist </summary>
+
+	- [] Upload image (POST)
+
+		<details> <summary>Upload criteria</summary>
+			- [ ] Compress image
+			- [ ] Convert image
+			- [ ] extract exif data
+			- [ ] save image locally
+		<details>
+
+	- [] Get all images (GET)
+	- [] Get image by id (GET)
+	- [] Update image details (PATCH)
+	- [] Delete image (DELETE)
+
+</details>
+
+### Comment Controller
+<details> <summary>Comment Controller Checklist</summary>
 
 </details>
