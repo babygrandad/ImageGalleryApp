@@ -16,9 +16,8 @@
 ### ImageController
 
 
--  [ ] Upload Image
 <details>
-  <summary>Click to expand this list</summary>
+  <summary>-  [ ] Upload Image</summary>
   * Item 1
   * Item 2
   * Item 3
