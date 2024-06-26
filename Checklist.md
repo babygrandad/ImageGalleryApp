@@ -17,7 +17,7 @@
 ### ImageController
 <details> <summary>Image Controller Checklist</summary>
 
--	[ ] Upload Image <details>
++	[ ] Upload Image <details>
 -	[ ] compress image
 	</details>
 
