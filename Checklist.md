@@ -16,10 +16,12 @@
 ### ImageController
 
 
-- - [ ] Upload Image
+-  [ ] Upload Image
 - - <details> <sammary>Upload Critera</sammary>
-			- [ ] Compress Image
-			- [ ] Convert Image
+			<ul>
+				<li>Compress Image</li>
+				<li>Convert Image</li>
+			<ul>
 		</details>
 
 
