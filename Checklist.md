@@ -19,7 +19,7 @@
 
 <details> 
 	<summary>
-	- [ ] Upload Image  
+- 	[ ] Upload Image  
 	</summary>
 
 - [ ] Compress image
