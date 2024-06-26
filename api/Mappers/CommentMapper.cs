@@ -23,7 +23,7 @@ namespace api.Mappers
                 CommentDate = commentModel.CommentDate,
                 LastUpdate = commentModel.LastUpdate,
                 IsEdited = commentModel.IsEdited,
-                UserName = commentModel.AppUser.UserName
+                UserName = commentModel.AppUser?.UserName // Added null check for AppUser
             };
         }
     }

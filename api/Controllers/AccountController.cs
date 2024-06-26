@@ -76,6 +76,7 @@ namespace api.Controllers
             }
         }
 
+        // Login route for the user entity
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
         {
@@ -112,6 +113,13 @@ namespace api.Controllers
             );
         }
 
+        // Please dont forget to work on the logout route for the user
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout([FromBody] string token)
+        {
+            return null;
+        }
+
         // work on this when you find a way to send the forgot email email.
         [HttpPost("forgotPassword")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDTO forgotPasswordDTO)
@@ -121,7 +129,23 @@ namespace api.Controllers
                 return BadRequest(ModelState);
             }
 
-            return  null;
+            return null;
+        }
+
+        // Password change route 
+        [HttpPost("changePassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO changePasswordDTO)
+        {
+            // Implement logic to change password
+            return null;
+        }
+
+        // email verification route
+        [HttpGet("verifyEmail")]
+        public async Task<IActionResult> VerifyEmail(string userId, string code)
+        {
+            // Implement logic to verify user's email
+            return null;
         }
     }
 }

@@ -54,7 +54,7 @@ namespace api.Repositories
                 images = images.Where(x => x.ImageTags.Any(tag => tag.Tag.TagName.ToLower().Contains(tagLower)));
             }
 
-             // Filter by tag if provided
+            // Filter by tag if provided
             if (!string.IsNullOrWhiteSpace(filterQuery.Category))
             {
                 var categoryLower = filterQuery.Category.ToLower(); // Ensure case-insensitive comparison
@@ -77,15 +77,14 @@ namespace api.Repositories
 
         public async Task<Image?> GetImageByIdAsync(int id)
         {
-            ///var image = await _dbContext.Images.Include(x => x.Comments).FirstOrDefaultAsync(i => i.ImageID == id);
             var image = await _dbContext.Images
-            .Include(i => i.Comments)
-            .Include(i => i.ImageTags) // Assuming Image has a collection of ImageTags
-                .ThenInclude(it => it.Tag) // Then include Tag from ImageTags
-            .Include(i => i.ImageCategories) // Assuming Image has a collection of ImageCategories
-                .ThenInclude(ic => ic.Category) // Then include Category from ImageCategories
-            .FirstOrDefaultAsync(i => i.ImageID == id);
-
+                .Include(i => i.Comments)
+                    .ThenInclude(c => c.AppUser) // Ensure AppUser is included
+                .Include(i => i.ImageTags)
+                    .ThenInclude(it => it.Tag)
+                .Include(i => i.ImageCategories)
+                    .ThenInclude(ic => ic.Category)
+                .FirstOrDefaultAsync(i => i.ImageID == id);
 
             if (image == null)
             {
@@ -94,6 +93,7 @@ namespace api.Repositories
 
             return image;
         }
+
 
         public Task<Image?> PostImageAsync(Image imageModel)
         {
