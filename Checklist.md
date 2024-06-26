@@ -17,19 +17,19 @@
 ### ImageController
 <details> <summary> Image Controller Checklist </summary>
 
-	- [] Upload image (POST)
+[ ] Upload image (POST)
 
 <details> <summary>Upload criteria</summary>
-			- [ ] Compress image
-			- [ ] Convert image
-			- [ ] extract exif data
-			- [ ] save image locally
+- [ ] Compress image
+- [ ] Convert image
+- [ ] extract exif data
+- [ ] save image locally
 <details>
 
-	- [] Get all images (GET)
-	- [] Get image by id (GET)
-	- [] Update image details (PATCH)
-	- [] Delete image (DELETE)
+- [ ] Get all images (GET)
+- [ ] Get image by id (GET)
+- [ ] Update image details (PATCH)
+- [ ] Delete image (DELETE)
 
 </details>
 
