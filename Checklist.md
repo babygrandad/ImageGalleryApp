@@ -19,12 +19,12 @@
 
 	- [] Upload image (POST)
 
-		<details> <summary>Upload criteria</summary>
+<details> <summary>Upload criteria</summary>
 			- [ ] Compress image
 			- [ ] Convert image
 			- [ ] extract exif data
 			- [ ] save image locally
-		<details>
+<details>
 
 	- [] Get all images (GET)
 	- [] Get image by id (GET)
