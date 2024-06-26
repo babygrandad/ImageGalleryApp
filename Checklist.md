@@ -17,11 +17,14 @@
 ### ImageController
 <details> <summary>Image Controller Checklist</summary>
 
-- [ ] Upload image (POST)
-	<details> <summary> Upload Criteria </summary>
-- [ ] Compress Image
+<details> 
+	<summary>
+	- [ ] Upload Image  
+	</summary>
+
+- [ ] Compress image
 - [ ] Convert image
-	</details>
+<details>
 
 </details>
 
