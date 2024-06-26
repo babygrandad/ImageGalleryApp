@@ -19,7 +19,10 @@
 
 - [ ] Upload image (POST)
 	<details> <summary> Upload Criteria </summary>
-		something
+	- [ ] Compress image
+	- [ ] Convert image
+	- [ ] Extract Exif Dat
+	- [ ] save image locally
 	</details>
 
 </details>
