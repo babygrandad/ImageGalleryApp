@@ -23,8 +23,8 @@
 -	*	[ ] Save Image Localloy
 -	[ ] GetAllImages
 -	[x] GetImageByID
--	[ ] UpdateImage
--	[ ] DeleteImage
+-	[x] UpdateImage
+-	[x] DeleteImage
 
 ### CommentController
 
