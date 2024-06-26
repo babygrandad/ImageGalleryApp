@@ -3,7 +3,7 @@
 
 ### AccountController
 
--	[ ] Login (POST)
+-	[ x ] Login (POST)
 -	[ ] Logout (POST)
 -	[ ] forgotPassword (POST)
 -	[ ] updateProfile (POST)
