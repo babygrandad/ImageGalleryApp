@@ -17,7 +17,7 @@
 
 
 - - [ ] Upload Image
-- - -	<details> <sammary>Upload Critera</sammary>
+- - <details> <sammary>Upload Critera</sammary>
 			- [ ] Compress Image
 			- [ ] Convert Image
 		</details>
