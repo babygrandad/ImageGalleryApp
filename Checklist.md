@@ -3,7 +3,8 @@
 
 ### AccountController
 
--	[ x ] Login (POST)
+-	[x] Register (POST)
+-	[x] Login (POST)
 -	[ ] Logout (POST)
 -	[ ] forgotPassword (POST)
 -	[ ] updateProfile (POST)
@@ -21,7 +22,7 @@
 -	*	[ ] Extract Exif Data
 -	*	[ ] Save Image Localloy
 -	[ ] GetAllImages
--	[ ] GetImageByID
+-	[x] GetImageByID
 -	[ ] UpdateImage
 -	[ ] DeleteImage
 
