@@ -17,12 +17,11 @@
 
 
 -  [ ] Upload Image
-- <details> <sammary>Upload Critera</sammary>
-			<ul>
-				<li>-	[ ] Compress Image</li>
-				<li>-	[ ] Convert Image</li>
-			<ul>
-	</details>
-
+<details>
+  <summary>Click to expand this list</summary>
+  * Item 1
+  * Item 2
+  * Item 3
+</details>
 
 
