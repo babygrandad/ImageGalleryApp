@@ -19,14 +19,14 @@
 
 - [ ] Upload image (POST)
 
-<details> <sammary> Upload Criteria </summary>
+	<details> <sammary> Upload Criteria </summary>
 
-- [ ] compress image
-- [ ] convert image
-- [ ] extract exif data
-- [ ] save pic locally
+	- [ ] compress image
+	- [ ] convert image
+	- [ ] extract exif data
+	- [ ] save pic locally
 
-</details>
+	</details>
 
 </details>
 
