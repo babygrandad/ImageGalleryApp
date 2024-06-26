@@ -15,16 +15,14 @@
 </details>
 
 ### ImageController
-<details> <summary> Image Controller Checklist </summary>
+<details> <summary>Image Controller Checklist</summary>
 
-[ ] Upload image (POST)
-
-<details> <summary>Upload criteria</summary>
+<details> <summary>[ ] Upload image (POST)</summary>
 - [ ] Compress image
 - [ ] Convert image
 - [ ] extract exif data
 - [ ] save image locally
-<details>
+</details>
 
 - [ ] Get all images (GET)
 - [ ] Get image by id (GET)
@@ -33,7 +31,3 @@
 
 </details>
 
-### Comment Controller
-<details> <summary>Comment Controller Checklist</summary>
-
-</details>
