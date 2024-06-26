@@ -18,8 +18,8 @@
 <details> <summary>Image Controller Checklist</summary>
 
 -	<details> <sumary>[ ] Upload Image</summary>
-	-	[ ] compress image
-	-	[ ] convert image
+		[ ] compress image
+		[ ] convert image
 	</details>
 
 </details>
