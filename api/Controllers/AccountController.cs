@@ -7,14 +7,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers
 {
-    public class Accountontroller : ControllerBase
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AccountController : ControllerBase
     {
+
         private readonly UserManager<AppUser> _userManager;
         //private readonly IEmailSender _emailSender;
         private readonly ITokenService _tokenService;
         private readonly SignInManager<AppUser> _signInManager;
 
-        public Accountontroller(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager)
+        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
             _tokenService = tokenService;
@@ -73,7 +76,6 @@ namespace api.Controllers
             }
         }
 
-
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
         {
@@ -109,7 +111,6 @@ namespace api.Controllers
                 }
             );
         }
-
 
         // work on this when you find a way to send the forgot email email.
         [HttpPost("forgotPassword")]

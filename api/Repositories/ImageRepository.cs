@@ -19,27 +19,73 @@ namespace api.Repositories
             _dbContext = dbcontext;
         }
 
-        public Task<Image?> DeleteAsync(string id)
+        public async Task<Image?> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var image = await _dbContext.Images.FindAsync(id);
+
+            if (image == null)
+            {
+                return null;
+            }
+
+            _dbContext.Images.Remove(image);
+            await _dbContext.SaveChangesAsync();
+            return image;
         }
 
-        public Task<List<Image>> GetAllImagesAsync(QueryObject filterQuery)
+        public async Task<List<Image>> GetAllImagesAsync(QueryObject filterQuery)
         {
-            throw new NotImplementedException();
+            // Initialize the queryable images including the necessary navigational properties
+            var images = _dbContext.Images
+                .Include(x => x.Comments)
+                .Include(x => x.ImageTags)
+                .Include(x => x.ImageCategories)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(filterQuery.Name))
+            {
+                images = images.Where(x => x.ImageName.Contains(filterQuery.Name));
+            }
+
+            // Filter by tag if provided
+            if (!string.IsNullOrWhiteSpace(filterQuery.Tag))
+            {
+                var tagLower = filterQuery.Tag.ToLower(); // Ensure case-insensitive comparison
+                images = images.Where(x => x.ImageTags.Any(tag => tag.Tag.TagName.ToLower().Contains(tagLower)));
+            }
+
+             // Filter by tag if provided
+            if (!string.IsNullOrWhiteSpace(filterQuery.Category))
+            {
+                var categoryLower = filterQuery.Category.ToLower(); // Ensure case-insensitive comparison
+                images = images.Where(x => x.ImageCategories.Any(cat => cat.Category.CategoryName.ToLower().Contains(categoryLower)));
+            }
+
+            // Sorting based on SortBy and IsDescending properties
+            if (!string.IsNullOrWhiteSpace(filterQuery.SortBy))
+            {
+                if (filterQuery.SortBy.Equals("ImageName", StringComparison.OrdinalIgnoreCase))
+                {
+                    images = filterQuery.IsDescending ? images.OrderByDescending(x => x.ImageName) : images.OrderBy(x => x.ImageName);
+                }
+            }
+
+            var skipNumber = (filterQuery.PageNumber - 1) * filterQuery.PageSize;
+
+            return await images.Skip(skipNumber).Take(filterQuery.PageSize).ToListAsync();
         }
 
         public async Task<Image?> GetImageByIdAsync(int id)
         {
-           ///var image = await _dbContext.Images.Include(x => x.Comments).FirstOrDefaultAsync(i => i.ImageID == id);
+            ///var image = await _dbContext.Images.Include(x => x.Comments).FirstOrDefaultAsync(i => i.ImageID == id);
             var image = await _dbContext.Images
-    .Include(i => i.Comments)
-    .Include(i => i.ImageTags) // Assuming Image has a collection of ImageTags
-        .ThenInclude(it => it.Tag) // Then include Tag from ImageTags
-    .Include(i => i.ImageCategories) // Assuming Image has a collection of ImageCategories
-        .ThenInclude(ic => ic.Category) // Then include Category from ImageCategories
-    .FirstOrDefaultAsync(i => i.ImageID == id);
-           // Include Categories
+            .Include(i => i.Comments)
+            .Include(i => i.ImageTags) // Assuming Image has a collection of ImageTags
+                .ThenInclude(it => it.Tag) // Then include Tag from ImageTags
+            .Include(i => i.ImageCategories) // Assuming Image has a collection of ImageCategories
+                .ThenInclude(ic => ic.Category) // Then include Category from ImageCategories
+            .FirstOrDefaultAsync(i => i.ImageID == id);
+
 
             if (image == null)
             {
@@ -54,9 +100,21 @@ namespace api.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Image?> UpdateImage(string id, UpdateImageDTO updateImageDTO)
+        public async Task<Image?> UpdateImageAsync(int id, UpdateImageDTO updateImageDTO)
         {
-            throw new NotImplementedException();
+            var existingImage = await _dbContext.Images.FindAsync(id);
+
+            if (existingImage == null)
+            {
+                return null;
+            }
+
+            existingImage.LastUpdated = updateImageDTO.LastUpdated;
+            existingImage.ImageName = updateImageDTO.ImageName;
+            existingImage.ImageDescription = updateImageDTO.ImageDescription;
+
+            await _dbContext.SaveChangesAsync();
+            return existingImage;
         }
     }
 }

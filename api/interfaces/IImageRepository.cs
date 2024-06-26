@@ -9,9 +9,9 @@ namespace api.Interfaces
     public interface IImageRepository
     {
         Task<Image?> GetImageByIdAsync(int id);
-        Task<Image?> UpdateImage(string id, UpdateImageDTO updateImageDTO);
+        Task<Image?> UpdateImageAsync(int id, UpdateImageDTO updateImageDTO);
         Task<Image?> PostImageAsync(Image imageModel);
-        Task<Image?> DeleteAsync(string id);
+        Task<Image?> DeleteAsync(int id);
         Task<List<Image>> GetAllImagesAsync(QueryObject filterQuery);
     }
 }

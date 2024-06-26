@@ -9,7 +9,7 @@ namespace api.Mappers
 {
     public static class CommentMapper
     {
-          public static GetCommentDTO ToGetCommentDTO(this Comment commentModel)
+        public static GetCommentDTO ToGetCommentDTO(this Comment commentModel)
         {
             if (commentModel == null)
                 return null;

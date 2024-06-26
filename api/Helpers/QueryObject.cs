@@ -13,7 +13,7 @@ namespace api.Helpers
 
 
         public string? SortBy { get; set; } = null;
-        public bool IsDecending { get; set; } = false;
+        public bool IsDescending { get; set; } = false;
 
 
         public int PageNumber { get; set; } = 1;
