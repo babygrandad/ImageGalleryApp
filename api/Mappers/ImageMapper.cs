@@ -1,5 +1,7 @@
 using System.Linq;
+using api.DTOs.Category;
 using api.DTOs.Image;
+using api.DTOs.Tag;
 using api.Models;
 
 namespace api.Mappers
@@ -16,14 +18,15 @@ namespace api.Mappers
             return new GetImageDTO
             {
                 ImageID = imageModel.ImageID,
-                UserID = imageModel.UserID,
+                FullName = imageModel.AppUser.FullName,
                 ImageName = imageModel.ImageName,
                 ImageDescription = imageModel.ImageDescription,
                 UploadDate = imageModel.UploadDate,
                 LastUpdated = imageModel.LastUpdated,
                 ImageURL = imageModel.ImageURL,
-                FullName = imageModel.FullName,
-                Comments = imageModel.Comments.Select(x => x.ToGetCommentDTO()).ToList()
+                Comments = imageModel.Comments.Select(x => x.ToGetCommentDTO()).ToList(),
+                Tags = imageModel.ImageTags.Select(it => new GetTagDTO{TagName = it.Tag.TagName}).ToList(),
+                Categories = imageModel.ImageCategories.Select(it => new GetCategoryDTO{CategoryName = it.Category.CategoryName}).ToList(),
                 // Populate other properties as needed
             };
         }

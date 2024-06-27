@@ -17,13 +17,11 @@ namespace api.Mappers
             return new GetCommentDTO
             {
                 CommentID = commentModel.CommentID,
-                ImageID = commentModel.ImageID,
-                UserID = commentModel.UserID,
                 CommentContent = commentModel.CommentContent,
                 CommentDate = commentModel.CommentDate,
                 LastUpdate = commentModel.LastUpdate,
                 IsEdited = commentModel.IsEdited,
-                UserName = commentModel.AppUser?.UserName // Added null check for AppUser
+                FullName = commentModel.AppUser.FullName,
             };
         }
     }

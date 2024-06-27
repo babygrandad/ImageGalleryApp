@@ -54,9 +54,9 @@ namespace api.Controllers
         // Continue to make the update route for image details
         [HttpPatch]
         [Route("{id:int}")]
-        public async Task<IActionResult> UpdateImage([FromRoute]int id, [FromBody] UpdateImageDTO updateImageDTO)
+        public async Task<IActionResult> UpdateImage([FromRoute] int id, [FromBody] UpdateImageDTO updateImageDTO)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
@@ -70,7 +70,7 @@ namespace api.Controllers
 
             return Ok(imageModel.ToGetImageDTO());
         }
-    
+
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> DeleteImage([FromRoute] int id)
@@ -81,8 +81,8 @@ namespace api.Controllers
             }
 
             var imageModel = await _imageRepo.DeleteAsync(id);
-            
-            if(imageModel == null)
+
+            if (imageModel == null)
             {
                 return NotFound();
             }
