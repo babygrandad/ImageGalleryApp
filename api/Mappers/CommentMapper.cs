@@ -24,5 +24,16 @@ namespace api.Mappers
                 FullName = commentModel.AppUser.FullName,
             };
         }
+
+        public static Comment ToCommentFromCreate (this CreateCommentDTO createCommentDTO, int imageId)
+        {
+            return new Comment
+            {
+                CommentContent = createCommentDTO.CommentContent,
+                CommentDate = createCommentDTO.CommentDate,
+                LastUpdate = createCommentDTO.LastUpdate,
+
+            };
+        }
     }
 }
