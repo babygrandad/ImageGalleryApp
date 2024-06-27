@@ -13,5 +13,6 @@ namespace api.Interfaces
         Task<Image?> PostImageAsync(Image imageModel);
         Task<Image?> DeleteAsync(int id);
         Task<List<Image>> GetAllImagesAsync(QueryObject filterQuery);
+        Task<bool> ImageExit(int id);
     }
 }
