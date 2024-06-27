@@ -21,10 +21,12 @@
 -	*	[ ] convert Image
 -	*	[ ] Extract Exif Data
 -	*	[ ] Save Image Localloy
--	[ ] GetAllImages
+-	[x] GetAllImages
 -	[x] GetImageByID
--	[x] UpdateImage
--	[x] DeleteImage
+-	[ ] UpdateImage
+-	*	[ ] Only allow poster to update image
+-	[ ] DeleteImage
+-	*	[ ] Only allow poster to delete image
 
 ### CommentController
 

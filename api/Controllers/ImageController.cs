@@ -5,6 +5,7 @@ using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -26,7 +27,7 @@ namespace api.Controllers
         public async Task<IActionResult> Getall([FromQuery] QueryObject filterQuery)
         {
             var image = await _imageRepo.GetAllImagesAsync(filterQuery);
-            var imageDTO = image.Select(x => x.ToGetImageDTO());
+            var imageDTO = image.Select(x => x.ToGetImagesDTO());
             return Ok(imageDTO);
 
         }
@@ -54,6 +55,7 @@ namespace api.Controllers
         // Continue to make the update route for image details
         [HttpPatch]
         [Route("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> UpdateImage([FromRoute] int id, [FromBody] UpdateImageDTO updateImageDTO)
         {
             if (!ModelState.IsValid)
@@ -73,6 +75,7 @@ namespace api.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteImage([FromRoute] int id)
         {
             if (!ModelState.IsValid)

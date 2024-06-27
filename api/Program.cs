@@ -89,6 +89,7 @@ builder.Services.AddAuthentication(options =>{
 //dependency injection for the Interfaces, Services and Repositories
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
 
 var app = builder.Build();

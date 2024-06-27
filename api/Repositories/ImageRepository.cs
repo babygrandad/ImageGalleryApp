@@ -37,9 +37,12 @@ namespace api.Repositories
         {
             // Initialize the queryable images including the necessary navigational properties
             var images = _dbContext.Images
+                .Include(c => c.AppUser)
                 .Include(x => x.Comments)
-                .Include(x => x.ImageTags)
-                .Include(x => x.ImageCategories)
+                .Include(i => i.ImageTags)
+                    .ThenInclude(it => it.Tag)
+                .Include(i => i.ImageCategories)
+                    .ThenInclude(ic => ic.Category)
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(filterQuery.Name))
@@ -94,6 +97,10 @@ namespace api.Repositories
             return image;
         }
 
+        public Task<bool> ImageExit(int id)
+        {
+            return _dbContext.Images.AnyAsync(x => x.ImageID == id);
+        }
 
         public Task<Image?> PostImageAsync(Image imageModel)
         {
