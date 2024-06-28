@@ -36,20 +36,35 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> CreateComment([FromRoute] int ImageId, CreateCommentDTO createCommentDTO)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if(! await _imageRepo.ImageExit(ImageId))
-                return BadRequest ("Image does not exist.");
-            
+            if (!await _imageRepo.ImageExit(ImageId))
+                return BadRequest("Image does not exist.");
+
+            var userEmail = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(userEmail))
+            {
+                return Unauthorized("Email is missing from the claims.");
+            }
+
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if (user == null)
+            {
+                return Unauthorized("User not found.");
+            }
+
+            var userId = user.Id;
+
             var commentModel = createCommentDTO.ToCommentFromCreate(ImageId);
+            commentModel.UserID = userId; // Set the UserId here
+            commentModel.ImageID = ImageId; // Ensure ImageID is set
             await _commentRepo.CreateAsync(commentModel);
             return CreatedAtAction(nameof(GetById), new { id = commentModel.CommentID }, commentModel.ToGetCommentDTO()); // Return 201 Created response with the location header
-            //return StatusCode(201, commentModel);
         }
-    
+
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id) // Asynchronous method to get a comment by ID
         {
