@@ -32,7 +32,7 @@ namespace api.Controllers
             _imageRepo = imageRepo;
         }
 
-        [HttpPost("{imageId:int}")]
+        [HttpPost("{ImageId:int}")]
         [Authorize]
         public async Task<IActionResult> CreateComment([FromRoute] int ImageId, CreateCommentDTO createCommentDTO)
         {
@@ -46,8 +46,8 @@ namespace api.Controllers
             
             var commentModel = createCommentDTO.ToCommentFromCreate(ImageId);
             await _commentRepo.CreateAsync(commentModel);
-            //return CreatedAtAction(nameof(GetById), new { id = commentModel.CommentID }, commentModel.ToGetCommentDTO()); // Return 201 Created response with the location header
-            return StatusCode(201, commentModel);
+            return CreatedAtAction(nameof(GetById), new { id = commentModel.CommentID }, commentModel.ToGetCommentDTO()); // Return 201 Created response with the location header
+            //return StatusCode(201, commentModel);
         }
     
         [HttpGet("{id:int}")]
