@@ -31,8 +31,10 @@
 ### CommentController
 
 -	[x] CreateComment
--	[ ] UpdateComment
+-	[x] UpdateComment
+-	*	[x] Only allow poster to update comment
 -	[ ] DeleteComment
+-	*	[ ] Only allow poster to delete comment
 -	[ ] *GetComment*
 
 ### TagController
