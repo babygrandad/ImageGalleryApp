@@ -42,9 +42,23 @@ namespace api.Repositories
            return await _dbContext.Comments.FindAsync(id);
         }
 
-        public Task<Comment> UpdateCommentAsync()
+        public async Task<Comment> UpdateCommentAsync(int commentId, UpdateCommentDTO updateCommentDTO, string userId)
         {
-            throw new NotImplementedException();
+            var comment = await _dbContext.Comments.FindAsync(commentId);
+
+            if (comment == null)
+            {
+                return null;
+            }
+
+            /*  I want to put a check to see if userId making the request is the same as the userId in the          
+                comment and if so, go ahead, if not return 401 unathorized
+            */
+            comment.CommentContent = updateCommentDTO.CommentContent;
+            comment.LastUpdate = updateCommentDTO.LastUpdate;
+
+            await _dbContext.SaveChangesAsync();
+            return comment;
         }
     }
 }

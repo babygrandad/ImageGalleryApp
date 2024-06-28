@@ -7,6 +7,7 @@ namespace api.DTOs.Comment
 {
     public class UpdateCommentDTO
     {
-        
+        public string CommentContent { get; set; }
+        public DateTime LastUpdate { get; set; } = DateTime.Now;
     }
 }

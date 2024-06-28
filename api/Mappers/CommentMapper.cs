@@ -35,5 +35,14 @@ namespace api.Mappers
 
             };
         }
+
+        public static Comment ToCommentFromUpdate (this UpdateCommentDTO updateCommentDTO, int comentId)
+        {
+            return new Comment
+            {
+                CommentContent = updateCommentDTO.CommentContent,
+                LastUpdate = updateCommentDTO.LastUpdate,
+            };
+        }
     }
 }

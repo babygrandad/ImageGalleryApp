@@ -34,8 +34,8 @@ namespace api.Controllers
 
         [HttpPost("{ImageId:int}")]
         [Authorize]
-        public async Task<IActionResult> CreateComment([FromRoute] int ImageId, CreateCommentDTO createCommentDTO)
-        {
+        public async Task<IActionResult> CreateComment([FromRoute] int ImageId, CreateCommentDTO createCommentDTO){
+        
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -66,8 +66,8 @@ namespace api.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetById([FromRoute] int id) // Asynchronous method to get a comment by ID
-        {
+        public async Task<IActionResult> GetById([FromRoute] int id){ // Asynchronous method to get a comment by ID
+        
             if (!ModelState.IsValid) // Check if the model state is valid
             {
                 return BadRequest(ModelState); // Return 400 Bad Request if model state is invalid
@@ -77,10 +77,51 @@ namespace api.Controllers
 
             if (comment == null) // Check if the comment exists
             {
-                return NotFound(); // Return 404 Not Found if the comment does not exist
+                return NotFound("comment not found"); // Return 404 Not Found if the comment does not exist
             }
 
             return Ok(comment.ToGetCommentDTO()); // Convert the comment model to DTO and return with a 200 OK response
+        }
+
+        [HttpPatch("{comentId:int}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateComment([FromRoute] int comentId, [FromBody] UpdateCommentDTO updateCommentDTO)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Check if comment exits 
+            var comment = await _commentRepo.GetCommentByID(comentId);
+            if (comment == null) // Check if the comment exists
+            {
+                return NotFound("comment not found"); // Return 404 Not Found if the comment does not exist
+            }
+
+            // get email from claims
+            var userEmail = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(userEmail))
+            {
+                return Unauthorized("Email is missing from the claims.");
+            }
+
+            // use email to get userId
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if (user == null)
+            {
+                return Unauthorized("User not found.");
+            }
+
+            var userId = user.Id;
+
+            // Update the comment
+            var commentModel = await _commentRepo.UpdateCommentAsync(comentId, updateCommentDTO, userId);
+
+            if(commentModel == null) return NotFound();
+            
+            return Ok (commentModel.ToGetCommentDTO());    
+            
         }
     }
 }
