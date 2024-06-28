@@ -7,6 +7,7 @@ using api.DTOs.Comment;
 using api.interfaces;
 using api.Interfaces;
 using api.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -15,9 +16,11 @@ namespace api.Repositories
     public class CommentRepository : ICommentRepository
     {
         private readonly ApplicationDBContext _dbContext;
-        public CommentRepository(ApplicationDBContext dbContext)
+
+         public CommentRepository(ApplicationDBContext dbContext, UserManager<AppUser> userManager)
         {
-           _dbContext = dbContext;
+            _dbContext = dbContext;
+
         }
 
         public async Task<Comment> CreateAsync(Comment commentModel)
@@ -51,11 +54,14 @@ namespace api.Repositories
                 return null;
             }
 
-            /*  I want to put a check to see if userId making the request is the same as the userId in the          
-                comment and if so, go ahead, if not return 401 unathorized
-            */
+            if (comment.UserID != userId)
+            {
+                throw new UnauthorizedAccessException("User is not authorized to update this comment.");
+            }
+
             comment.CommentContent = updateCommentDTO.CommentContent;
             comment.LastUpdate = updateCommentDTO.LastUpdate;
+            comment.IsEdited = true;
 
             await _dbContext.SaveChangesAsync();
             return comment;

@@ -83,9 +83,9 @@ namespace api.Controllers
             return Ok(comment.ToGetCommentDTO()); // Convert the comment model to DTO and return with a 200 OK response
         }
 
-        [HttpPatch("{comentId:int}")]
+        [HttpPatch("{commentId:int}")]
         [Authorize]
-        public async Task<IActionResult> UpdateComment([FromRoute] int comentId, [FromBody] UpdateCommentDTO updateCommentDTO)
+        public async Task<IActionResult> UpdateComment([FromRoute] int commentId, [FromBody] UpdateCommentDTO updateCommentDTO)
         {
             if(!ModelState.IsValid)
             {
@@ -93,7 +93,7 @@ namespace api.Controllers
             }
 
             // Check if comment exits 
-            var comment = await _commentRepo.GetCommentByID(comentId);
+            var comment = await _commentRepo.GetCommentByID(commentId);
             if (comment == null) // Check if the comment exists
             {
                 return NotFound("comment not found"); // Return 404 Not Found if the comment does not exist
@@ -115,13 +115,21 @@ namespace api.Controllers
 
             var userId = user.Id;
 
-            // Update the comment
-            var commentModel = await _commentRepo.UpdateCommentAsync(comentId, updateCommentDTO, userId);
+            try
+            {
+                var updatedComment = await _commentRepo.UpdateCommentAsync(commentId, updateCommentDTO, userId);
+                if (updatedComment == null)
+                {
+                    return NotFound();
+                }
 
-            if(commentModel == null) return NotFound();
-            
-            return Ok (commentModel.ToGetCommentDTO());    
-            
+                return Ok(updatedComment.ToGetCommentDTO());
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized("User is not authorized to update this comment.");
+            }
+
         }
     }
 }
