@@ -30,9 +30,9 @@
 
 ### CommentController
 
--	[ ] CreateComment
--	[ ] UpdateImage
--	[ ] DeleteImage
+-	[x] CreateComment
+-	[ ] UpdateComment
+-	[ ] DeleteComment
 -	[ ] *GetComment*
 
 ### TagController
