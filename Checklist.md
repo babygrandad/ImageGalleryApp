@@ -12,7 +12,7 @@
 -	[ ] changePassword (POST)
 -	[ ] verifyEmail (GET)
 
-<details> <sammary>Notes For Account.</sammary>
+<details> <summary>Notes For Account.</summary>
 
 <h2>Create react Front for the Routes made</h2>	
 
