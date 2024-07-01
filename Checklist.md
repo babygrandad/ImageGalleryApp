@@ -3,6 +3,10 @@
 
 ### AccountController
 
+<details> <summary>Notes For Account.</summary>
+<h2>Create react Front for the Routes made</h2>	
+</details>
+
 -	[x] Register (POST)
 -	[x] Login (POST)
 -	[ ] Logout (POST)
@@ -12,9 +16,6 @@
 -	[ ] changePassword (POST)
 -	[ ] verifyEmail (GET)
 
-<details> <summary>Notes For Account.</summary>
-<h2>Create react Front for the Routes made</h2>	
-</details>
 
 ### ImageController
 
