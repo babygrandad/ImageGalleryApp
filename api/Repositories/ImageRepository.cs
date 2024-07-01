@@ -21,13 +21,18 @@ namespace api.Repositories
             _dbContext = dbcontext;
         }
 
-        public async Task<Image?> DeleteAsync(int id)
+        public async Task<Image?> DeleteAsync(int id, AppUser user)
         {
             var image = await _dbContext.Images.FindAsync(id);
 
             if (image == null)
             {
                 return null;
+            }
+
+            if (image.UserID != user.Id)
+            {
+                throw new UnauthorizedAccessException("User not autherized to delete this image.");
             }
 
             _dbContext.Images.Remove(image);

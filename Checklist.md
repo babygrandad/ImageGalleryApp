@@ -25,8 +25,8 @@
 -	[x] GetImageByID
 -	[x] UpdateImage
 -	*	[x] Only allow poster to update image
--	[ ] DeleteImage
--	*	[ ] Only allow poster to delete image
+-	[x] DeleteImage
+-	*	[x] Only allow poster to delete image
 
 ### CommentController
 

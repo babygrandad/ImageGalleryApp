@@ -106,14 +106,32 @@ namespace api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var imageModel = await _imageRepo.DeleteAsync(id);
-
-            if (imageModel == null)
+            var userEmail = User.GetUserEmail();
+            if (string.IsNullOrEmpty(userEmail))
             {
-                return NotFound();
+                return Unauthorized("Email is missing from the claims.");
             }
 
-            return NoContent();
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if (user == null)
+            {
+                return Unauthorized("User not found.");
+            }
+
+            try
+            {
+                var imageModel = await _imageRepo.DeleteAsync(id,user);
+                if (imageModel == null)
+                {
+                    return NotFound();
+                }
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+
+            return Ok("Image was successfully deleted.");
         }
 
     }
