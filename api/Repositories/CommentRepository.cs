@@ -7,8 +7,10 @@ using api.DTOs.Comment;
 using api.interfaces;
 using api.Interfaces;
 using api.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace api.Repositories
@@ -16,6 +18,7 @@ namespace api.Repositories
     public class CommentRepository : ICommentRepository
     {
         private readonly ApplicationDBContext _dbContext;
+        private readonly UserManager<AppUser> _userManager;
 
          public CommentRepository(ApplicationDBContext dbContext, UserManager<AppUser> userManager)
         {
@@ -30,9 +33,21 @@ namespace api.Repositories
             return commentModel;
         }
 
-        public Task<Comment> DeleteCommentAsync()
+        public async Task<Comment> DeleteCommentAsync(AppUser user, int commentId)
         {
-            throw new NotImplementedException();
+            var comment = await _dbContext.Comments.FindAsync(commentId);
+
+            if (comment == null) return null;
+
+            if (comment.UserID != user.Id)
+            {
+                throw new UnauthorizedAccessException("User is not authorized to delete this comment.");
+            }
+
+             _dbContext.Comments.Remove(comment);
+            await _dbContext.SaveChangesAsync();
+            return comment;
+
         }
 
         public Task<Comment> GetAllComments()

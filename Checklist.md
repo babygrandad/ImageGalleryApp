@@ -23,8 +23,8 @@
 -	*	[ ] Save Image Localloy
 -	[x] GetAllImages
 -	[x] GetImageByID
--	[ ] UpdateImage
--	*	[ ] Only allow poster to update image
+-	[x] UpdateImage
+-	*	[x] Only allow poster to update image
 -	[ ] DeleteImage
 -	*	[ ] Only allow poster to delete image
 
@@ -33,8 +33,8 @@
 -	[x] CreateComment
 -	[x] UpdateComment
 -	*	[x] Only allow poster to update comment
--	[ ] DeleteComment
--	*	[ ] Only allow poster to delete comment
+-	[x] DeleteComment
+-	*	[x] Only allow poster to delete comment
 -	[ ] *GetComment*
 
 ### TagController

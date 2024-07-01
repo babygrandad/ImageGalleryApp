@@ -8,6 +8,8 @@ using api.Helpers;
 using api.Interfaces;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace api.Repositories
 {
@@ -107,13 +109,18 @@ namespace api.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<Image?> UpdateImageAsync(int id, UpdateImageDTO updateImageDTO)
+        public async Task<Image?> UpdateImageAsync(int id, UpdateImageDTO updateImageDTO, AppUser user)
         {
             var existingImage = await _dbContext.Images.FindAsync(id);
 
             if (existingImage == null)
             {
                 return null;
+            }
+
+            if(existingImage.UserID != user.Id)
+            {
+                throw new UnauthorizedAccessException("user not autherized to update this comment");
             }
 
             existingImage.LastUpdated = updateImageDTO.LastUpdated;

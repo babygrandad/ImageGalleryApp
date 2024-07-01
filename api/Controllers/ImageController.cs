@@ -5,8 +5,10 @@ using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using api.Extensions;
 
 namespace api.Controllers
 {
@@ -16,11 +18,13 @@ namespace api.Controllers
     {
         private readonly ApplicationDBContext _dbContext;
         private readonly IImageRepository _imageRepo;
+        private readonly UserManager<AppUser> _userManager;
 
-        public ImageController(IImageRepository imageRepo, ApplicationDBContext dbContext)
+        public ImageController(IImageRepository imageRepo, ApplicationDBContext dbContext, UserManager<AppUser> userManager)
         {
             _imageRepo = imageRepo;
             _dbContext = dbContext;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -63,14 +67,33 @@ namespace api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var imageModel = await _imageRepo.UpdateImageAsync(id, updateImageDTO);
-
-            if (imageModel == null)
+            var userEmail = User.GetUserEmail();
+            if (string.IsNullOrEmpty(userEmail))
             {
-                return NotFound();
+                return Unauthorized("Email is missing from the claims.");
             }
 
-            return Ok(imageModel.ToGetImageDTO());
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if (user == null)
+            {
+                return Unauthorized("User not found.");
+            }
+
+            try
+            {
+                var imageModel = await _imageRepo.UpdateImageAsync(id, updateImageDTO, user);
+                if (imageModel == null)
+                {
+                    return NotFound();
+
+                }
+                return Ok(imageModel.ToGetImageDTO());
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized("User is not authorized to update this comment.");
+            }
+
         }
 
         [HttpDelete]

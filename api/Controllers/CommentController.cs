@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.DTOs.Comment;
+using api.Extensions;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
@@ -34,8 +35,9 @@ namespace api.Controllers
 
         [HttpPost("{ImageId:int}")]
         [Authorize]
-        public async Task<IActionResult> CreateComment([FromRoute] int ImageId, CreateCommentDTO createCommentDTO){
-        
+        public async Task<IActionResult> CreateComment([FromRoute] int ImageId, CreateCommentDTO createCommentDTO)
+        {
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -44,7 +46,8 @@ namespace api.Controllers
             if (!await _imageRepo.ImageExit(ImageId))
                 return BadRequest("Image does not exist.");
 
-            var userEmail = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+            var userEmail = User.GetUserEmail(); // from the claims extention
+
             if (string.IsNullOrEmpty(userEmail))
             {
                 return Unauthorized("Email is missing from the claims.");
@@ -66,8 +69,9 @@ namespace api.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetById([FromRoute] int id){ // Asynchronous method to get a comment by ID
-        
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        { // Asynchronous method to get a comment by ID
+
             if (!ModelState.IsValid) // Check if the model state is valid
             {
                 return BadRequest(ModelState); // Return 400 Bad Request if model state is invalid
@@ -87,7 +91,7 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateComment([FromRoute] int commentId, [FromBody] UpdateCommentDTO updateCommentDTO)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
@@ -100,7 +104,7 @@ namespace api.Controllers
             }
 
             // get email from claims
-            var userEmail = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+            var userEmail = User.GetUserEmail();
             if (string.IsNullOrEmpty(userEmail))
             {
                 return Unauthorized("Email is missing from the claims.");
@@ -129,7 +133,50 @@ namespace api.Controllers
             {
                 return Unauthorized("User is not authorized to update this comment.");
             }
-
         }
+
+        [HttpDelete("{commentId:int}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteComment([FromRoute] int commentId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var comment = await _commentRepo.GetCommentByID(commentId);
+            if (comment == null)
+            {
+                return NotFound("Comment not found");
+            }
+
+            var userEmail = User.GetUserEmail();
+            if (userEmail == null)
+            {
+                return Unauthorized("User not found");
+            }
+
+            var appUser = await _userManager.FindByEmailAsync(userEmail);
+            if (appUser == null)
+            {
+                return Unauthorized("User not found");
+            }
+
+            try
+            {
+                await _commentRepo.DeleteCommentAsync(appUser, commentId);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "A problem happened while handling your request.");
+            }
+
+            return Ok("Comment deleted.");
+        }
+
     }
 }

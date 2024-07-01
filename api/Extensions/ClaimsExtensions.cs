@@ -8,7 +8,7 @@ namespace api.Extensions
 {
     public static class ClaimsExtensions
     {
-        public static string GetUsername(this ClaimsPrincipal user)
+        public static string GetUserEmail(this ClaimsPrincipal user)
         {
             //this link might have been deprecated so if it does not work, ask chat gpt to give you an update.
             var emailClaim = user.Claims.SingleOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress");
