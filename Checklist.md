@@ -4,7 +4,7 @@
 ### AccountController
 
 <details> <summary>Notes For Account.</summary>
-<h2>Create react Front for the Routes made</h2>	
+<h2>Create react Front for the Routes made</h2>
 </details>
 
 -	[x] Register (POST)
@@ -53,10 +53,3 @@
 -	[ ] UpdateCategory
 -	[ ] DeleteTag
 -	[ ] *GetCategory*
-
-
-<details> <summary>Notes For Account.</summary>
-
-<h2>Create react Front for the Routes made</h2>	
-
-</details>
