@@ -12,6 +12,10 @@
 -	[ ] changePassword (POST)
 -	[ ] verifyEmail (GET)
 
+<details> <summary>Notes For Account.</sammary>
+<h2>Create react Front for the Routes made</h2>	
+
+<details>
 
 
 ### ImageController
@@ -51,3 +55,7 @@
 -	[ ] DeleteTag
 -	[ ] *GetCategory*
 
+
+<details> <summary>Notes For Project.</sammary>
+
+<details>
