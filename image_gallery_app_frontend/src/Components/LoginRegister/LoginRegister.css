@@ -1,6 +1,4 @@
-@import url('../../App.css');
-
-
+/*Login Register Container*/
 .login-container{
 	display: flex;
 	align-items: center;
@@ -13,37 +11,19 @@
 	min-width: 100vw;
 }
 
+/*Aside Related Styling*/
+
 aside{
-	background-color: var(--background-color);
+	background-color: var(--bg);
 	padding: var(--spacing-lg);
+	padding-top: var(--spacing-xxl);
+	min-height: 100vh;
+	flex:2;
 }
 
-.formText > p {
-	margin: 0;
-	font-size: small;
+/*Main related Styling*/
+main{
+	flex:8
 }
 
-.formFieldContainer{
-	padding-top: var(--spacing-md);
-}
 
-.formFieldContainer > input {
-	display: block;
-	width: 100%;
-	padding: var(--spacing-xs);
-}
-
-.buttonContainer{
-	display: flex;
-	justify-content: center;
-}
-
-.buttonContainer > .formButton{
-	font-weight: 600;
-	font-size: var(--spacing-sm);
-	background-color: var(--primary);
-	border-radius: 4px;
-	border: none;
-	padding: var(--spacing-sm);
-	color: var(--text);
-}

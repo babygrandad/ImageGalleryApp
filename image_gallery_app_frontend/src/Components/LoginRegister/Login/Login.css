@@ -1,0 +1,8 @@
+@import url('../../../App.css');
+@import url("../LoginRegister.css");
+
+/*	If you are wondering where all the styling for the login page is.
+	
+	It is in the Register.css file. It styles for both.(IT SHOULD NOT) Fix it before
+	you run into futher problems.
+*/
