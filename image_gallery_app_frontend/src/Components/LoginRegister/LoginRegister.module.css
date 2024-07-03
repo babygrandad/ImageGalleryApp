@@ -1,17 +1,7 @@
 @import url('../../index.css');
 
 /*Login Register Container*/
-.loginRegisterContainer{
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background-image: url("images/business_bkg.jpg");
-	background-position: center;
-	background-size: cover;
-	background-repeat: no-repeat;	
-	min-height: 100vh;
-	width: 100%;
-}
+
 
 /*Aside Related Styling*/
 
@@ -24,7 +14,7 @@ aside{
 }
 
 .formText {
-	margin-bottom: var(--spacing-lg);
+	margin-bottom: var(--spacing-xl);
 }
 
 .formText > p {
@@ -32,25 +22,33 @@ aside{
 	font-size: small;
 }
 
-.loginRegisterForm{
+.formInputsWrapper{
 	display: flex;
 	flex-direction: column;
 	gap: var(--spacing-sm);
+	width: 100%;
+	max-width: 400px;
+	padding-bottom: var(--spacing-xl);
 }
 
-.formFieldContainer > lable {
+.formInfoContainer{
+	display: flex;
+	flex-direction: column;
+}
+
+.formLable {
 	font-weight: bold;
 	font-size: small;
 }
 
-.formFieldContainer > input {
-	display: block;
-	width: 100%;
+.errorText{
+	color: var(--accent);
+	font-size: smaller;
+	display: none;
 }
 
 .buttonContainer{
-	display: flex;
-	justify-content: center;
+	margin-top: var(--spacing-xl);
 }
 
 .formButton{
@@ -64,18 +62,31 @@ aside{
 	color: var(--button-hover-text);
 }
 
-.alternateLogin > p {
+.loginRegisterQuestion{
+	font-size: smaller;
+	text-align: center;
+}
+
+.loginRegisterLink{
+	font-weight: bold;
+	text-decoration: none;
 	color: var(--text);
 }
 
-.alternateLogin > p > a{
+.loginRegisterLink:hover{
 	text-decoration: underline;
 }
 
-.alternateLogin > p > a:hover{
-	text-decoration: dotted;
-	cursor:pointer;
-	color: var(--text-hover-state);
+.socialButtonsWrapper{
+	display: flex;
+	flex-direction: column;
+	gap : var(--spacing-sm)
+}
+
+.socialButton{
+	background-color: white;
+	color: var(--text);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
 }
 
 

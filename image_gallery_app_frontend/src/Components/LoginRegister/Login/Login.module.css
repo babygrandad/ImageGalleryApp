@@ -1,1 +1,67 @@
 @import url("../../../index.css");
+
+.LoginContainer{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-image: url("images/business_bkg.jpg");
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;	
+	min-height: 100vh;
+	width: 100%;
+}
+
+.loginForm{
+	display: flex;
+	flex-direction: column;
+	background-color:white;
+	width: 100%;
+	max-width: 722px;
+	align-items: center;
+	padding: var(--spacing-xl);
+	border-radius: var(--spacing-xs);
+	
+}
+
+.formText{
+	text-align: center;
+}
+
+.formFieldWrapper{
+	display: block;
+	width: 100%;
+	background-color: white;
+	padding:5px 0 5px 15px;
+	border: 1px solid var(--text);
+	border-radius: var(--spacing-xxs);
+}
+
+.inputField{
+	border: none;
+	width: 90%;
+}
+
+.checkContainer{
+	display: flex;
+	justify-content: space-between;
+}
+
+.rememberText{
+	font-size: smaller;
+}
+
+.forgotPassword{
+	font-size: smaller;
+	text-align: right;
+	text-decoration: none;
+	color: var(--text);
+}
+
+.forgotPassword:hover{
+	text-decoration: underline;
+}
+
+.buttonContainer{
+	margin-top: var(--spacing-xl);
+}

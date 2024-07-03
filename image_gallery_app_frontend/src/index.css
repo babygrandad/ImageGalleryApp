@@ -111,30 +111,20 @@ body{
 }
 
 .button{
-	font-weight: 600;
 	font-size: var(--spacing-sm);
 	border: none;
-	border-radius: var(--spacing-xs);
+	border-radius: var(--spacing-xxs);
 	padding: var(--spacing-sm);
 }
 
 .button:hover  {
 	cursor: pointer;
-	/*background-color: var(--button-hover-bg);*/
-	/*color: var(--button-hover-text);*/
 }
 
 .inputField {
+	font-weight: 100;
 	padding: var(--spacing-xs);
 	border-radius:var(--spacing-xxs);
-	border:2px var(--text) solid;
 	outline: none;
-}
-
-.inputField:focus {
-	border:2px var(--primary) solid;
-}
-
-.inputField:hover {
-	border:2px var(--text-hover-state) solid;
+	font-size: smaller;
 }

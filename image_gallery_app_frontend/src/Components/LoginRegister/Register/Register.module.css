@@ -1,9 +1,45 @@
 @import url("../../../index.css");
 
+.registerContainer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	min-width: 100vw;
+	padding: var(--spacing-xxl);
+}
+
+.registerWrapper {
+	display: flex;
+	min-width: 100%;
+	min-height: 100%;
+	gap: var(--spacing-xxl)
+}
+
+/*	Styles for the left side of the page*/
+.aside {
+	background-color: white;
+	min-height: 100%;
+	flex: 3;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+}
+
+.inputField {
+	display: block;
+	min-width: 100%;
+	border: 1px solid var(--text);
+}
 
 
-
-
-
-
-
+/*	styles for the right side of the page*/
+.main {
+	flex: 7;
+	border-radius: var(--spacing-xs);
+	background-image: url("images/business_bkg.jpg");
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
