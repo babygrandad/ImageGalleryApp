@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+	/* Site Colors */
+	--primary-color:#2187AB;
+	--secondary-color: #2ecc71;
+	--accent-color: #e74c3c;
+	--background-color: #ecf0f1;
+	--text-color: #2c3e50;
+
+	--primary-color-dark: #1e6f9f;
+	--secondary-color-dark: #27a55b;
+	--accent-color-dark: #ff4d4d;
+	--background-color-dark: #1b1b1b;
+	--text-color-dark: #e0e0e0;
+
+	/* Interaction Colors */
+	--button-bg: var(--primary-color);
+	--button-text: #ffffff;
+	--button-hover-bg: #2980b9;
+	--button-hover-text: #ffffff;
+	--button-active-bg: #2471a3;
+	--button-active-text: #ffffff;
+	--text-hover-state: #2980b9;
+	--text-active-state: #2471a3;
+
+	/* Site Fonts*/
+	--heading-text: 'Poppins', sans-serif;
+	--body-text: 'Inter', 'sans-serif';
+	--h1: 3.053rem;   /* Approximately 49px */
+    --h2: 2.442rem;   /* Approximately 39px */
+    --h3: 1.954rem;   /* Approximately 31px */
+    --h4: 1.563rem;   /* Approximately 25px */
+    --h5: 1.250rem;   /* Approximately 20px */
+    --small: 0.8rem;  /* Approximately 13px */
+    --base-size: 16px; /* base font size */
+
+	/* Site Sizes (Spacing for margins, gutters, padding, etc.) */
+	--spacing-xxs: 0.25rem;	/* 4px */
+	--spacing-xs: 0.5rem;   /* 8px */
+	--spacing-sm: 1rem;     /* 16px */
+	--spacing-md: 1.5rem;   /* 24px */
+	--spacing-lg: 2rem;     /* 32px */
+	--spacing-xl: 3rem;     /* 48px */
+	--spacing-xxl: 4rem;    /* 64px */
+
+
+	/* Site Themes*/
+	/* Lite Mode Theme*/
+	[data-theme='light'] {
+        --primary: var(--primary-color);
+        --secondary: var(--secondary-color);
+        --accent: var(--accent-color);
+        --bg: var(--background-color);
+        --text:var(--text-color);
+    }
+    
+	/* Dark Mode Theme*/
+    [data-theme='dark'] {
+    
+        --primary: var(--primary-color-dark);
+        --secondary: var(--secondary-color-dark);
+        --accent: var(--accent-color-dark);
+        --bg: var(--background-color-dark);
+        --text: var(--text-color-dark);
+    }
+
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+p{
+    margin: 16px 0;
+}
+
+h1{
+    font-size: var(--h1);
+	font-family: var(--heading-text);
+}
+h2{
+    font-size: var(--h2);
+	font-family: var(--heading-text);
+}
+h3{
+    font-size: var(--h3);
+	font-family: var(--heading-text);
+}
+h4{
+    font-size: var(--h4);
+	font-family: var(--heading-text);    
+}
+h5{
+    font-size: var(--h5);
+	font-family: var(--heading-text);    
+}
+
+body{
+	font-family: var(--body-text);
+	color: var(--text);
+	min-width: 100vw;
+}
+
+.container{
+	width: 100%;
+    max-width: 2560px;
+    margin: 0 auto;
+}
+
+.button{
+	font-weight: 600;
+	font-size: var(--spacing-sm);
+	border: none;
+	border-radius: var(--spacing-xs);
+	padding: var(--spacing-sm);
+}
+
+.button:hover  {
+	cursor: pointer;
+	/*background-color: var(--button-hover-bg);*/
+	/*color: var(--button-hover-text);*/
+}
+
+.inputField {
+	padding: var(--spacing-xs);
+	border-radius:var(--spacing-xxs);
+	border:2px var(--text) solid;
+	outline: none;
+}
+
+.inputField:focus {
+	border:2px var(--primary) solid;
+}
+
+.inputField:hover {
+	border:2px var(--text-hover-state) solid;
+}

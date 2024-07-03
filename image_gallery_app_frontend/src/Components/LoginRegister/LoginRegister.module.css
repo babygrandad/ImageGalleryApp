@@ -1,0 +1,87 @@
+@import url('../../index.css');
+
+/*Login Register Container*/
+.loginRegisterContainer{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-image: url("images/business_bkg.jpg");
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;	
+	min-height: 100vh;
+	width: 100%;
+}
+
+/*Aside Related Styling*/
+
+aside{
+	background-color: var(--bg);
+	padding: var(--spacing-lg);
+	padding-top: var(--spacing-xxl);
+	min-height: 100vh;
+	flex:2;
+}
+
+.formText {
+	margin-bottom: var(--spacing-lg);
+}
+
+.formText > p {
+	margin: 0;
+	font-size: small;
+}
+
+.loginRegisterForm{
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-sm);
+}
+
+.formFieldContainer > lable {
+	font-weight: bold;
+	font-size: small;
+}
+
+.formFieldContainer > input {
+	display: block;
+	width: 100%;
+}
+
+.buttonContainer{
+	display: flex;
+	justify-content: center;
+}
+
+.formButton{
+	border: none;
+	background-color: var(--button-bg);
+	color: var(--button-text);
+}
+
+.formButton:hover{
+	background-color: var(--button-hover-bg);
+	color: var(--button-hover-text);
+}
+
+.alternateLogin > p {
+	color: var(--text);
+}
+
+.alternateLogin > p > a{
+	text-decoration: underline;
+}
+
+.alternateLogin > p > a:hover{
+	text-decoration: dotted;
+	cursor:pointer;
+	color: var(--text-hover-state);
+}
+
+
+/*Main related Styling*/
+main{
+	flex:8
+}
+
+
