@@ -2,6 +2,8 @@ import React from 'react'
 import LoginRegister from '../LoginRegister.module.css'
 import RegisterStyle from './Register.module.css'
 
+
+
 const Register = () => {
   return (
     <div className={RegisterStyle.registerContainer}>
@@ -13,6 +15,13 @@ const Register = () => {
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. In, quidem!</p>
             </div>
             <div className={LoginRegister.formInputsWrapper}>
+            <div className={LoginRegister.formInfoContainer}>
+                <label htmlFor="registerUsername" className={LoginRegister.formLable}>Username</label>
+                <div className={RegisterStyle.formFieldWrapper}>
+                  <input id='registerUsername' type='text' placeholder='Enter Username' className={`${RegisterStyle.inputField} inputField`} />
+                </div>
+                <span id='registerUsernameError' className={LoginRegister.errorText}>Userame field cannot be left empty.</span>
+              </div>
               <div className={LoginRegister.formInfoContainer}>
                 <label htmlFor="registerFullName" className={LoginRegister.formLable}>Full Name</label>
                 <div className={RegisterStyle.formFieldWrapper}>

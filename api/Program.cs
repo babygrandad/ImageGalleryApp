@@ -52,6 +52,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 //this service is responisble for which DataBase is being used 
 builder.Services.AddDbContext<ApplicationDBContext>(options =>  {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    builder.Services.AddCors();
 });
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>{
@@ -102,6 +103,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(options => options.WithOrigins("http://localhost:5173")
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
