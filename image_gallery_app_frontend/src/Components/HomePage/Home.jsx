@@ -1,17 +1,16 @@
 import React from 'react'
-import HomeStyle from './Home.module.css'
+import CommonStyles from '../CommonComponents/CommonComponents.module.css'
+import SideMenu from '../SideMenu/SideMenu'
+import ContentContainer from '../ContentContainer/ContentContainer'
+
 
 function Home() {
-  return (
-	<div className='continer'>
-		<aside>
-
-		</aside>
-		<main>
-
-		</main>
-	</div>
-  )
+	return (
+		<div className={CommonStyles.container}>
+			<SideMenu />
+			<ContentContainer />
+		</div>
+	)
 }
 
 export default Home

@@ -1,0 +1,82 @@
+/*	Side menu STyles*/
+.sideMenu{
+	flex: 2;
+	background-color: var(--primary);
+	padding: var(--spacing-sm) var(--spacing-xs);
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.sideMenuLinks{
+	text-decoration: none;
+}
+
+.topLogoLink{
+	font-size: var(--h2);
+	font-family: var(--heading-text);
+	font-weight: bold;
+	color: var(--white-on-bg);
+}
+
+.sideMenuList{
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-sm)
+}
+
+.sideMenuListItem{	
+	border-radius: var(--spacing-xxs);
+	font-size: var(--h5);
+	font-weight: 600;
+	color: var(--white-on-bg);
+}
+
+.sideMenuListItem.active{
+	background-color: var(--white-on-bg);
+	color: var(--Text);
+}
+
+.sideMenuListItem:hover{
+	background-color: var(--white-on-bg);
+	color: var(--Text);
+}
+
+.sideMenuListItem > a{
+	padding: var(--spacing-lg) var(--spacing-xs);
+}
+
+.sideMenuLinks {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+}
+
+.sideMenuIcons{
+	margin-right: var(--spacing-xs);
+}
+
+.menuLogoutContainer{
+	font-size: var(--h5);
+	font-family: var(--heading-text);
+	font-weight: 600;
+	display: flex;
+	align-items: center;
+	padding-left: var(--spacing-xs);
+	border-radius: var(--spacing-xxs);
+}
+
+.menuLogoutContainer:hover{
+	background-color: var(--white-on-bg);
+}
+
+.menuLogoutLink{
+	padding: var(--spacing-lg) 0;
+	width: 100%;
+	color: var(--white-on-bg);
+}
+
+.menuLogoutLink:hover{
+	color: var(--Text);
+}

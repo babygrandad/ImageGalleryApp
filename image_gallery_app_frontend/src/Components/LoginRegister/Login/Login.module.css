@@ -4,7 +4,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-image: url("images/business_bkg.jpg");
+	background-image: url("images/workbook_pro.jpg");
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;	
@@ -21,8 +21,9 @@
 	align-items: center;
 	padding: var(--spacing-xl);
 	border-radius: var(--spacing-xs);
-	
+	z-index: 2;
 }
+
 
 .formText{
 	text-align: center;

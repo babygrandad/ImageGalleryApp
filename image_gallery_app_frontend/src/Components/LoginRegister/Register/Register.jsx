@@ -9,7 +9,7 @@ const Register = () => {
         <div className={RegisterStyle.aside}>
           <form className={RegisterStyle.registerForm}>
             <div className={`${LoginRegister.formText} ${RegisterStyle.formText}`}>
-              <h3>Image Gallery App</h3>
+              <h3>Register Profile</h3>
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. In, quidem!</p>
             </div>
             <div className={LoginRegister.formInputsWrapper}>

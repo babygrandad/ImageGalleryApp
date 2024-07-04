@@ -112,3 +112,17 @@ also consider this folder structure - general idea of how things are laid out
   ...
 - Program.cs
 ...
+
+
+Common Html structure
+
+<div className={CommonStyles.continer}>
+  <aside className={CommonStyles.sideMenu}>
+
+  </aside>
+  <main className={CommonStyles.contentContainer}>
+    <div className={CommonStyles.topBar}>
+
+    </div>
+  </main>
+</div>

@@ -20,9 +20,7 @@ namespace api.Controllers
     {
         private readonly ApplicationDBContext _dbContext;
         private readonly ICommentRepository _commentRepo;
-
         private readonly IImageRepository _imageRepo;
-
         private readonly UserManager<AppUser> _userManager;
 
         public CommentController(ApplicationDBContext dbContext, ICommentRepository commentRepo, UserManager<AppUser> userManager, IImageRepository imageRepo)
