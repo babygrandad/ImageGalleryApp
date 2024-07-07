@@ -1,76 +1,163 @@
-import React from 'react'
-import LoginRegister from '../LoginRegister.module.css'
-import RegisterStyle from './Register.module.css'
-import BASE_URL from '../../../config'
-import axios from 'axios'
-
-
+import React, { useState } from 'react';
+import LoginRegister from '../LoginRegister.module.css';
+import RegisterStyle from './Register.module.css';
+import axios from 'axios';
+import BASE_URL from '../../../config';
 
 const Register = () => {
+  const [formData, setFormData] = useState({
+    username: '',
+    fullName: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+
+  const [errors, setErrors] = useState({
+    username: '',
+    fullName: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.username) newErrors.username = 'Username field cannot be left empty.';
+    if (!formData.fullName) newErrors.fullName = 'Full Name field cannot be left empty.';
+    if (!formData.email) newErrors.email = 'Email field cannot be left empty.';
+    if (!formData.password) newErrors.password = 'Password field cannot be left empty.';
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match.';
+    } else if (!formData.confirmPassword) {
+      newErrors.confirmPassword = 'Confirm Password field cannot be left empty.';
+    }
+    return newErrors;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newErrors = validateForm();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+    } else {
+      try {
+        const response = await axios.post(`${BASE_URL}/register`, formData);
+        console.log('Registration successful', response.data);
+      } catch (error) {
+        console.error('Error registering', error);
+      }
+    }
+  };
+
   return (
     <div className={RegisterStyle.registerContainer}>
       <div className={RegisterStyle.registerWrapper}>
         <div className={RegisterStyle.aside}>
-          <form className={RegisterStyle.registerForm}>
+          <form className={RegisterStyle.registerForm} onSubmit={handleSubmit}>
             <div className={`${LoginRegister.formText} ${RegisterStyle.formText}`}>
               <h3>Register Profile</h3>
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. In, quidem!</p>
             </div>
             <div className={LoginRegister.formInputsWrapper}>
-            <div className={LoginRegister.formInfoContainer}>
-                <label htmlFor="registerUsername" className={LoginRegister.formLable}>Username</label>
+              <div className={LoginRegister.formInfoContainer}>
+                <label htmlFor="username" className={LoginRegister.formLable}>Username</label>
                 <div className={RegisterStyle.formFieldWrapper}>
-                  <input id='registerUsername' type='text' placeholder='Enter Username' className={`${RegisterStyle.inputField} inputField`} />
+                  <input
+                    id='username'
+                    type='text'
+                    placeholder='Enter Username'
+                    className={`${RegisterStyle.inputField} inputField`}
+                    value={formData.username}
+                    onChange={handleChange}
+                  />
                 </div>
-                <span id='registerUsernameError' className={LoginRegister.errorText}>Userame field cannot be left empty.</span>
+                <span id='registerUsernameError' className={LoginRegister.errorText}>{errors.username}</span>
               </div>
               <div className={LoginRegister.formInfoContainer}>
-                <label htmlFor="registerFullName" className={LoginRegister.formLable}>Full Name</label>
+                <label htmlFor="fullName" className={LoginRegister.formLable}>Full Name</label>
                 <div className={RegisterStyle.formFieldWrapper}>
-                  <input id='registerFullName' type='text' placeholder='Enter Name' className={`${RegisterStyle.inputField} inputField`} />
+                  <input
+                    id='fullName'
+                    type='text'
+                    placeholder='Enter Name'
+                    className={`${RegisterStyle.inputField} inputField`}
+                    value={formData.fullName}
+                    onChange={handleChange}
+                  />
                 </div>
-                <span id='registerFullNameError' className={LoginRegister.errorText}>Full Name field cannot be left empty.</span>
+                <span id='registerFullNameError' className={LoginRegister.errorText}>{errors.fullName}</span>
               </div>
               <div className={LoginRegister.formInfoContainer}>
-                <label htmlFor="registerEmail" className={LoginRegister.formLable}>Email Address</label>
+                <label htmlFor="email" className={LoginRegister.formLable}>Email Address</label>
                 <div className={RegisterStyle.formFieldWrapper}>
-                  <input id='registerEmail' type='email' placeholder='Enter Email' className={`${RegisterStyle.inputField} inputField`} />
+                  <input
+                    id='email'
+                    type='email'
+                    placeholder='Enter Email'
+                    className={`${RegisterStyle.inputField} inputField`}
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
                 </div>
-                <span id='registerEmailError' className={LoginRegister.errorText}>Email field cannot be left empty.</span>
+                <span id='registerEmailError' className={LoginRegister.errorText}>{errors.email}</span>
               </div>
               <div className={LoginRegister.formInfoContainer}>
-                <label htmlFor="registerPassword" className={LoginRegister.formLable}>Password</label>
+                <label htmlFor="password" className={LoginRegister.formLable}>Password</label>
                 <div className={RegisterStyle.formFieldWrapper}>
-                  <input id='registerPassword' type='password' placeholder='Enter Password' className={`${RegisterStyle.inputField} inputField`} />
+                  <input
+                    id='password'
+                    type='password'
+                    placeholder='Enter Password'
+                    className={`${RegisterStyle.inputField} inputField`}
+                    value={formData.password}
+                    onChange={handleChange}
+                  />
                 </div>
-                <span id='registerPasswordError' className={LoginRegister.errorText}>Password field cannot be left empty.</span>
+                <span id='registerPasswordError' className={LoginRegister.errorText}>{errors.password}</span>
               </div>
               <div className={LoginRegister.formInfoContainer}>
-                <label htmlFor="registerConfirmPassword" className={LoginRegister.formLable}>Confirm Password</label>
+                <label htmlFor="confirmPassword" className={LoginRegister.formLable}>Confirm Password</label>
                 <div className={RegisterStyle.formFieldWrapper}>
-                  <input id='registerConfirmPassword' type='password' placeholder='Enter Password' className={`${RegisterStyle.inputField} inputField`} />
+                  <input
+                    id='confirmPassword'
+                    type='password'
+                    placeholder='Enter Password'
+                    className={`${RegisterStyle.inputField} inputField`}
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                  />
                 </div>
-                <span id='registerConfirmPasswordError' className={LoginRegister.errorText}>Password field cannot be left empty.</span>
+                <span id='registerConfirmPasswordError' className={LoginRegister.errorText}>{errors.confirmPassword}</span>
               </div>
               <div className={`${LoginRegister.formInfoContainer} ${LoginRegister.buttonContainer}`}>
-                <button id='LoginButton' className={`${LoginRegister.formButton} button`}>Register</button>
+                <button id='LoginButton' className={`${LoginRegister.formButton} button`} type="submit">Register</button>
               </div>
               <div className={LoginRegister.formInfoContainer}>
-                <p className={LoginRegister.loginRegisterQuestion}>Already have an account? <a className={LoginRegister.loginRegisterLink} href='/login'>Login</a> Here</p>
+                <p className={LoginRegister.loginRegisterQuestion}>
+                  Already have an account? <a className={LoginRegister.loginRegisterLink} href='/login'>Login</a> Here
+                </p>
               </div>
               <div className={LoginRegister.socialButtonsWrapper}>
-                <button id='RegisterToGoogleButton' className={`${LoginRegister.formButton} ${LoginRegister.socialButton} button`}><i class="fab fa-google"></i> Sign in with Google</button>
-                <button id='RegisterToFacebookButton' className={`${LoginRegister.formButton} ${LoginRegister.socialButton} button`}><i class="fab fa-facebook"></i> Sign in with Facebook</button>
+                <button id='RegisterToGoogleButton' className={`${LoginRegister.formButton} ${LoginRegister.socialButton} button`}>
+                  <i className="fab fa-google"></i> Sign in with Google
+                </button>
+                <button id='RegisterToFacebookButton' className={`${LoginRegister.formButton} ${LoginRegister.socialButton} button`}>
+                  <i className="fab fa-facebook"></i> Sign in with Facebook
+                </button>
               </div>
             </div>
           </form>
         </div>
-        <div className={RegisterStyle.main}>
-          
-        </div>
+        <div className={RegisterStyle.main}></div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;
