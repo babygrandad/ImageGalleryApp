@@ -17,7 +17,6 @@ function Login() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setLoginData(prevValue => {
-      console.log(`email: ${prevValue.email}`);
       return {
         ...prevValue, [name]: value
       }
