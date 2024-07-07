@@ -1,6 +1,8 @@
 import React from 'react'
 import LoginRegister from '../LoginRegister.module.css'
 import RegisterStyle from './Register.module.css'
+import BASE_URL from '../../../config'
+import axios from 'axios'
 
 
 
