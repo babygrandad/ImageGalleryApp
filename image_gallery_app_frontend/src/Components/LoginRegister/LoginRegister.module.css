@@ -44,7 +44,7 @@ aside{
 .errorText{
 	color: var(--accent);
 	font-size: smaller;
-	display: none;
+	/* display: none; */
 }
 
 .buttonContainer{
