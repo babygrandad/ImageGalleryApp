@@ -14,8 +14,15 @@ function Login() {
     password: ""
   });
 
+  const [emailError, setEmailError] = useState ('')
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    if(name === 'email')
+      setEmailError('')
+
+
     setLoginData(prevValue => {
       return {
         ...prevValue, [name]: value
@@ -23,9 +30,16 @@ function Login() {
     });
   };
 
+  const validateLogin = () => {
+    if(!loginData.email){
+      setEmailError('Email field cannot be left blank.');
+      return
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    validateLogin();
 
     try {
       const response = await axios.post(`${BASE_URL}/account/login`, loginData);
@@ -59,7 +73,7 @@ function Login() {
                 onChange={handleChange}
               />
             </div>
-            <span id='loginEmailError' className={LoginRegister.errorText}>Email field cannot be left empty.</span>
+            <span id='loginEmailError' className={LoginRegister.errorText}>{emailError}</span>
           </div>
           <div className={LoginRegister.formInfoContainer}>
             <label htmlFor="loginPassword" className={LoginRegister.formLable}>Password</label>
