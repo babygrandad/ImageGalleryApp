@@ -6,7 +6,7 @@ import BASE_URL from '../../../config';
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    username: '',
+    userName: '',
     fullName: '',
     email: '',
     password: '',
@@ -14,7 +14,7 @@ const Register = () => {
   });
 
   const [errors, setErrors] = useState({
-    username: '',
+    userName: '',
     fullName: '',
     email: '',
     password: '',
@@ -28,7 +28,7 @@ const Register = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.username) newErrors.username = 'Username field cannot be left empty.';
+    if (!formData.userName) newErrors.userName = 'Username field cannot be left empty.';
     if (!formData.fullName) newErrors.fullName = 'Full Name field cannot be left empty.';
     if (!formData.email) newErrors.email = 'Email field cannot be left empty.';
     if (!formData.password) newErrors.password = 'Password field cannot be left empty.';
@@ -47,7 +47,7 @@ const Register = () => {
       setErrors(newErrors);
     } else {
       try {
-        const response = await axios.post(`${BASE_URL}/register`, formData);
+        const response = await axios.post(`${BASE_URL}/account/register`, formData);
         console.log('Registration successful', response.data);
       } catch (error) {
         console.error('Error registering', error);
@@ -66,18 +66,18 @@ const Register = () => {
             </div>
             <div className={LoginRegister.formInputsWrapper}>
               <div className={LoginRegister.formInfoContainer}>
-                <label htmlFor="username" className={LoginRegister.formLable}>Username</label>
+                <label htmlFor="userName" className={LoginRegister.formLable}>Username</label>
                 <div className={RegisterStyle.formFieldWrapper}>
                   <input
-                    id='username'
+                    id='userName'
                     type='text'
                     placeholder='Enter Username'
                     className={`${RegisterStyle.inputField} inputField`}
-                    value={formData.username}
+                    value={formData.userName}
                     onChange={handleChange}
                   />
                 </div>
-                <span id='registerUsernameError' className={LoginRegister.errorText}>{errors.username}</span>
+                <span id='registerUsernameError' className={LoginRegister.errorText}>{errors.userName}</span>
               </div>
               <div className={LoginRegister.formInfoContainer}>
                 <label htmlFor="fullName" className={LoginRegister.formLable}>Full Name</label>
