@@ -4,6 +4,7 @@ import LoginStyle from './Login.module.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import BASE_URL from '../../../config';
+import LoginRegisterSubmitButton from '../Subcomponents/LoginRegisterSubmitButton';
 
 function Login() {
   const navigate = useNavigate(); // Hook to navigate programmatically
@@ -82,6 +83,7 @@ function Login() {
             <div className={LoginStyle.formFieldWrapper}>
               <i className="fas fa-user"></i>
               <input
+                id='loginEmail'
                 name='email' // Changed from 'loginEmail' to 'email' to match the state property
                 type='text'
                 placeholder='Enter Email'
@@ -111,9 +113,10 @@ function Login() {
             </div>
           </div>
           <span className={LoginRegister.errorText}>{successErrors.response}</span>
-          <div className={`${LoginRegister.formInfoContainer} ${LoginRegister.buttonContainer}`}>
-            <button id='LoginButton' className={`${LoginRegister.formButton} button`}>Login</button>
-          </div>
+          <LoginRegisterSubmitButton
+            id='loginButton'
+            buttonText='Login'
+          />
           <div className={LoginRegister.formInfoContainer}>
             <p className={LoginRegister.loginRegisterQuestion}>New to this platform? <a className={LoginRegister.loginRegisterLink} href='/'>Register</a> Here</p>
           </div>

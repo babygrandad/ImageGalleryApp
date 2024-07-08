@@ -35,7 +35,7 @@ namespace api.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var existingUser = await _userManager.FindByEmailAsync(registerDTO.Email);
+                var existingUser = await _userManager.FindByEmailAsync(registerDTO.Email.ToLower());
                 if (existingUser != null)
                 {
                     return BadRequest(new { errors = new[] { "Email is already taken." } });
@@ -44,7 +44,7 @@ namespace api.Controllers
                 var appUser = new AppUser
                 {
                     UserName = registerDTO.UserName,
-                    Email = registerDTO.Email,
+                    Email = registerDTO.Email.ToLower(),
                     FullName = registerDTO.FullName,
                 };
 
@@ -121,9 +121,10 @@ namespace api.Controllers
 
         // Please dont forget to work on the logout route for the user
         [HttpPost("logout")]
-        public async Task<IActionResult> Logout([FromBody] string token)
+        public async Task<IActionResult> Logout()
         {
-            return null;
+            await _signInManager.SignOutAsync();
+            return Ok(new { message = "Logged out successfully" });
         }
 
         // work on this when you find a way to send the forgot email email.

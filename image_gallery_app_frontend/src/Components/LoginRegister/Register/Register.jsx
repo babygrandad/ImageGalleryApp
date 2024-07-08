@@ -3,6 +3,8 @@ import LoginRegister from '../LoginRegister.module.css';
 import RegisterStyle from './Register.module.css';
 import axios from 'axios';
 import BASE_URL from '../../../config';
+import RegisterFormInput from '../Subcomponents/RegisterFormInput'; // Corrected import
+import LoginRegisterSubmitButton from '../Subcomponents/LoginRegisterSubmitButton';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -80,79 +82,55 @@ const Register = () => {
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. In, quidem!</p>
             </div>
             <div className={LoginRegister.formInputsWrapper}>
-              <div className={LoginRegister.formInfoContainer}>
-                <label htmlFor="userName" className={LoginRegister.formLable}>Username</label>
-                <div className={RegisterStyle.formFieldWrapper}>
-                  <input
-                    id='userName'
-                    type='text'
-                    placeholder='Enter Username'
-                    className={`${RegisterStyle.inputField} inputField`}
-                    value={formData.userName}
-                    onChange={handleChange}
-                  />
-                </div>
-                <span id='registerUsernameError' className={LoginRegister.errorText}>{errors.userName}</span>
-              </div>
-              <div className={LoginRegister.formInfoContainer}>
-                <label htmlFor="fullName" className={LoginRegister.formLable}>Full Name</label>
-                <div className={RegisterStyle.formFieldWrapper}>
-                  <input
-                    id='fullName'
-                    type='text'
-                    placeholder='Enter Name'
-                    className={`${RegisterStyle.inputField} inputField`}
-                    value={formData.fullName}
-                    onChange={handleChange}
-                  />
-                </div>
-                <span id='registerFullNameError' className={LoginRegister.errorText}>{errors.fullName}</span>
-              </div>
-              <div className={LoginRegister.formInfoContainer}>
-                <label htmlFor="email" className={LoginRegister.formLable}>Email Address</label>
-                <div className={RegisterStyle.formFieldWrapper}>
-                  <input
-                    id='email'
-                    type='email'
-                    placeholder='Enter Email'
-                    className={`${RegisterStyle.inputField} inputField`}
-                    value={formData.email}
-                    onChange={handleChange}
-                  />
-                </div>
-                <span id='registerEmailError' className={LoginRegister.errorText}>{errors.email}</span>
-              </div>
-              <div className={LoginRegister.formInfoContainer}>
-                <label htmlFor="password" className={LoginRegister.formLable}>Password</label>
-                <div className={RegisterStyle.formFieldWrapper}>
-                  <input
-                    id='password'
-                    type='password'
-                    placeholder='Enter Password'
-                    className={`${RegisterStyle.inputField} inputField`}
-                    value={formData.password}
-                    onChange={handleChange}
-                  />
-                </div>
-                <span id='registerPasswordError' className={LoginRegister.errorText}>{errors.password}</span>
-              </div>
-              <div className={LoginRegister.formInfoContainer}>
-                <label htmlFor="confirmPassword" className={LoginRegister.formLable}>Confirm Password</label>
-                <div className={RegisterStyle.formFieldWrapper}>
-                  <input
-                    id='confirmPassword'
-                    type='password'
-                    placeholder='Enter Password'
-                    className={`${RegisterStyle.inputField} inputField`}
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                  />
-                </div>
-                <span id='registerConfirmPasswordError' className={LoginRegister.errorText}>{errors.confirmPassword}</span>
-              </div>
-              <div className={`${LoginRegister.formInfoContainer} ${LoginRegister.buttonContainer}`}>
-                <button id='LoginButton' className={`${LoginRegister.formButton} button`} type="submit">Register</button>
-              </div>
+              <RegisterFormInput
+                id="userName"
+                label="Username"
+                type="text"
+                placeholder="Enter Username"
+                value={formData.userName}
+                error={errors.userName}
+                onChange={handleChange}
+              />
+              <RegisterFormInput
+                id="fullName"
+                label="Full Name"
+                type="text"
+                placeholder="Enter Name"
+                value={formData.fullName}
+                error={errors.fullName}
+                onChange={handleChange}
+              />
+              <RegisterFormInput
+                id="email"
+                label="Email Address"
+                type="email"
+                placeholder="Enter Email"
+                value={formData.email}
+                error={errors.email}
+                onChange={handleChange}
+              />
+              <RegisterFormInput
+                id="password"
+                label="Password"
+                type="password"
+                placeholder="Enter Password"
+                value={formData.password}
+                error={errors.password}
+                onChange={handleChange}
+              />
+              <RegisterFormInput
+                id="confirmPassword"
+                label="Confirm Password"
+                type="password"
+                placeholder="Enter Password"
+                value={formData.confirmPassword}
+                error={errors.confirmPassword}
+                onChange={handleChange}
+              />
+              <LoginRegisterSubmitButton
+                id='registerButton'
+                buttonText='Register'
+              />
               <div className={LoginRegister.formInfoContainer}>
                 <p className={LoginRegister.loginRegisterQuestion}>
                   Already have an account? <a className={LoginRegister.loginRegisterLink} href='/login'>Login</a> Here
