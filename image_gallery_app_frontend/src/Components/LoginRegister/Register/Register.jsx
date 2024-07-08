@@ -42,7 +42,9 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const newErrors = validateForm();
+    
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
@@ -50,7 +52,20 @@ const Register = () => {
         const response = await axios.post(`${BASE_URL}/account/register`, formData);
         console.log('Registration successful', response.data);
       } catch (error) {
-        console.error('Error registering', error);
+        const serverErrors = {}
+        if(error.response.data.errors){
+        var responseErrors = error.response.data.errors
+        console.log(responseErrors)
+
+        responseErrors.forEach(err => {
+            err.includes('Username') ? serverErrors.userName = err : serverErrors.userName = "";
+            err.includes('Email') ? serverErrors.email = err : serverErrors.email = "";
+            err.includes('Passwords') ? serverErrors.password = err : serverErrors.password = "";
+        });
+
+        setErrors(serverErrors)
+
+        }
       }
     }
   };

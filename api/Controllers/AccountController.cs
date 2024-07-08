@@ -35,6 +35,12 @@ namespace api.Controllers
                     return BadRequest(ModelState);
                 }
 
+                var existingUser = await _userManager.FindByEmailAsync(registerDTO.Email);
+                if (existingUser != null)
+                {
+                    return BadRequest(new { errors = new[] { "Email is already taken." } });
+                }
+
                 var appUser = new AppUser
                 {
                     UserName = registerDTO.UserName,
@@ -62,17 +68,17 @@ namespace api.Controllers
                     }
                     else
                     {
-                        return StatusCode(500, roleResult.Errors);
+                        return StatusCode(500, new { errors = roleResult.Errors.Select(e => e.Description) });
                     }
                 }
                 else
                 {
-                    return StatusCode(500, createdUser.Errors);
+                    return StatusCode(500, new { errors = createdUser.Errors.Select(e => e.Description) });
                 }
             }
             catch (Exception e) // Catch any exceptions that occur during the process
             {
-                return StatusCode(500, e); // Return 500 Internal Server Error with the exception details
+                return StatusCode(500, new { message = "An internal server error occurred.", exception = e.Message });
             }
         }
 

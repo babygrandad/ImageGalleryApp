@@ -6,48 +6,65 @@ import axios from 'axios';
 import BASE_URL from '../../../config';
 
 function Login() {
-
   const navigate = useNavigate(); // Hook to navigate programmatically
 
   const [loginData, setLoginData] = useState({
-    email: "",
-    password: ""
+    email: '',
+    password: ''
   });
 
-  const [emailError, setEmailError] = useState ('')
+  const [successErrors, setSuccessErrors] = useState({
+    email: '',
+    response: '',
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if(name === 'email')
-      setEmailError('')
-
-
-    setLoginData(prevValue => {
-      return {
-        ...prevValue, [name]: value
-      }
-    });
+    setLoginData((prevValue) => ({
+      ...prevValue,
+      [name]: value
+    }));
   };
 
   const validateLogin = () => {
-    if(!loginData.email){
-      setEmailError('Email field cannot be left blank.');
-      return
+    let isValid = true;
+
+    if (!loginData.email) {
+      setSuccessErrors((prevErrors) => ({
+        ...prevErrors,
+        email: 'Email field cannot be left blank.'
+      }));
+      isValid = false;
+    } else {
+      setSuccessErrors((prevErrors) => ({
+        ...prevErrors,
+        email: ''
+      }));
     }
-  }
+
+    return isValid;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    validateLogin();
+    if (!validateLogin()) return;
 
     try {
       const response = await axios.post(`${BASE_URL}/account/login`, loginData);
       if (response.data.token) {
         navigate('/feed'); // Navigate to '/feed' upon successful login
+      } else {
+        setSuccessErrors((prevErrors) => ({
+          ...prevErrors,
+          response: response.data.message || 'Login failed.'
+        }));
       }
-      
     } catch (error) {
+      setSuccessErrors((prevErrors) => ({
+        ...prevErrors,
+        response: error.response?.data?.message || 'Login error. Please try again.'
+      }));
       console.error('Login Error: ', error);
     }
   };
@@ -73,7 +90,7 @@ function Login() {
                 onChange={handleChange}
               />
             </div>
-            <span id='loginEmailError' className={LoginRegister.errorText}>{emailError}</span>
+            <span id='loginEmailError' className={LoginRegister.errorText}>{successErrors.email}</span>
           </div>
           <div className={LoginRegister.formInfoContainer}>
             <label htmlFor="loginPassword" className={LoginRegister.formLable}>Password</label>
@@ -89,14 +106,11 @@ function Login() {
                 onChange={handleChange}
               />
             </div>
-            <span id='loginPasswordError' className={LoginRegister.errorText}>.-.</span>
             <div className={LoginStyle.checkContainer}>
-              <div>
-                <input type='checkbox' /> <span className={LoginStyle.rememberText}>Remember me?</span>
-              </div>
               <a href="/forgotPassword" className={LoginStyle.forgotPassword}>Forgot Password?</a>
             </div>
           </div>
+          <span className={LoginRegister.errorText}>{successErrors.response}</span>
           <div className={`${LoginRegister.formInfoContainer} ${LoginRegister.buttonContainer}`}>
             <button id='LoginButton' className={`${LoginRegister.formButton} button`}>Login</button>
           </div>
