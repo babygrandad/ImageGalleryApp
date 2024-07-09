@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import LoginRegister from '../LoginRegister.module.css';
 import LoginStyle from './Login.module.css';
-import { useNavigate } from 'react-router-dom';
+import { redirect, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import BASE_URL from '../../../config';
 import LoginRegisterSubmitButton from '../Subcomponents/LoginRegisterSubmitButton';
+import { setToken } from '../../../utils/auth';
 
 function Login() {
   const navigate = useNavigate(); // Hook to navigate programmatically
@@ -16,6 +17,7 @@ function Login() {
 
   const [successErrors, setSuccessErrors] = useState({
     email: '',
+    password: '',
     response: '',
   });
 
@@ -26,6 +28,14 @@ function Login() {
       ...prevValue,
       [name]: value
     }));
+
+    setSuccessErrors((prevErrors) => ({
+      ...prevErrors,
+      response: '',
+      email: '',
+      password: ''
+    }));
+
   };
 
   const validateLogin = () => {
@@ -37,11 +47,14 @@ function Login() {
         email: 'Email field cannot be left blank.'
       }));
       isValid = false;
-    } else {
+    }
+
+    if (!loginData.password) {
       setSuccessErrors((prevErrors) => ({
         ...prevErrors,
-        email: ''
+        password: 'password field cannot be left blank.'
       }));
+      isValid = false;
     }
 
     return isValid;
@@ -53,20 +66,56 @@ function Login() {
 
     try {
       const response = await axios.post(`${BASE_URL}/account/login`, loginData);
-      if (response.data.token) {
-        navigate('/feed'); // Navigate to '/feed' upon successful login
-      } else {
+
+      if (response.status === 200) {
+        console.log('Success:', response.data);
+        const token = response.data.token;
+        setToken(token);
+        redirect('/feed');
+      }
+
+    }
+
+    catch (error) {
+
+      setLoginData((prevErrors) => ({
+        ...prevErrors,
+        password: ''
+      }));
+
+      if (error.response) {
+        // Server responded with a status other than 2xx
+        switch (error.response.status) {
+          case 400:
+            console.error('Bad Request:', error.response.data);
+            break;
+          case 401:
+            console.error('Unauthorized:', error.response.data);
+            setSuccessErrors((prevErrors) => ({
+              ...prevErrors,
+              response: error.response.data
+            }))
+            break;
+          case 500:
+            console.error('Internal Server Error:', error.response.data);
+            break;
+          default:
+            console.error('Unexpected error:', error.response.data);
+        }
+      } else if (error.request) {
+        // No response was received
+        console.error('No response received:', error.request);
         setSuccessErrors((prevErrors) => ({
           ...prevErrors,
-          response: response.data.message || 'Login failed.'
-        }));
+          response: "Cannot connect to server."
+        }))
+      } else {
+        // Something happened in setting up the request
+        console.error('Error message:', error.message);
       }
-    } catch (error) {
-      setSuccessErrors((prevErrors) => ({
-        ...prevErrors,
-        response: error.response?.data?.message || 'Login error. Please try again.'
-      }));
-      console.error('Login Error: ', error);
+
+      // Logging the complete error object for debugging
+      console.error('Full error object:', error);
     }
   };
 
@@ -108,6 +157,7 @@ function Login() {
                 onChange={handleChange}
               />
             </div>
+            <span id='loginPasswordError' className={LoginRegister.errorText}>{successErrors.password}</span>
             <div className={LoginStyle.checkContainer}>
               <a href="/forgotPassword" className={LoginStyle.forgotPassword}>Forgot Password?</a>
             </div>
