@@ -14,7 +14,7 @@ aside{
 }
 
 .formText {
-	margin-bottom: var(--spacing-xl);
+	margin-bottom: var(--spacing-lg);
 }
 
 .formText > p {
@@ -48,7 +48,7 @@ aside{
 }
 
 .buttonContainer{
-	margin-top: var(--spacing-xl);
+	margin-top: var(--spacing-lg);
 }
 
 .formButton{
