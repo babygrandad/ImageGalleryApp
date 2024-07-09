@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import LoginRegister from '../LoginRegister.module.css';
 import ForgotResetStyle from '../ForgotResetPassword.module.css';
 import RegisterStyle from '../Register/Register.module.css';
-import RegisterFormInput from '../Subcomponents/RegisterFormInput';
-import LoginRegisterSubmitButton from '../Subcomponents/LoginRegisterSubmitButton';
+import RegisterFormInput from '../LoginRegister/Subcomponents/RegisterFormInput';
+import LoginRegisterSubmitButton from '../LoginRegister/Subcomponents/LoginRegisterSubmitButton';
 
 function ResetPassword() {
 	const [formData, setFormData] = useState({
