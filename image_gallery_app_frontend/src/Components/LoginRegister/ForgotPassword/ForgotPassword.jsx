@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import LoginRegister from '../LoginRegister.module.css';
 import ForgotResetStyle from '../ForgotResetPassword.module.css';
 import RegisterStyle from '../Register/Register.module.css';
-import RegisterFormInput from '../LoginRegister/Subcomponents/RegisterFormInput';
-import LoginRegisterSubmitButton from '../LoginRegister/Subcomponents/LoginRegisterSubmitButton';
+import RegisterFormInput from '../Subcomponents/RegisterFormInput';
+import LoginRegisterSubmitButton from '../Subcomponents/LoginRegisterSubmitButton';
 
 
 function ForgotPassword() {
