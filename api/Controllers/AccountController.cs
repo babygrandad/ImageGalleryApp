@@ -1,5 +1,7 @@
 using api.DTOs.Account;
+using api.Extensions;
 using api.interfaces;
+using api.Interfaces;
 using api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -14,15 +16,20 @@ namespace api.Controllers
     {
 
         private readonly UserManager<AppUser> _userManager;
-        //private readonly IEmailSender _emailSender;
+        private readonly IEmailService _emailService;
         private readonly ITokenService _tokenService;
         private readonly SignInManager<AppUser> _signInManager;
 
-        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager)
+        public AccountController(
+            UserManager<AppUser> userManager,
+            ITokenService tokenService,
+            SignInManager<AppUser> signInManager,
+            IEmailService emailService)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _signInManager = signInManager;
+            _emailService = emailService;
         }
 
 
@@ -154,6 +161,11 @@ namespace api.Controllers
         public async Task<IActionResult> VerifyEmail(string userId, string code)
         {
             // Implement logic to verify user's email
+
+            var recipient = "relebogilenkotswe@gmail.com";
+            var subject = "Test Mail";
+            var Message = "If you recieve this email then you are the lucky one?";
+            await _emailService.SendEmailAsync(recipient,subject,Message);
             return null;
         }
     }

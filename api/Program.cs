@@ -4,6 +4,7 @@ using api.Interfaces;
 using api.Models;
 using api.Repositories;
 using api.Service;
+using api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -92,6 +93,7 @@ builder.Services.AddAuthentication(options =>{
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 
 var app = builder.Build();
