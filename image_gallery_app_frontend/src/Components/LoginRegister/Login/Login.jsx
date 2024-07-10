@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import LoginRegister from '../LoginRegister.module.css';
 import LoginStyle from './Login.module.css';
-import { redirect, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import BASE_URL from '../../../config';
 import LoginRegisterSubmitButton from '../Subcomponents/LoginRegisterSubmitButton';
@@ -71,52 +71,65 @@ function Login() {
         console.log('Success:', response.data);
         const token = response.data.token;
         setToken(token);
-        redirect('/feed');
+        
+        try {
+          navigate('/feed'); // Use navigate instead of redirect
+          console.log('i ran');
+        } catch (ex) {
+          console.log(ex.message);
+        }
       }
-
     }
 
     catch (error) {
-
       setLoginData((prevErrors) => ({
         ...prevErrors,
         password: ''
       }));
-
+    
+      let errorMessage = 'An unexpected error occurred.';
+    
       if (error.response) {
         // Server responded with a status other than 2xx
         switch (error.response.status) {
           case 400:
             console.error('Bad Request:', error.response.data);
+            errorMessage = error.response.data.message || 'Bad Request';
             break;
           case 401:
             console.error('Unauthorized:', error.response.data);
+            errorMessage = error.response.data.message || 'Unauthorized';
             setSuccessErrors((prevErrors) => ({
               ...prevErrors,
-              response: error.response.data
-            }))
+              response: errorMessage
+            }));
             break;
           case 500:
             console.error('Internal Server Error:', error.response.data);
+            errorMessage = error.response.data.message || 'Internal Server Error';
             break;
           default:
             console.error('Unexpected error:', error.response.data);
+            errorMessage = error.response.data.message || 'Unexpected error';
         }
       } else if (error.request) {
         // No response was received
         console.error('No response received:', error.request);
+        errorMessage = 'Cannot connect to server.';
         setSuccessErrors((prevErrors) => ({
           ...prevErrors,
-          response: "Cannot connect to server."
-        }))
+          response: errorMessage
+        }));
       } else {
         // Something happened in setting up the request
         console.error('Error message:', error.message);
+        errorMessage = error.message;
       }
-
+    
       // Logging the complete error object for debugging
       console.error('Full error object:', error);
     }
+    
   };
 
   return (
