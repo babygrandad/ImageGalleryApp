@@ -60,6 +60,22 @@ namespace api.Controllers
 
                 if (createdUser.Succeeded)
                 {
+
+                    var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
+                    var confirmationLink = Url.Action("ConfirmEmail",
+                                                        "Account",
+                                                        new
+                                                        {
+                                                            userId = appUser.Id,
+                                                            token = emailToken
+                                                        },
+                                                        Request.Scheme);
+
+                    var recipient = registerDTO.Email.ToLower();
+                    var subject = "Test Mail";
+                    var Message = confirmationLink;
+                    await _emailService.SendEmailAsync(recipient, subject, Message);
+
                     var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
 
                     if (roleResult.Succeeded)
@@ -70,7 +86,7 @@ namespace api.Controllers
                                 UserName = appUser.UserName,
                                 FullName = appUser.UserName,
                                 Email = appUser.Email,
-                                Token = _tokenService.CreateToken(appUser)
+                                //Token = _tokenService.CreateToken(appUser)
                             }
                         );
                     }
@@ -157,16 +173,30 @@ namespace api.Controllers
         }
 
         // email verification route
-        [HttpGet("verifyEmail")]
-        public async Task<IActionResult> VerifyEmail(string userId, string code)
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
-            // Implement logic to verify user's email
+            if (userId == null || token == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
-            var recipient = "relebogilenkotswe@gmail.com";
-            var subject = "Test Mail";
-            var Message = "If you recieve this email then you are the lucky one?";
-            await _emailService.SendEmailAsync(recipient,subject,Message);
-            return null;
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+                return Ok("Email Confirmed");
+            }
+            else{
+            // Handle failure
+            return BadRequest(result.Errors);
+            }
         }
+
     }
 }

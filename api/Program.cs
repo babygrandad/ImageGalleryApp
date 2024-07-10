@@ -65,7 +65,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>{
     options.User.RequireUniqueEmail = true; // Ensure unique email
     
 })
-.AddEntityFrameworkStores<ApplicationDBContext>();
+.AddEntityFrameworkStores<ApplicationDBContext>()
+.AddDefaultTokenProviders(); // Add this line to register default token providers
 
 builder.Services.AddAuthentication(options =>{
     options.DefaultAuthenticateScheme = 
