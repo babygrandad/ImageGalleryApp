@@ -5,14 +5,16 @@ import Cookies from 'js-cookies'
 */
 // Function to set the JWT token in a cookie
 export const setToken = (token) => {
-  Cookies.set('jwt', token, {
+  Cookies.setItem('jwt', token, {
     expires: 1, /* expires in 1 day*/
     path: '/',
     secure: false,
     sameSite: 'Strict'
   });
+  return true;
 };
+
 // Function to get the JWT token from the cookie
 export const getToken = () => {
-  return Cookies.get('jwt');
+  return Cookies.getItem('jwt');
 };

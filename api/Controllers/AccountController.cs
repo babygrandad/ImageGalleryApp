@@ -120,15 +120,21 @@ namespace api.Controllers
 
             if (user == null) // Check if user exists
             {
-                return Unauthorized("Invalid Email or Password."); // Return 401 Unauthorized if user not found
+                return Unauthorized(new { message = "Invalid email or password." }); // Return 401 Unauthorized if user not found
             }
 
+            // Check if the email is confirmed
+            if (!user.EmailConfirmed)
+            {
+                return Unauthorized(new { message = "Email is not confirmed." });
+            }
+            
             // Check if the password is correct
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDTO.Password, false);
 
             if (!result.Succeeded) // Check if the sign-in was successful
             {
-                return Unauthorized("Invalid Email or Password."); // Return 401 Unauthorized if password is incorrect
+                return Unauthorized(new { message = "Invalid email or password." }); // Return 401 Unauthorized if password is incorrect
             }
 
             // Return user data and token if login is successful
@@ -192,9 +198,10 @@ namespace api.Controllers
             {
                 return Ok("Email Confirmed");
             }
-            else{
-            // Handle failure
-            return BadRequest(result.Errors);
+            else
+            {
+                // Handle failure
+                return BadRequest(result.Errors);
             }
         }
 
