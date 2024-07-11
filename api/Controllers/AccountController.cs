@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace api.Controllers
 {
@@ -19,18 +20,22 @@ namespace api.Controllers
         private readonly IEmailService _emailService;
         private readonly ITokenService _tokenService;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly ILogger<AccountController> _logger;
 
         public AccountController(
             UserManager<AppUser> userManager,
             ITokenService tokenService,
             SignInManager<AppUser> signInManager,
-            IEmailService emailService)
+            IEmailService emailService,
+            ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _signInManager = signInManager;
             _emailService = emailService;
+            _logger = logger;
         }
+
 
 
         [HttpPost("register")]
@@ -60,35 +65,35 @@ namespace api.Controllers
 
                 if (createdUser.Succeeded)
                 {
-
                     var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
                     var confirmationLink = Url.Action("ConfirmEmail",
-                                                        "Account",
-                                                        new
-                                                        {
-                                                            userId = appUser.Id,
-                                                            token = emailToken
-                                                        },
-                                                        Request.Scheme);
+                                                      "Account",
+                                                      new
+                                                      {
+                                                          userId = appUser.Id,
+                                                          token = emailToken
+                                                      },
+                                                      Request.Scheme);
 
                     var recipient = registerDTO.Email.ToLower();
-                    var subject = "Test Mail";
-                    var Message = confirmationLink;
-                    await _emailService.SendEmailAsync(recipient, subject, Message);
+                    var subject = "Confirm Your Email";
+                    var message = $"Please confirm your email by clicking the following link: {confirmationLink}";
+
+                    try
+                    {
+                        await _emailService.SendEmailAsync(recipient, subject, message);
+                    }
+                    catch (Exception ex)
+                    {
+                        await _userManager.DeleteAsync(appUser); // Cleanup by deleting the created user
+                        return StatusCode(500, "An error occurred while sending the confirmation email. Please try again.");
+                    }
 
                     var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
 
                     if (roleResult.Succeeded)
                     {
-                        return Ok(
-                            new UserDTO
-                            {
-                                UserName = appUser.UserName,
-                                FullName = appUser.UserName,
-                                Email = appUser.Email,
-                                //Token = _tokenService.CreateToken(appUser)
-                            }
-                        );
+                        return Ok(new { message = "User registered successfully. Please check your email to confirm your account." });
                     }
                     else
                     {
@@ -102,6 +107,7 @@ namespace api.Controllers
             }
             catch (Exception e) // Catch any exceptions that occur during the process
             {
+                // Consider logging the exception (use a logging framework like Serilog, NLog, etc.)
                 return StatusCode(500, new { message = "An internal server error occurred.", exception = e.Message });
             }
         }
@@ -128,7 +134,7 @@ namespace api.Controllers
             {
                 return Unauthorized(new { message = "Email is not confirmed." });
             }
-            
+
             // Check if the password is correct
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDTO.Password, false);
 
@@ -167,7 +173,44 @@ namespace api.Controllers
                 return BadRequest(ModelState);
             }
 
-            return null;
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(forgotPasswordDTO.email);
+                if (user == null)
+                {
+                    return BadRequest("User not found");
+                }
+
+                var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                if (resetToken == null)
+                {
+                    return StatusCode(500, "Could not generate reset token, please try again.");
+                }
+
+                var resetLink = Url.Action("ResetPassword",
+                                           "Account",
+                                           new
+                                           {
+                                               userId = user.Id,
+                                               token = resetToken
+                                           },
+                                           Request.Scheme);
+
+                var recipient = forgotPasswordDTO.email;
+                var subject = "Reset Password";
+                var message = $"Please reset your password by clicking the following link: {resetLink}";
+
+                await _emailService.SendEmailAsync(recipient, subject, message);
+
+                return Ok("Password reset email sent successfully.");
+            }
+            catch (Exception ex)
+            {
+
+                // Log the exception (consider using a logging framework like Serilog, NLog, etc.)
+                _logger.LogError(ex, "Error occurred during user registration.");
+                return StatusCode(500, "An error occurred while processing your request. Please try again later.");
+            }
         }
 
         // Password change route 
@@ -177,6 +220,39 @@ namespace api.Controllers
             // Implement logic to change password
             return null;
         }
+
+        [HttpPost("resetPassword")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDTO resetPasswordDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var user = await _userManager.FindByIdAsync(resetPasswordDTO.UserId);
+                if (user == null)
+                {
+                    return BadRequest("Invalid user.");
+                }
+
+                var result = await _userManager.ResetPasswordAsync(user, resetPasswordDTO.Token, resetPasswordDTO.NewPassword);
+                if (!result.Succeeded)
+                {
+                    var errors = result.Errors.Select(e => e.Description);
+                    return BadRequest(new { Errors = errors });
+                }
+
+                return Ok("Password has been reset successfully.");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (consider using a logging framework like Serilog, NLog, etc.)
+                return StatusCode(500, "An error occurred while processing your request. Please try again later.");
+            }
+        }
+
 
         // email verification route
         [HttpGet]
