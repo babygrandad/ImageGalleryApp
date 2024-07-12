@@ -7,6 +7,7 @@ import ForgotPassword from './Components/LoginRegister/ForgotPassword/ForgotPass
 import ResetPassword from './Components/LoginRegister/ResetPassword/ResetPassword';
 import ImageSection from './Components/ImageSection/ImageSection';
 
+
 function App() {
   const [count, setCount] = useState(0)
 

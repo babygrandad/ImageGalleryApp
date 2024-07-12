@@ -1,0 +1,43 @@
+.container{
+	display: flex;
+	flex-direction: column;
+	padding: var(--spacing-xl);
+	gap: var(--spacing-lg)
+}
+
+.imagesWrapper{
+	display: grid;
+	grid-template-columns: repeat(3, 1fr); /* Three columns with equal width */
+	gap: var(--spacing-lg);
+	position: relative;
+}
+
+.imageContainer{
+	border-radius: var(--spacing-xxs);
+	position: relative;
+	overflow: clip;
+	background-color: red;
+	
+}
+
+.image {
+	max-width: 100%;
+	height: 100%;
+}
+
+
+.imageDetails{
+	position: absolute;
+	bottom: 0;
+	z-index: 2;
+	padding: var(--spacing-xs);
+	color:  var(--white-on-bg);
+	width: 100%;
+	background-image: linear-gradient( rgba(128, 128, 128 ,0.3), rgba(128, 128, 128 ,0.3));
+}
+
+.imageDescription{
+	
+	font-size: var(--spacing-sm);
+	margin: 0;
+}
