@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import BASE_URL from '../../../config';
 import LoginRegisterSubmitButton from '../Subcomponents/LoginRegisterSubmitButton';
-import { setToken } from '../../../utils/auth';
+import { setUser } from '../../../utils/auth';
 
 function Login() {
   const navigate = useNavigate(); // Hook to navigate programmatically
@@ -69,8 +69,8 @@ function Login() {
 
       if (response.status === 200) {
         console.log('Success:', response.data);
-        const token = response.data.token;
-        setToken(token);
+        const user = response.data;
+        setUser(user);
         
         try {
           navigate('/feed'); // Use navigate instead of redirect
@@ -181,7 +181,7 @@ function Login() {
             buttonText='Login'
           />
           <div className={LoginRegister.formInfoContainer}>
-            <p className={LoginRegister.loginRegisterQuestion}>New to this platform? <a className={LoginRegister.loginRegisterLink} href='/'>Register</a> Here</p>
+            <p className={LoginRegister.loginRegisterQuestion}>New to this platform? <a className={LoginRegister.loginRegisterLink} href='/register'>Register</a> Here</p>
           </div>
         </div>
       </form>
