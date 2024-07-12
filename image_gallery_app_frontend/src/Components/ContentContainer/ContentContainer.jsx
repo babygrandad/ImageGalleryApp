@@ -1,7 +1,7 @@
 import React from 'react'
 import ContentContainerStyle from './ContentContainer.module.css'
 import TopbarStyle from './Topbar.module.css'
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom'
 
 function ContentContainer() {
   return (

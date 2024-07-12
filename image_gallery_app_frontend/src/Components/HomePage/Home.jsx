@@ -1,7 +1,8 @@
 import React from 'react'
 import CommonStyles from '../CommonComponents/CommonComponents.module.css'
 import SideMenu from '../SideMenu/SideMenu'
-import ImageSection from '../ImageSection/ImageSection'
+import ContentContainer from '../ContentContainer/ContentContainer';
+import ImageSection from '../ImageSection/ImageSection';
 
 
 
