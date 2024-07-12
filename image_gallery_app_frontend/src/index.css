@@ -45,7 +45,7 @@
 	--spacing-xl: 3rem;     /* 48px */
 	--spacing-xxl: 4rem;    /* 64px */
 
-
+	
 	/* Site Themes*/
 	/* Lite Mode Theme*/
 	[data-theme='light'] {
@@ -127,5 +127,5 @@ body{
 	padding: var(--spacing-xs);
 	border-radius:var(--spacing-xxs);
 	outline: none;
-	font-size: smaller;
+	font-size: var(--small);
 }

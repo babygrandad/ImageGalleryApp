@@ -133,7 +133,7 @@ const Register = () => {
               />
               <div className={LoginRegister.formInfoContainer}>
                 <p className={LoginRegister.loginRegisterQuestion}>
-                  Already have an account? <a className={LoginRegister.loginRegisterLink} href='/login'>Login</a> Here
+                  Already have an account? <a className={LoginRegister.loginRegisterLink} href='/'>Login</a> Here
                 </p>
               </div>
               <div className={LoginRegister.socialButtonsWrapper}>
