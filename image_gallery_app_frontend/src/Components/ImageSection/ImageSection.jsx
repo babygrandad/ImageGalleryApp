@@ -1,51 +1,57 @@
 import React from 'react'
 import ImageSectionStyle from './ImageSection.module.css'
+import SearchArea from '../SubComponents/SearchArea'
+import GridImage from './GridImage'
+import GridPagination from '../SubComponents/GridPagination'
 
 function ImageSection() {
 	return (
 		<div className={ImageSectionStyle.ImageSection}>
-			<div className={ImageSectionStyle.container}>
-				<div className={ImageSectionStyle.searchAreaContainer}>
-
-						<form action="">
-							<div className="searcBarContainer">
-							<input type="search" name="" id="" placeholder='Search for...' />
-							</div>
-							<button type="button">Filters</button>
-						</form>
-
-				</div>
+				<SearchArea />
 				<div className={ImageSectionStyle.imagesWrapper}>
+					<GridImage
+						imageID="image1"
+						imageURL="https://picsum.photos/id/237/300/200"
+						imageName="Dog"
+						imageDescription="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel voluptatem nam repellat, aliquam veniam, unde sequi corporis ducimus quidem voluptate quisquam accusamus sit nesciunt. Sequi veritatis iste ut maiores error?"
+					/>
 
-					<div className={ImageSectionStyle.imageContainer}>
-						<img src="/images/palace.jpg" alt="" className={ImageSectionStyle.image}/>
-						<div className={ImageSectionStyle.imageDetails}>
-							<h5 className={ImageSectionStyle.imageName}>Image Name</h5>
-							<p className={ImageSectionStyle.imageDescription}>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel voluptatem nam repellat, aliquam veniam, unde sequi corporis ducimus quidem voluptate quisquam accusamus sit nesciunt. Sequi veritatis iste ut maiores error?</p>
-						</div>
-					</div>
+					<GridImage
+						imageID="image2"
+						imageURL="images/palace.jpg"
+						imageName="Palace"
+						imageDescription="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel voluptatem nam repellat, aliquam veniam, unde sequi corporis ducimus quidem voluptate quisquam accusamus sit nesciunt. Sequi veritatis iste ut maiores error?"
+					/>
 
-					<div className={ImageSectionStyle.imageContainer}>
-						<img className={ImageSectionStyle.image} src="images/palace.jpg" alt="" />
-						<div className={ImageSectionStyle.imageDetails}>
-							<h5 className={ImageSectionStyle.imageName}>Image Name</h5>
-							<p className={ImageSectionStyle.imageDescription}>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel voluptatem nam repellat, aliquam veniam, unde sequi corporis ducimus quidem voluptate quisquam accusamus sit nesciunt. Sequi veritatis iste ut maiores error?</p>
-						</div>
-					</div>
+					<GridImage
+						imageID="image3"
+						imageURL="https://picsum.photos/id/217/300/200"
+						imageName="Dog"
+						imageDescription="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel voluptatem nam repellat, aliquam veniam, unde sequi corporis ducimus quidem voluptate quisquam accusamus sit nesciunt. Sequi veritatis iste ut maiores error?"
+					/>
 
-					<div className={ImageSectionStyle.imageContainer}>
-						<img className={ImageSectionStyle.image} src="images/palace.jpg" alt="" />
-						<div className={ImageSectionStyle.imageDetails}>
-							<h5 className={ImageSectionStyle.imageName}>Image Name</h5>
-							<p className={ImageSectionStyle.imageDescription}>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel voluptatem nam repellat, aliquam veniam, unde sequi corporis ducimus quidem voluptate quisquam accusamus sit nesciunt. Sequi veritatis iste ut maiores error?</p>
-						</div>
-					</div>
+					<GridImage
+						imageID="image4"
+						imageURL="https://picsum.photos/id/137/300/200"
+						imageName="Dog"
+						imageDescription="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel voluptatem nam repellat, aliquam veniam, unde sequi corporis ducimus quidem voluptate quisquam accusamus sit nesciunt. Sequi veritatis iste ut maiores error?"
+					/>
 
+					<GridImage
+						imageID="image5"
+						imageURL="https://picsum.photos/id/235/300/200"
+						imageName="Dog"
+						imageDescription="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel voluptatem nam repellat, aliquam veniam, unde sequi corporis ducimus quidem voluptate quisquam accusamus sit nesciunt. Sequi veritatis iste ut maiores error?"
+					/>
+
+					<GridImage
+						imageID="image6"
+						imageURL="https://picsum.photos/id/37/300/200"
+						imageName="Dog"
+						imageDescription="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel voluptatem nam repellat, aliquam veniam, unde sequi corporis ducimus quidem voluptate quisquam accusamus sit nesciunt. Sequi veritatis iste ut maiores error?"
+					/>
 				</div>
-				<div className={ImageSectionStyle.paginationContainer}>
-					pagination
-				</div>
-			</div>
+				<GridPagination />
 		</div>
 	)
 }

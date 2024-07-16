@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Web;
 
 namespace api.Controllers
 {
@@ -78,6 +79,7 @@ namespace api.Controllers
                     var recipient = registerDTO.Email.ToLower();
                     var subject = "Confirm Your Email";
                     var message = $"Please confirm your email by clicking the following link: {confirmationLink}";
+                    Console.WriteLine(emailToken);
 
                     try
                     {
@@ -182,19 +184,13 @@ namespace api.Controllers
                 }
 
                 var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var encodedToken = HttpUtility.UrlEncode(resetToken);
                 if (resetToken == null)
                 {
                     return StatusCode(500, "Could not generate reset token, please try again.");
                 }
 
-                var resetLink = Url.Action("ResetPassword",
-                                           "Account",
-                                           new
-                                           {
-                                               userId = user.Id,
-                                               token = resetToken
-                                           },
-                                           Request.Scheme);
+                var resetLink = $"http://localhost:5173/resetpassword?userId={user.Id}&token={encodedToken}";
 
                 var recipient = forgotPasswordDTO.email;
                 var subject = "Reset Password";
@@ -202,7 +198,7 @@ namespace api.Controllers
 
                 await _emailService.SendEmailAsync(recipient, subject, message);
 
-                return Ok("Password reset email sent successfully.");
+                return Ok("Password reset email sent successfully. Please check your Email for the link");
             }
             catch (Exception ex)
             {
@@ -244,7 +240,7 @@ namespace api.Controllers
                     return BadRequest(new { Errors = errors });
                 }
 
-                return Ok("Password has been reset successfully.");
+                return Ok("Password has been reset successfully. You can now log in");
             }
             catch (Exception ex)
             {
@@ -255,7 +251,7 @@ namespace api.Controllers
 
 
         // email verification route
-        [HttpGet]
+        [HttpGet("ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
             if (userId == null || token == null)

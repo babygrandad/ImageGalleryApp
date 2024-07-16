@@ -5,8 +5,10 @@
 	--primary-color:#2187AB;
 	--secondary-color: #2ecc71;
 	--accent-color: #e74c3c;
-	--background-color: #ecf0f1;
+	--background-color: #E9F5F9;
 	--text-color: #2c3e50;
+	--search-grey: #F2F2F2;
+	--search-placeholder-grey: #AEB6B7;
 
 	--primary-color-dark: #1e6f9f;
 	--secondary-color-dark: #27a55b;
@@ -33,7 +35,7 @@
     --h3: 1.954rem;   /* Approximately 31px */
     --h4: 1.563rem;   /* Approximately 25px */
     --h5: 1.250rem;   /* Approximately 20px */
-    --small: 0.8rem;  /* Approximately 13px */
+    --small: 12px;  /* Approximately 13px */
     --base-size: 16px; /* base font size */
 
 	/* Site Sizes (Spacing for margins, gutters, padding, etc.) */
@@ -74,8 +76,15 @@
 	box-sizing: border-box;
 }
 
+body{
+	font-family: var(--body-text);
+	color: var(--text);
+	font-size: var(--base-size);
+}
+
 p{
     margin: 16px 0;
+	line-height: 14.52px;
 }
 
 h1{
@@ -99,15 +108,11 @@ h5{
 	font-family: var(--heading-text);    
 }
 
-body{
-	font-family: var(--body-text);
-	color: var(--text);
-	min-width: 100vw;
-}
-
 .container{
 	width: 100%;
-    max-width: 2560px;
+    max-width: 1920px;
+	height: 100%;
+	max-height: 100vh;
     margin: 0 auto;
 }
 
@@ -115,7 +120,7 @@ body{
 	font-size: var(--spacing-sm);
 	border: none;
 	border-radius: var(--spacing-xxs);
-	padding: var(--spacing-sm);
+	padding: var(--base-size);
 }
 
 .button:hover  {

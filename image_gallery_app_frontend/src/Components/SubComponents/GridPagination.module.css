@@ -1,0 +1,7 @@
+.grid_pagination_container{
+	background-color: aquamarine;
+	margin-bottom: var(--spacing-lg);
+	text-align: center;
+	margin-top: auto;
+	margin-bottom: 0;
+}
