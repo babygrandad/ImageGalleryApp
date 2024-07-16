@@ -1,43 +1,62 @@
-.container{
+.ImageSection{
+	width: 100%;
+	height:100vh;
+	max-height: 100vh;
+	padding: var(--spacing-lg) var(--spacing-lg) ; /* if you want to moe pagination up remove the margin bottom 0 on the Image section */
 	display: flex;
+	overflow-y: scroll;
 	flex-direction: column;
-	padding: var(--spacing-xl);
-	gap: var(--spacing-lg)
+	gap: var(--spacing-lg);
 }
 
-.imagesWrapper{
-	display: grid;
-	grid-template-columns: repeat(3, 1fr); /* Three columns with equal width */
-	gap: var(--spacing-lg);
+.container{
 	position: relative;
+	width: 100%;
+	padding: 0 var(--spacing-xl);
+	border: 1px dashed limegreen;
+}
+
+.imagesWrapper {
+	display: grid;
+	grid-auto-columns: minmax(0, 1fr);
+	grid-template-columns: repeat(3, auto);
+	justify-content: space-between;
+	gap: var(--spacing-lg);
+	max-width: 100%;
 }
 
 .imageContainer{
-	border-radius: var(--spacing-xxs);
 	position: relative;
-	overflow: clip;
-	background-color: red;
-	
-}
-
-.image {
-	max-width: 100%;
+	flex: 1 0 calc(33.333% - 1rem);
+	max-width: 462.406px;
+	max-height: 312.25px;
 	height: 100%;
+	width: 100%;
+	border-radius: var(--spacing-xs);
+	overflow: clip;
+	text-align: center;
+	box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.25);
 }
-
 
 .imageDetails{
 	position: absolute;
-	bottom: 0;
 	z-index: 2;
-	padding: var(--spacing-xs);
-	color:  var(--white-on-bg);
+	bottom: 0;
 	width: 100%;
-	background-image: linear-gradient( rgba(128, 128, 128 ,0.3), rgba(128, 128, 128 ,0.3));
+	color: var(--white-on-bg);
+	background-color: rgba(123, 119, 119, 0.7);
+	padding: 0 var(--spacing-sm) var(--spacing-xs);
+	text-align: left;
+
+}
+
+.image{
+	height: 100%;
+	width: 100%;
+    object-fit: cover;
 }
 
 .imageDescription{
-	
-	font-size: var(--spacing-sm);
-	margin: 0;
+	font-size: var(--small);
+	margin-bottom: 0;
 }
