@@ -1,19 +1,13 @@
 import React from 'react'
 import ContentContainerStyle from './ContentContainer.module.css'
-import TopbarStyle from './Topbar.module.css'
 import { Outlet } from 'react-router-dom'
+import TopBar from '../SubComponents/TopBar'
+
 
 function ContentContainer() {
   return (
 	<div className={ContentContainerStyle.contentContainer}>
-		<div className={TopbarStyle.container}>
-			<div className="currentPage">
-				Home
-			</div>
-			<div className="topBarProfileContainer">
-				Relebogile Nkotswe
-			</div>
-		</div>
+		<TopBar />
 		<Outlet />
 	</div>
   )

@@ -79,7 +79,7 @@
 body{
 	font-family: var(--body-text);
 	color: var(--text);
-	font-size: var(--base-size);
+	font-size: var(--small);
 }
 
 p{
