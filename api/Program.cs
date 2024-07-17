@@ -63,7 +63,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>{
     options.Password.RequireLowercase = true;
     options.Password.RequireNonAlphanumeric = true;
     options.User.RequireUniqueEmail = true; // Ensure unique email
-    
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 3;
 })
 .AddEntityFrameworkStores<ApplicationDBContext>()
 .AddDefaultTokenProviders(); // Add this line to register default token providers

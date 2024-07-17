@@ -3,11 +3,12 @@
 	flex: 2;
 	background-color: var(--primary);
 	padding: var(--spacing-sm) var(--spacing-xs);
-	max-height: 100vh;
+	max-height: 100svh;
 	display: flex;
 	flex-direction: column;
 	width: 100%;
-	gap: var(--spacing-xxl)
+	gap: var(--spacing-xxl);
+	overflow-y: scroll;
 }
 
 .sideMenuLinks{

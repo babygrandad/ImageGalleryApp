@@ -11,7 +11,6 @@ function ResetPassword() {
 
 	const urlParams = new URLSearchParams(window.location.search);
     const userId = urlParams.get('userId');
-    //const token = decodeURIComponent(urlParams.get('token'));
 	const token = urlParams.get('token');
 
 	const initialState = {

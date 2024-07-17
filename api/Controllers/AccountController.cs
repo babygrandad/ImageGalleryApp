@@ -76,19 +76,20 @@ namespace api.Controllers
                                                       },
                                                       Request.Scheme);
 
-                    var recipient = registerDTO.Email.ToLower();
+                    var recipientEmail = registerDTO.Email.ToLower();
                     var subject = "Confirm Your Email";
-                    var message = $"Please confirm your email by clicking the following link: {confirmationLink}";
+                    var link = confirmationLink;
+                    var nameOfUser = registerDTO.FullName;
                     Console.WriteLine(emailToken);
 
                     try
                     {
-                        await _emailService.SendEmailAsync(recipient, subject, message);
+                        await _emailService.SendEmailAsync(recipientEmail, subject, nameOfUser, link, "WelcomeEmail");
                     }
                     catch (Exception ex)
                     {
                         await _userManager.DeleteAsync(appUser); // Cleanup by deleting the created user
-                        return StatusCode(500, "An error occurred while sending the confirmation email. Please try again.");
+                        return StatusCode(500, $"An error occurred while sending the confirmation email. Please try again. : {ex}" );
                     }
 
                     var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
@@ -194,9 +195,9 @@ namespace api.Controllers
 
                 var recipient = forgotPasswordDTO.email;
                 var subject = "Reset Password";
-                var message = $"Please reset your password by clicking the following link: {resetLink}";
+                var link = resetLink;
 
-                await _emailService.SendEmailAsync(recipient, subject, message);
+                await _emailService.SendEmailAsync(recipient, subject, user.FullName, link, "ForgotPasswordTemplate");
 
                 return Ok("Password reset email sent successfully. Please check your Email for the link");
             }
