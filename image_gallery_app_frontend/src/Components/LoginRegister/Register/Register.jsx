@@ -139,7 +139,7 @@ const Register = () => {
           <form className={RegisterStyle.registerForm} onSubmit={handleSubmit}>
             <div className={`${LoginRegister.formText} ${RegisterStyle.formText}`}>
               <h3>Register Profile</h3>
-              <p>Join the Image App Gallery community by creating your profile. Showcase your unique images, connect with other photographers, and explore a world of creativity.</p>
+              <p>Showcase your unique images and explore a world of creativity.</p>
             </div>
             <div className={LoginRegister.formInputsWrapper}>
               <RegisterFormInput

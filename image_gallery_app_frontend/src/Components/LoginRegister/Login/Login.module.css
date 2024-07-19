@@ -59,7 +59,7 @@
 .forgotPassword{
 	text-align: right;
 	text-decoration: none;
-	color: var(--text);
+	color: var(--form-lable-text);
 	margin-top: var(--spacing-xs);
 }
 

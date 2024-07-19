@@ -199,7 +199,7 @@ namespace api.Controllers
 
                 await _emailService.SendEmailAsync(recipient, subject, user.FullName, link, "ForgotPassword");
 
-                return Ok("Password reset email sent successfully. Please check your Email for the link");
+                return Ok("Password reset email sent successfully. Please check your email for the link");
             }
             catch (Exception ex)
             {
