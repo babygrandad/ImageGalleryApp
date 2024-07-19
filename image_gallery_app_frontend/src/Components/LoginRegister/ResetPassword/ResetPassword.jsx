@@ -21,20 +21,16 @@ function ResetPassword() {
 		successErrors: {
 			success: '',
 			errors: '',
+		},
+		formErrors: {
+			password: '',
+			confirmPassword: '',
 		}
 	}
-	const [formData, setFormData] = useState({
-		password:'',
-		confirmPassword:'',
-	});
-	const [successErrors, setSuccessErrors] = useState({
-		success:'',
-		errors:'',
-	});
-	const [formErrors, setFormErrors] = useState({
-		password:'',
-		confirmPassword:'',
-	});
+
+	const [formData, setFormData] = useState(initialState.formData);
+	const [successErrors, setSuccessErrors] = useState(initialState.successErrors);
+	const [formErrors, setFormErrors] = useState(initialState.formErrors);
 
 	const handleChange = (e) => {
 		const { id, value } = e.target;
@@ -56,6 +52,9 @@ function ResetPassword() {
 			newPassword :formData.password,
 			confirmPassword: formData.confirmPassword
 		};
+
+		
+
 		console.log(data)
 		console.log({decoded: decodeURIComponent(urlParams.get('token'))})
 		
@@ -64,8 +63,9 @@ function ResetPassword() {
 			const response = await axios.post(`${BASE_URL}/account/resetPassword`, data);
 
 			if (response.status === 200) {
-
+				setFormData(initialState.formData)
 				//put these in some dialoge box then when they click you redirect them
+				console.log(response.data)
 
 				setFormErrors({}); // MIGHT NEED TO REMOVE THIS WELL SEE
 				setSuccessErrors({
@@ -76,18 +76,23 @@ function ResetPassword() {
 
 		}
 		catch (err) {
-			
 			if (err.response && err.response.status === 400 && err.response.data.errors) {
 				const errorMessages = [];
-	
+		
 				for (const field in err.response.data.errors) {
 					if (err.response.data.errors.hasOwnProperty(field)) {
-						err.response.data.errors[field].forEach((message) => {
-							errorMessages.push(`${field}: ${message}`);
-						});
+						const error = err.response.data.errors[field];
+						
+						if (Array.isArray(error)) {
+							error.forEach((message) => {
+								errorMessages.push(`${message}`);
+							});
+						} else {
+							errorMessages.push(`${error}`);
+						}
 					}
 				}
-	
+		
 				setSuccessErrors((prevValue) => ({
 					...prevValue,
 					errors: errorMessages

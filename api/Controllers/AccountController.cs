@@ -52,7 +52,7 @@ namespace api.Controllers
                 var existingUser = await _userManager.FindByEmailAsync(registerDTO.Email.ToLower());
                 if (existingUser != null)
                 {
-                    return BadRequest(new { errors = new[] { "Email is already taken." } });
+                    return BadRequest(new { errors = new[] { "Email already exists." } });
                 }
 
                 var appUser = new AppUser
@@ -89,7 +89,7 @@ namespace api.Controllers
                     catch (Exception ex)
                     {
                         await _userManager.DeleteAsync(appUser); // Cleanup by deleting the created user
-                        return StatusCode(500, $"An error occurred while sending the confirmation email. Please try again. : {ex}" );
+                        return StatusCode(500, $"An error occurred while sending the confirmation email. Please try again.");
                     }
 
                     var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
@@ -159,12 +159,12 @@ namespace api.Controllers
         }
 
         // Please dont forget to work on the logout route for the user
-        [HttpPost("logout")]
+        [HttpGet("logout")]
         [Authorize]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return Ok(new { message = "Logged out successfully" });
+            return Redirect("http://localhost:5173");
         }
 
         // work on this when you find a way to send the forgot email email.
@@ -194,10 +194,10 @@ namespace api.Controllers
                 var resetLink = $"http://localhost:5173/resetpassword?userId={user.Id}&token={encodedToken}";
 
                 var recipient = forgotPasswordDTO.email;
-                var subject = "Reset Password";
+                var subject = "Reset Password Request";
                 var link = resetLink;
 
-                await _emailService.SendEmailAsync(recipient, subject, user.FullName, link, "ForgotPasswordTemplate");
+                await _emailService.SendEmailAsync(recipient, subject, user.FullName, link, "ForgotPassword");
 
                 return Ok("Password reset email sent successfully. Please check your Email for the link");
             }
@@ -269,7 +269,7 @@ namespace api.Controllers
             var result = await _userManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
             {
-                return Ok("Email Confirmed");
+                return Redirect("http://localhost:5173");
             }
             else
             {

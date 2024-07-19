@@ -29,7 +29,7 @@ function SideMenu() {
 			</div>
 			<div className={SideMenuStyles.menuLogoutContainer}>
 
-				<a href="/logout" className={`${SideMenuStyles.menuLogoutLink} ${SideMenuStyles.sideMenuLinks}`}>
+				<a href="/" className={`${SideMenuStyles.menuLogoutLink} ${SideMenuStyles.sideMenuLinks}`}>
 					<span className={`${SideMenuStyles.sideMenuIcons} material-symbols-outlined`}>logout</span> Logout
 				</a>
 			</div>
