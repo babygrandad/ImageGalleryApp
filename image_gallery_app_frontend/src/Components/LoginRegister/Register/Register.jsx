@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LoginRegister from '../LoginRegister.module.css';
 import RegisterStyle from './Register.module.css';
 import axios from 'axios';
@@ -7,25 +8,40 @@ import RegisterFormInput from '../Subcomponents/RegisterFormInput'; // Corrected
 import LoginRegisterSubmitButton from '../Subcomponents/LoginRegisterSubmitButton';
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    userName: '',
-    fullName: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
+  const initialState = {
+    formData: {
+      userName: '',
+      fullName: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    },
+    formErrors: {
+      userName: '',
+      fullName: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    },
+    successErrors: {
+      success: '',
+      errors: [],
+    }
+  }
 
-  const [errors, setErrors] = useState({
-    userName: '',
-    fullName: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState(initialState.formData);
+
+  const [formErrors, setFormErrors] = useState(initialState.formErrors);
+
+  const [successErrors, setSuccessErrors] = useState(initialState.successErrors);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
+
+    setFormErrors({ ...formErrors, [id]: '' })
   };
 
   const validateForm = () => {
@@ -44,33 +60,59 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setSuccessErrors(initialState.successErrors)
     const newErrors = validateForm();
-    
+
     if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-    } else {
+      setFormErrors(newErrors);
+    }
+    else {
       try {
         const response = await axios.post(`${BASE_URL}/account/register`, formData);
         console.log('Registration successful', response.data);
-      } catch (error) {
-        const serverErrors = {}
-        if(error.response.data.errors){
-        var responseErrors = error.response.data.errors
-        console.log(responseErrors)
 
-        responseErrors.forEach(err => {
-            err.includes('Username') ? serverErrors.userName = err : serverErrors.userName = "";
-            err.includes('Email') ? serverErrors.email = err : serverErrors.email = "";
-            err.includes('Passwords') ? serverErrors.password = err : serverErrors.password = "";
+        // Show alert with response message
+        alert(response.data.message);
+
+        // Navigate after alert confirmation
+        navigate('/');
+        
+
+      } catch (err) {
+        console.error('Registration failed', err);
+
+        // Initialize a new errors object
+        const newFormErrors = { ...initialState.formErrors };
+
+        const errors = err.response?.data?.errors || [`${err.message} : ${err.response.data}`];
+
+        errors.forEach((error) => {
+          if (error.toLowerCase().includes('username')) {
+            newFormErrors.userName = error;
+          } else if (error.toLowerCase().includes('email')) {
+            if (!error.includes("Request failed with status code 500")) {
+              newFormErrors.email = error;
+            }else{
+              setSuccessErrors({
+                success: '',
+                errors: [error]
+              });
+            }
+          } else if (error.toLowerCase().includes('password')) {
+            newFormErrors.password = error;
+          } else {
+            setSuccessErrors({
+              success: '',
+              errors: [error]
+            });
+          }
         });
 
-        setErrors(serverErrors)
-
-        }
+        // Set the form errors state
+        setFormErrors(newFormErrors);
       }
     }
-  };
+  }
 
   return (
     <div className={RegisterStyle.registerContainer}>
@@ -88,7 +130,7 @@ const Register = () => {
                 type="text"
                 placeholder="Enter Username"
                 value={formData.userName}
-                error={errors.userName}
+                error={formErrors.userName}
                 onChange={handleChange}
               />
               <RegisterFormInput
@@ -97,7 +139,7 @@ const Register = () => {
                 type="text"
                 placeholder="Enter Name"
                 value={formData.fullName}
-                error={errors.fullName}
+                error={formErrors.fullName}
                 onChange={handleChange}
               />
               <RegisterFormInput
@@ -106,7 +148,7 @@ const Register = () => {
                 type="email"
                 placeholder="Enter Email"
                 value={formData.email}
-                error={errors.email}
+                error={formErrors.email}
                 onChange={handleChange}
               />
               <RegisterFormInput
@@ -115,7 +157,7 @@ const Register = () => {
                 type="password"
                 placeholder="Enter Password"
                 value={formData.password}
-                error={errors.password}
+                error={formErrors.password}
                 onChange={handleChange}
               />
               <RegisterFormInput
@@ -124,13 +166,23 @@ const Register = () => {
                 type="password"
                 placeholder="Enter Password"
                 value={formData.confirmPassword}
-                error={errors.confirmPassword}
+                error={formErrors.confirmPassword}
                 onChange={handleChange}
               />
               <LoginRegisterSubmitButton
                 id='registerButton'
                 buttonText='Register'
               />
+              {successErrors.success && (
+                <span className={LoginRegister.serverSuccess}>{successErrors.success}</span>
+              )}
+              {successErrors.errors.length > 0 && (
+                <div>
+                  {successErrors.errors.map((error, index) => (
+                    <div key={index}>{error}</div>
+                  ))}
+                </div>
+              )}
               <div className={LoginRegister.formInfoContainer}>
                 <p className={LoginRegister.loginRegisterQuestion}>
                   Already have an account? <a className={LoginRegister.loginRegisterLink} href='/'>Login</a> Here
@@ -150,7 +202,10 @@ const Register = () => {
         <div className={RegisterStyle.main}></div>
       </div>
     </div>
-  );
-};
+  )
+}
+
+
+
 
 export default Register;

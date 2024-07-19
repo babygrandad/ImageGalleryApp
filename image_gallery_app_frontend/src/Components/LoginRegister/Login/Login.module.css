@@ -46,6 +46,7 @@
 .checkContainer{
 	display: flex;
 	justify-content: flex-end;
+	margin-top: var(--spacing-xs);
 }
 
 .rememberText{
