@@ -34,7 +34,7 @@
 	width: 100%;
 	background-color: white;
 	padding:5px 0 5px 15px;
-	border: 1px solid var(--text);
+	border: 1px solid var(--form-lable-text);
 	border-radius: var(--spacing-xxs);
 }
 
@@ -43,10 +43,13 @@
 	width: 90%;
 }
 
+.inputField::placeholder, .inputIcon{
+	color: var(--input-placeholder-text);
+}
+
 .checkContainer{
 	display: flex;
-	justify-content: flex-end;
-	margin-top: var(--spacing-xs);
+	justify-content: space-between;
 }
 
 .rememberText{
@@ -57,6 +60,7 @@
 	text-align: right;
 	text-decoration: none;
 	color: var(--text);
+	margin-top: var(--spacing-xs);
 }
 
 .forgotPassword:hover{

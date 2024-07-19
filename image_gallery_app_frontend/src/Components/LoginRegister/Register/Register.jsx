@@ -76,40 +76,58 @@ const Register = () => {
 
         // Navigate after alert confirmation
         navigate('/');
-        
+
 
       } catch (err) {
-        console.error('Registration failed', err);
+        let errorMessage = 'An unexpected error occurred.';
 
-        // Initialize a new errors object
-        const newFormErrors = { ...initialState.formErrors };
+        if (err.response) {
+          console.error('Registration failed', err);
 
-        const errors = err.response?.data?.errors || [`${err.message} : ${err.response.data}`];
+          // Initialize a new errors object
+          const newFormErrors = { ...initialState.formErrors };
 
-        errors.forEach((error) => {
-          if (error.toLowerCase().includes('username')) {
-            newFormErrors.userName = error;
-          } else if (error.toLowerCase().includes('email')) {
-            if (!error.includes("Request failed with status code 500")) {
-              newFormErrors.email = error;
-            }else{
+          const errors = err.response?.data?.errors || [`${err.message} : ${err.response.data}`];
+
+          errors.forEach((error) => {
+            if (error.toLowerCase().includes('username')) {
+              newFormErrors.userName = error;
+            } else if (error.toLowerCase().includes('email')) {
+              if (!error.includes("Request failed with status code 500")) {
+                newFormErrors.email = error;
+              } else {
+                setSuccessErrors({
+                  success: '',
+                  errors: [error]
+                });
+              }
+            } else if (error.toLowerCase().includes('password')) {
+              newFormErrors.password = error;
+            } else {
               setSuccessErrors({
                 success: '',
                 errors: [error]
               });
             }
-          } else if (error.toLowerCase().includes('password')) {
-            newFormErrors.password = error;
-          } else {
-            setSuccessErrors({
-              success: '',
-              errors: [error]
-            });
-          }
-        });
+          });
 
-        // Set the form errors state
-        setFormErrors(newFormErrors);
+          // Set the form errors state
+          setFormErrors(newFormErrors);
+        }
+        else if (err.request) {
+          // No response was received
+          console.error('No response received:', err.request);
+          errorMessage = 'Cannot connect to server.';
+          setSuccessErrors((prevErrors) => ({
+            ...prevErrors,
+            errors: [errorMessage]
+          }));
+        }
+        else {
+          // Something happened in setting up the request
+          console.error('Error message:', err.message);
+          errorMessage = err.message;
+        }
       }
     }
   }
@@ -121,7 +139,7 @@ const Register = () => {
           <form className={RegisterStyle.registerForm} onSubmit={handleSubmit}>
             <div className={`${LoginRegister.formText} ${RegisterStyle.formText}`}>
               <h3>Register Profile</h3>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. In, quidem!</p>
+              <p>Join the Image App Gallery community by creating your profile. Showcase your unique images, connect with other photographers, and explore a world of creativity.</p>
             </div>
             <div className={LoginRegister.formInputsWrapper}>
               <RegisterFormInput
@@ -177,7 +195,7 @@ const Register = () => {
                 <span className={LoginRegister.serverSuccess}>{successErrors.success}</span>
               )}
               {successErrors.errors.length > 0 && (
-                <div>
+                <div className={LoginRegister.serverError}>
                   {successErrors.errors.map((error, index) => (
                     <div key={index}>{error}</div>
                   ))}

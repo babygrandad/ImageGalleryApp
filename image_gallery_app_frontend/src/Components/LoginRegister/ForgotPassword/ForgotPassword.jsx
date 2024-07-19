@@ -17,7 +17,7 @@ function ForgotPassword() {
 
 	const initialState = {
 		success: '',
-		errors:'',
+		errors: [],
 	}
 	const [successErrors, setSuccessErrors] = useState(initialState);
 
@@ -33,10 +33,10 @@ function ForgotPassword() {
 	const validateEmail = () => {
 		let isValid = true
 
-		if(!formData.email){
-			setSuccessErrors((prevErrors) =>({
+		if (!formData.email) {
+			setSuccessErrors((prevErrors) => ({
 				...prevErrors,
-				errors : 'Email cannot be left blank'
+				errors: ['Email cannot be left blank']
 			}));
 			isValid = false
 		}
@@ -48,30 +48,43 @@ function ForgotPassword() {
 		e.preventDefault();
 		setSuccessErrors(initialState);
 
-		if(!validateEmail()) return;
-		
-		try{
+		if (!validateEmail()) return;
+
+		try {
 			const response = await axios.post(`${BASE_URL}/account/forgotPassword`, formData);
 
-			if(response.status === 200){
+			if (response.status === 200) {
 
 				setSuccessErrors((prevErrors) => ({
 					...prevErrors,
-					success: response.data
+					success: [response.data]
 				}))
 			}
 			console.log(response)
 
 		}
-		catch (ex)
-		{
-			console.error(ex)
-			setSuccessErrors((prevErrors) => ({
-				...prevErrors,
-				errors: ex.response.data
-			}))
-		}
+		catch (err) {
+			let errorMessage = 'An unexpected error occurred.';
 
+			if (err.response) {
+				console.error(err)
+				setSuccessErrors((prevErrors) => ({
+					...prevErrors,
+					errors: [err.response.data]
+				}))
+			} else if (err.request) {
+				console.error('No response received:', err.request);
+				errorMessage = 'Cannot connect to server.';
+				setSuccessErrors((prevErrors) => ({
+					...prevErrors,
+					errors: [errorMessage]
+				}));
+			} else {
+				// Something happened in setting up the request
+				console.error('Error message:', err.message);
+				errorMessage = err.message;
+			}
+		}
 	}
 
 
@@ -97,8 +110,16 @@ function ForgotPassword() {
 								id='registerButton'
 								buttonText='Submit'
 							/>
-							<span className={LoginRegister.serverSucess}>{successErrors.success}</span>
-							<span className={LoginRegister.serverError}>{successErrors.errors}</span>
+							{successErrors.success && (
+								<span className={LoginRegister.serverSuccess}>{successErrors.success}</span>
+							)}
+							{successErrors.errors.length > 0 && (
+								<div className={LoginRegister.serverError}>
+									{successErrors.errors.map((error, index) => (
+										<div key={index}>{error}</div>
+									))}
+								</div>
+							)}
 						</div>
 					</form>
 				</div>
