@@ -137,7 +137,7 @@ function Login() {
       <form className={LoginStyle.loginForm} onSubmit={handleSubmit}>
         <div className={`${LoginRegister.formText} ${LoginStyle.formText}`}>
           <h3>Image Gallery App</h3>
-          <h3>Log in</h3>
+          <h3>Login</h3>
         </div>
         <div className={LoginRegister.formInputsWrapper}>
           <div className={LoginRegister.formInfoContainer}>

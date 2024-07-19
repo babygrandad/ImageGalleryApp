@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LoginRegister from '../LoginRegister.module.css';
 import ForgotResetStyle from '../ForgotResetPassword.module.css';
 import RegisterStyle from '../Register/Register.module.css';
@@ -8,6 +9,8 @@ import axios from 'axios';
 import BASE_URL from '../../../config';
 
 function ResetPassword() {
+
+	const navigate = useNavigate();
 
 	const urlParams = new URLSearchParams(window.location.search);
     const userId = urlParams.get('userId');
@@ -68,10 +71,14 @@ function ResetPassword() {
 				console.log(response.data)
 
 				setFormErrors({}); // MIGHT NEED TO REMOVE THIS WELL SEE
-				setSuccessErrors({
-					success: "Password has been successfully reset!",
-					errors: []
-				});
+				//setSuccessErrors({
+				//	success: "Password has been successfully reset!",
+				//	errors: []
+				//});
+
+				alert('Password has been successfully reset!')
+
+				navigate('/');
 			}
 
 		}
