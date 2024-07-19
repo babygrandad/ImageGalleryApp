@@ -143,7 +143,7 @@ function Login() {
           <div className={LoginRegister.formInfoContainer}>
             <label htmlFor="loginEmail" className={LoginRegister.formLable}>Email</label>
             <div className={LoginStyle.formFieldWrapper}>
-              <i className="fas fa-user"></i>
+              <i className={`${LoginStyle.inputIcon} fas fa-user`}></i>
               <input
                 id='loginEmail'
                 name='email' // Changed from 'loginEmail' to 'email' to match the state property
@@ -159,7 +159,7 @@ function Login() {
           <div className={LoginRegister.formInfoContainer}>
             <label htmlFor="loginPassword" className={LoginRegister.formLable}>Password</label>
             <div className={LoginStyle.formFieldWrapper}>
-              <i className="fas fa-lock"></i>
+              <i className={`${LoginStyle.inputIcon} fas fa-lock`}></i>
               <input
                 id='loginPassword'
                 name='password' // Changed from 'loginPassword' to 'password' to match the state property
@@ -170,8 +170,9 @@ function Login() {
                 onChange={handleChange}
               />
             </div>
-            <span id='loginPasswordError' className={LoginRegister.errorText}>{successErrors.password}</span>
+            
             <div className={LoginStyle.checkContainer}>
+            <span id='loginPasswordError' className={LoginRegister.errorText}>{successErrors.password}</span>
               <a href="/forgotPassword" className={LoginStyle.forgotPassword}>Forgot Password?</a>
             </div>
           </div>

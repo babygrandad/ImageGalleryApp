@@ -6,14 +6,14 @@
 	justify-content: center;
 	min-height: 100vh;
 	min-width: 100vw;
-	padding: var(--spacing-xxl);
+	padding: var(--spacing-lg);
 }
 
 .registerWrapper {
 	display: flex;
 	min-width: 100%;
 	min-height: 100%;
-	gap: var(--spacing-xxl)
+	gap: var(--spacing-lg)
 }
 
 /*	Styles for the left side of the page*/
@@ -30,9 +30,12 @@
 .inputField {
 	display: block;
 	min-width: 100%;
-	border: 1px solid var(--text);
+	border: 1px solid var(--form-lable-text);
 }
 
+.inputField::placeholder{
+	color: var(--input-placeholder-text);
+}
 
 /*	styles for the right side of the page*/
 .main {

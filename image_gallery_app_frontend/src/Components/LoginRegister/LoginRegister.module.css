@@ -15,11 +15,13 @@ aside{
 
 .formText {
 	margin-bottom: var(--spacing-lg);
+	max-width: 400px;
 }
 
 .formText > p {
 	margin: 0;
 	font-size: small;
+	color: #000;
 }
 
 .formInputsWrapper{
@@ -39,11 +41,13 @@ aside{
 .formLable {
 	font-weight: bold;
 	font-size: small;
+	color: var(--form-lable-text);
 }
 
 .errorText{
 	color: var(--accent);
 	font-size: smaller;
+	margin: var(--spacing-xxs);
 	/* display: none; */
 }
 
@@ -53,7 +57,7 @@ aside{
 
 .formButton{
 	border: none;
-	background-color: var(--button-bg);
+	background-color: var(--primary);
 	color: var(--button-text);
 }
 
@@ -90,12 +94,9 @@ aside{
 
 .serverError > *{
 	
-	margin-bottom: var(--spacing-sm);
-	background-color: rgb(248, 216, 221);
-	padding: var(--spacing-xs);
-	border-radius: var(--spacing-xs);
-	border: 1px solid red;
+	margin-bottom: var(--spacing-lg);
 	font-size: var(--small);
+	color: var(--accent);
 }
 
 /*Main related Styling*/

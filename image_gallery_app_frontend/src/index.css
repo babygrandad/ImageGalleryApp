@@ -7,8 +7,6 @@
 	--accent-color: #e74c3c;
 	--background-color: #E9F5F9;
 	--text-color: #2c3e50;
-	--search-grey: #F2F2F2;
-	--search-placeholder-grey: #AEB6B7;
 
 	--primary-color-dark: #1e6f9f;
 	--secondary-color-dark: #27a55b;
@@ -26,6 +24,13 @@
 	--text-hover-state: #2980b9;
 	--text-active-state: #2471a3;
 	--white-on-bg:#E9F5F9;
+
+	/* Item colours */
+	--search-grey: #F2F2F2;
+	--search-placeholder-grey: #AEB6B7;
+	--input-placeholder-text: rgba(75, 85, 88, 0.7);
+	--form-lable-text: #0F3C4C;
+
 
 	/* Site Fonts*/
 	--heading-text: 'Poppins', sans-serif;
@@ -121,6 +126,7 @@ h5{
 	border: none;
 	border-radius: var(--spacing-xxs);
 	padding: var(--base-size);
+	font-family: var(--heading-text);
 }
 
 .button:hover  {
