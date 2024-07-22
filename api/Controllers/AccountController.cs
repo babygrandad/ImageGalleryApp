@@ -139,22 +139,38 @@ namespace api.Controllers
             var maxFailAttempts = _userManager.Options.Lockout.MaxFailedAccessAttempts;
             var LockoutTime = _userManager.Options.Lockout.DefaultLockoutTimeSpan;
 
-            if(await _userManager.IsLockedOutAsync(user))
+            if (await _userManager.IsLockedOutAsync(user))
             {
                 var lockedUntil = await _userManager.GetLockoutEndDateAsync(user);
                 DateTimeOffset currentTime = DateTimeOffset.Now;
-                TimeSpan difference = (TimeSpan)(lockedUntil -currentTime);
+                TimeSpan difference = (TimeSpan)(lockedUntil - currentTime);
                 double totalSeconds = difference.TotalSeconds;
                 totalSeconds = Math.Ceiling((double)totalSeconds);
                 return Unauthorized(new { message = $"Your account is currently locked out please try again in {totalSeconds} seconds" });
             };
-            
+
+            var loginFailCount = await _userManager.GetAccessFailedCountAsync(user);
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDTO.Password, lockoutOnFailure: false);
-            if (!result.Succeeded)
+            if (result.Succeeded)
             {
+                await _userManager.ResetAccessFailedCountAsync(user);
+
+                return Ok(
+                    new UserDTO
+                    {
+                        UserName = user.UserName,
+                        Email = user.Email,
+                        FullName = user.FullName,
+                        Token = _tokenService.CreateToken(user)
+                    }
+                );
+            }
+            else
+            {
+
                 await _userManager.AccessFailedAsync(user);
-                var loginFailCount = await _userManager.GetAccessFailedCountAsync(user);
+
 
                 if (loginFailCount < maxFailAttempts)
                 {
@@ -172,19 +188,9 @@ namespace api.Controllers
 
                     return Unauthorized(new { message = $"Too many incorrect loggin attempts. Your account will be locked out for {totalSeconds} seconds." });
                 }
+
             }
 
-            await _userManager.ResetAccessFailedCountAsync(user);
-
-            return Ok(
-                new UserDTO
-                {
-                    UserName = user.UserName,
-                    Email = user.Email,
-                    FullName = user.FullName,
-                    Token = _tokenService.CreateToken(user)
-                }
-            );
         }
 
         // Please dont forget to work on the logout route for the user
