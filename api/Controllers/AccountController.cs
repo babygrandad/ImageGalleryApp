@@ -136,29 +136,41 @@ namespace api.Controllers
                 return Unauthorized(new { message = "Email is not confirmed." });
             }
 
-            if (user.LockoutEnabled && user.LockoutEnd.HasValue && user.LockoutEnd > DateTimeOffset.Now)
+            var maxFailAttempts = _userManager.Options.Lockout.MaxFailedAccessAttempts;
+            var LockoutTime = _userManager.Options.Lockout.DefaultLockoutTimeSpan;
+
+            if(await _userManager.IsLockedOutAsync(user))
             {
-                return Unauthorized(new { message = "User account is locked out." });
-            }
+                var lockedUntil = await _userManager.GetLockoutEndDateAsync(user);
+                DateTimeOffset currentTime = DateTimeOffset.Now;
+                TimeSpan difference = (TimeSpan)(lockedUntil -currentTime);
+                double totalSeconds = difference.TotalSeconds;
+                totalSeconds = Math.Ceiling((double)totalSeconds);
+                return Unauthorized(new { message = $"Your account is currently locked out please try again in {totalSeconds} seconds" });
+            };
+            
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDTO.Password, lockoutOnFailure: false);
-
             if (!result.Succeeded)
             {
                 await _userManager.AccessFailedAsync(user);
+                var loginFailCount = await _userManager.GetAccessFailedCountAsync(user);
 
-                var accessFailedCount = await _userManager.GetAccessFailedCountAsync(user);
-                var maxFailedAccessAttempts = _userManager.Options.Lockout.MaxFailedAccessAttempts;
-
-                if (accessFailedCount >= maxFailedAccessAttempts)
+                if (loginFailCount < maxFailAttempts)
                 {
-                    await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.Now.Add(_userManager.Options.Lockout.DefaultLockoutTimeSpan));
-                    return Unauthorized(new { message = "User account is locked out." });
+                    var attemptsLeft = maxFailAttempts - loginFailCount;
+                    return Unauthorized(new { message = $"Invalid email or password. You have {attemptsLeft} attempt(s) before your account is locked out." });
                 }
                 else
                 {
-                    var attemptsLeft = maxFailedAccessAttempts - accessFailedCount;
-                    return Unauthorized(new { message = $"Invalid email or password. You have {attemptsLeft} attempt(s) left before your account is locked out." });
+                    await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.Now.Add(LockoutTime));
+                    var lockedUntil = await _userManager.GetLockoutEndDateAsync(user);
+                    DateTimeOffset currentTime = DateTimeOffset.Now;
+                    TimeSpan difference = (TimeSpan)(lockedUntil - currentTime);
+                    double totalSeconds = difference.TotalSeconds;
+                    totalSeconds = Math.Ceiling((double)totalSeconds);
+
+                    return Unauthorized(new { message = $"Too many incorrect loggin attempts. Your account will be locked out for {totalSeconds} seconds." });
                 }
             }
 
