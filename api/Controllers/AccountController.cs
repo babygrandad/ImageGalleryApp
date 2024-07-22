@@ -119,41 +119,58 @@ namespace api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
         {
-            if (!ModelState.IsValid) // Check if the model state is valid
+            if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState); // Return 400 Bad Request if model state is invalid
+                return BadRequest(ModelState);
             }
 
-            // Find user by Email (converted to lowercase)
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == loginDTO.Email.ToLower());
 
-            if (user == null) // Check if user exists
+            if (user == null)
             {
-                return Unauthorized(new { message = "Invalid email or password." }); // Return 401 Unauthorized if user not found
+                return Unauthorized(new { message = "Invalid email or password." });
             }
 
-            // Check if the email is confirmed
             if (!user.EmailConfirmed)
             {
                 return Unauthorized(new { message = "Email is not confirmed." });
             }
 
-            // Check if the password is correct
-            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDTO.Password, false);
-
-            if (!result.Succeeded) // Check if the sign-in was successful
+            if (user.LockoutEnabled && user.LockoutEnd.HasValue && user.LockoutEnd > DateTimeOffset.Now)
             {
-                return Unauthorized(new { message = "Invalid email or password." }); // Return 401 Unauthorized if password is incorrect
+                return Unauthorized(new { message = "User account is locked out." });
             }
 
-            // Return user data and token if login is successful
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDTO.Password, lockoutOnFailure: false);
+
+            if (!result.Succeeded)
+            {
+                await _userManager.AccessFailedAsync(user);
+
+                var accessFailedCount = await _userManager.GetAccessFailedCountAsync(user);
+                var maxFailedAccessAttempts = _userManager.Options.Lockout.MaxFailedAccessAttempts;
+
+                if (accessFailedCount >= maxFailedAccessAttempts)
+                {
+                    await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.Now.Add(_userManager.Options.Lockout.DefaultLockoutTimeSpan));
+                    return Unauthorized(new { message = "User account is locked out." });
+                }
+                else
+                {
+                    var attemptsLeft = maxFailedAccessAttempts - accessFailedCount;
+                    return Unauthorized(new { message = $"Invalid email or password. You have {attemptsLeft} attempt(s) left before your account is locked out." });
+                }
+            }
+
+            await _userManager.ResetAccessFailedCountAsync(user);
+
             return Ok(
                 new UserDTO
                 {
-                    UserName = user.UserName, // Set username
-                    Email = user.Email, // Set email address
+                    UserName = user.UserName,
+                    Email = user.Email,
                     FullName = user.FullName,
-                    Token = _tokenService.CreateToken(user) // Generate and set token
+                    Token = _tokenService.CreateToken(user)
                 }
             );
         }
