@@ -1,17 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Data;
 using api.DTOs.Comment;
-using api.interfaces;
 using api.Interfaces;
 using api.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
-
 
 namespace api.Repositories
 {
@@ -23,7 +14,6 @@ namespace api.Repositories
          public CommentRepository(ApplicationDBContext dbContext, UserManager<AppUser> userManager)
         {
             _dbContext = dbContext;
-
         }
 
         public async Task<Comment> CreateAsync(Comment commentModel)

@@ -7,7 +7,7 @@ using api.Models;
 
 namespace api.Mappers
 {
-    public static class CategoryMappers
+    public static class CategoryMapper
     {
         public static GetCategoryDTO ToGetCategoryDTO(this Category categoryModel)
         {
