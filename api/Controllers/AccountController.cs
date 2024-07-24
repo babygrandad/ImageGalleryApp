@@ -142,7 +142,6 @@ namespace api.Controllers
                     }
                 );
             }
-<<<<<<< HEAD
             else if (result.IsLockedOut)
             {
                 var lockedUntil = await _userManager.GetLockoutEndDateAsync(user);
