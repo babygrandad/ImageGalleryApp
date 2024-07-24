@@ -22,6 +22,9 @@
 	color: var(--white-on-bg);
 }
 
+.topLogoImage{
+	max-height: 60px;
+}
 .sideMenuList{
 	display: flex;
 	flex-direction: column;

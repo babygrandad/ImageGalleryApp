@@ -87,13 +87,13 @@ const Register = () => {
           // Initialize a new errors object
           const newFormErrors = { ...initialState.formErrors };
 
-          const errors = err.response?.data?.errors || [`${err.message} : ${err.response.data}`];
+          const errors = err.response?.data?.errors || [`${err.response.data}`];
 
           errors.forEach((error) => {
             if (error.toLowerCase().includes('username')) {
               newFormErrors.userName = error;
             } else if (error.toLowerCase().includes('email')) {
-              if (!error.includes("Request failed with status code 500")) {
+              if (!error.includes("confirmation email")) {
                 newFormErrors.email = error;
               } else {
                 setSuccessErrors({

@@ -119,72 +119,44 @@ namespace api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == loginDTO.Email.ToLower());
 
-            if (user == null)
+            if (user == null) return Unauthorized(new { message = "Invalid email or password." });
+
+            if (!user.EmailConfirmed) return Unauthorized(new { message = "Email is not confirmed." });
+            
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDTO.Password, lockoutOnFailure: true);
+
+            if (result.Succeeded)
             {
-                return Unauthorized(new { message = "Invalid email or password." });
+                await _userManager.ResetAccessFailedCountAsync(user);
+                return Ok(
+                    new UserDTO
+                    {
+                        UserName = user.UserName,
+                        Email = user.Email,
+                        FullName = user.FullName,
+                        Token = _tokenService.CreateToken(user)
+                    }
+                );
             }
-
-            if (!user.EmailConfirmed)
-            {
-                return Unauthorized(new { message = "Email is not confirmed." });
-            }
-
-            var maxFailAttempts = _userManager.Options.Lockout.MaxFailedAccessAttempts;
-            var LockoutTime = _userManager.Options.Lockout.DefaultLockoutTimeSpan;
-
-            if(await _userManager.IsLockedOutAsync(user))
+            else if (result.IsLockedOut)
             {
                 var lockedUntil = await _userManager.GetLockoutEndDateAsync(user);
-                DateTimeOffset currentTime = DateTimeOffset.Now;
-                TimeSpan difference = (TimeSpan)(lockedUntil -currentTime);
-                double totalSeconds = difference.TotalSeconds;
-                totalSeconds = Math.Ceiling((double)totalSeconds);
+                var totalSeconds = Math.Ceiling((lockedUntil?.Subtract(DateTimeOffset.Now).TotalSeconds) ?? 0);
                 return Unauthorized(new { message = $"Your account is currently locked out please try again in {totalSeconds} seconds" });
-            };
-            
-
-            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDTO.Password, lockoutOnFailure: false);
-            if (!result.Succeeded)
+            }
+            else
             {
-                await _userManager.AccessFailedAsync(user);
-                var loginFailCount = await _userManager.GetAccessFailedCountAsync(user);
+                var accessFailedCount = await _userManager.GetAccessFailedCountAsync(user);
+                var maxFailedAccessAttempts = _userManager.Options.Lockout.MaxFailedAccessAttempts;
+                var attemptsLeft = maxFailedAccessAttempts - accessFailedCount;
 
-                if (loginFailCount < maxFailAttempts)
-                {
-                    var attemptsLeft = maxFailAttempts - loginFailCount;
-                    return Unauthorized(new { message = $"Invalid email or password. You have {attemptsLeft} attempt(s) before your account is locked out." });
-                }
-                else
-                {
-                    await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.Now.Add(LockoutTime));
-                    var lockedUntil = await _userManager.GetLockoutEndDateAsync(user);
-                    DateTimeOffset currentTime = DateTimeOffset.Now;
-                    TimeSpan difference = (TimeSpan)(lockedUntil - currentTime);
-                    double totalSeconds = difference.TotalSeconds;
-                    totalSeconds = Math.Ceiling((double)totalSeconds);
-
-                    return Unauthorized(new { message = $"Too many incorrect loggin attempts. Your account will be locked out for {totalSeconds} seconds." });
-                }
+                return Unauthorized(new { message = $"Invalid username or password. You have {attemptsLeft} attemps left" });
             }
 
-            await _userManager.ResetAccessFailedCountAsync(user);
-
-            return Ok(
-                new UserDTO
-                {
-                    UserName = user.UserName,
-                    Email = user.Email,
-                    FullName = user.FullName,
-                    Token = _tokenService.CreateToken(user)
-                }
-            );
         }
 
         // Please dont forget to work on the logout route for the user
@@ -269,7 +241,7 @@ namespace api.Controllers
                     var errors = result.Errors.Select(e => e.Description);
                     return BadRequest(new { Errors = errors });
                 }
-
+                await _userManager.ResetAccessFailedCountAsync(user);
                 return Ok("Password has been reset successfully. You can now log in");
             }
             catch (Exception ex)

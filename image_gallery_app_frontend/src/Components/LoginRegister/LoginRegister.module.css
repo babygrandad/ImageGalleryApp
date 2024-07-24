@@ -94,10 +94,15 @@ aside{
 }
 
 .serverError > *{
-	
 	margin-bottom: var(--spacing-sm);
 	font-size: var(--small);
 	color: var(--accent);
+}
+
+.serverSuccess {
+	margin-bottom: var(--spacing-sm);
+	font-size: var(--small);
+	color: var(--secondary);
 }
 
 /*Main related Styling*/
