@@ -96,6 +96,7 @@ builder.Services.AddAuthentication(options =>{
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 
 
