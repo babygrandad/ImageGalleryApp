@@ -1,0 +1,32 @@
+.dragArea {
+	padding: var(--spacing-lg);
+	border-radius: var(--spacing-xxs);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	aspect-ratio: 3/2;
+	border: 2px dashed var(--primary);
+	background-color: var(--white-on-bg);
+}
+
+.uploadIcon{
+	font-size: 8pc;
+}
+
+.instructionText{
+	color: var(--primary);
+	font-size: var(--base-size);
+}
+
+.fileInput{
+	display: none;
+}
+
+.uploadLabel{
+	background-color: var(--primary);
+	padding: var(--spacing-sm) var(--spacing-lg);
+	font-size: var(--base-size);
+	color: var(--white-on-bg);
+	border-radius: var(--spacing-xxs);
+}

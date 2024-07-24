@@ -7,7 +7,10 @@ import TopBar from '../SubComponents/TopBar'
 function ContentContainer() {
   return (
 	<div className={ContentContainerStyle.contentContainer}>
-		<TopBar />
+		<TopBar 
+		breadcrum={'Home'}
+		fullName={'Relebogile Nkotswe'}
+		/>
 		<Outlet />
 	</div>
   )

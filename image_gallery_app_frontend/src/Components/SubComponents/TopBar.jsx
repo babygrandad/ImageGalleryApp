@@ -1,14 +1,14 @@
 import React from 'react'
 import TopbarStyle from './Topbar.module.css'
 
-function TopBar() {
+function TopBar({breadcrum, fullName}) {
 	return (
 		<div className={TopbarStyle.container}>
 			<div className="currentPage">
-				Home
+				{breadcrum}
 			</div>
 			<div className="topBarProfileContainer">
-				Relebogile Nkotswe
+				{fullName}
 			</div>
 		</div>
 	)
