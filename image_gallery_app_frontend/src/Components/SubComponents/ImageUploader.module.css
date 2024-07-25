@@ -12,6 +12,7 @@
 
 .uploadIcon{
 	font-size: 8pc;
+	color: var(--primary);
 }
 
 .instructionText{
