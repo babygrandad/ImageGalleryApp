@@ -15,6 +15,13 @@ namespace api.Models
         public DateTime LastUpdated { get; set; } = DateTime.Now;
         public string ImageURL { get; set; }
 
+        public string ImageDimensions { get; set; } //  Exif Data - Image dimensions
+        public string FileSize { get; set; } //  Exif Data - Image Size
+        public DateTime? DateCapturted { get; set; } //  Exif Data - The day the image was capture
+        public string? Make { get; set; } //  Exif Data - The Brand of the camera
+        public string? Model { get; set; } //  Exif Data - The specific camera Model
+        public string? LenseType { get; set; } //  Exif Data - The lense used to take the image
+
         public AppUser AppUser { get; set; }
         public List<ImageCategory> ImageCategories { get; set; } = new List<ImageCategory>();
         public List<ImageTag> ImageTags { get; set; } = new List<ImageTag>();
