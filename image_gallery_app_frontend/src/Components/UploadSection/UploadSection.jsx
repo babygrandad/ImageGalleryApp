@@ -95,6 +95,7 @@ function UploadSection(props) {
 
 		if (!image) {
 			updateErrors({ imageFile: "Please select an image" });
+			console.log(successErrors);
 			console.log("no image falure block");
 			return;
 		}
@@ -113,7 +114,6 @@ function UploadSection(props) {
 					}
 				)
 
-				console.log("about to try with the status codes")
 				if(imageData && imageData.status === 200)
 				{
 					console.log("Returning data: ",imageData)
@@ -123,20 +123,8 @@ function UploadSection(props) {
 						imageDeleteURL: imageData.data.data.delete_url,
 					}));
 				}
-
-				//if (data.status === 200) {
-				//	console.log("Seccess: ", formData);
-				//	setFormData((prevData) => ({
-				//		...prevData,
-				//		imageURL: data.display_url,
-				//		imageDeleteURL: data.delete_url,
-				//	}));
-				//}
-				//else {
-				//	console.log("Fail: ", data)
-				//}
 			}
-			catch (err) {
+			catch (err) { // convert the error to display on the front end as for now it only shows on console
 				console.error("Something went wrong while processing your post: ", err.response.data.error)
 			}
 		}
@@ -150,9 +138,11 @@ function UploadSection(props) {
 		if (!formData.imageCategory) newErrors.imageCategory = "Please select a category from the list";
 		if (formData.imageTags.length < 2) newErrors.imageTags = "You need to give at least 2 tags";
 		if (formData.imageTags.length > 5) newErrors.imageTags = "You can only provide a maximum of 5 tags";
-
+		if (!image) newErrors.imageFile = "You have not yet selected an image to upload";
+	
+		setSuccessErrors(newErrors);
 		return newErrors;
-	}
+	};
 
 	// Updates the Form Erros
 	const updateErrors = (newErrors) => {
@@ -164,12 +154,24 @@ function UploadSection(props) {
 	
 
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = (e) => {
 		e.preventDefault();
-		
-		handleUploadtoIMGBB(image, formData);
-		
-	}
+		setSuccessErrors(null); // Reset errors before validation
+	
+		// Validate the form and update errors
+		const newErrors = validateForm();
+		if (Object.keys(newErrors).length === 0) {
+			// Proceed with image upload if there are no errors
+			handleUploadtoIMGBB(image, formData);
+
+			// reset form and all other states
+
+			console.log("No errors you can proceed.")
+		} else {
+			// Log errors if any
+			console.log(newErrors);
+		}
+	};
 
 	return (
 		<div className={UploadStyle.uploadSection}>
