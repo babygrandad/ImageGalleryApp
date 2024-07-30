@@ -12,7 +12,7 @@ namespace api.Models
         public int CategoryID { get; set; }
         public string CategoryName { get; set; } 
 
-        public List<ImageCategory> ImageCategories { get; set; }
-
+        // Navigation property for images in this category
+        public List<Image> Images { get; set; } = new List<Image>();
     }
 }

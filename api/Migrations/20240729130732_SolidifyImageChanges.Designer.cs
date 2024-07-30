@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
@@ -11,9 +12,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240729130732_SolidifyImageChanges")]
+    partial class SolidifyImageChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +54,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "05e972f3-2177-462d-a6cd-e8c7bb6d4cdb",
+                            Id = "6ff2ea5c-b364-4dad-9a3d-bfa82fd7ac3a",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "cc28ede0-1b2f-435f-8540-a860c0b363fc",
+                            Id = "6522ea58-e521-4e1b-805d-1ac68fcd0231",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -307,10 +310,7 @@ namespace api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageID"));
 
-                    b.Property<int>("CategoryID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("DateCaptured")
+                    b.Property<DateTime?>("DateCapturted")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FileSize")
@@ -354,11 +354,32 @@ namespace api.Migrations
 
                     b.HasKey("ImageID");
 
-                    b.HasIndex("CategoryID");
-
                     b.HasIndex("UserID");
 
                     b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("api.Models.ImageCategory", b =>
+                {
+                    b.Property<int>("ImageCategoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageCategoryID"));
+
+                    b.Property<int>("CategoryID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ImageID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ImageCategoryID");
+
+                    b.HasIndex("CategoryID");
+
+                    b.HasIndex("ImageID");
+
+                    b.ToTable("ImageCategories");
                 });
 
             modelBuilder.Entity("api.Models.ImageTag", b =>
@@ -503,12 +524,6 @@ namespace api.Migrations
 
             modelBuilder.Entity("api.Models.Image", b =>
                 {
-                    b.HasOne("api.Models.Category", "Category")
-                        .WithMany("Images")
-                        .HasForeignKey("CategoryID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("api.Models.AppUser", "AppUser")
                         .WithMany("Images")
                         .HasForeignKey("UserID")
@@ -516,8 +531,25 @@ namespace api.Migrations
                         .IsRequired();
 
                     b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("api.Models.ImageCategory", b =>
+                {
+                    b.HasOne("api.Models.Category", "Category")
+                        .WithMany("ImageCategories")
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api.Models.Image", "Image")
+                        .WithMany("ImageCategories")
+                        .HasForeignKey("ImageID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
+
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("api.Models.ImageTag", b =>
@@ -569,12 +601,14 @@ namespace api.Migrations
 
             modelBuilder.Entity("api.Models.Category", b =>
                 {
-                    b.Navigation("Images");
+                    b.Navigation("ImageCategories");
                 });
 
             modelBuilder.Entity("api.Models.Image", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("ImageCategories");
 
                     b.Navigation("ImageTags");
 

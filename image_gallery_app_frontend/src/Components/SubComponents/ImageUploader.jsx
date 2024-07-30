@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import ImageUploaderStyle from './ImageUploader.module.css';
 import * as ExifReader from 'exifreader';
 
-function ImageUploader() {
+function ImageUploader({ onMetadata }) {
 	const [errorMessage, seterrorMessage] = useState({});
 	const [file, setFile] = useState(null);
-	const [binaryData, setBinaryData] = useState(null);
 
 	useEffect(() => {
 		if (file) {
@@ -13,8 +12,15 @@ function ImageUploader() {
 			const fetchExifData = async () => {
 				if (file) {
 					const blob = new Blob([file], { type: file.type });
-					const metadata = await ExifReader.load(file);
-					console.log(metadata);
+					const metadata = await ExifReader.load(file); // -- -- Same function as below in the try catch remove if that one works
+					try {
+						onMetadata({ file, metadata }); // Pass the metadata to the parent
+					} catch (error) {
+						//setErrorMessage({ ...errorMessage, api: 'Failed to load EXIF data.' });
+						console.log("Failed to load EXIF data")
+					}
+					console.log("File FUll: ", file);
+					console.log("MetaData FUll: ", metadata);
 				}
 			};
 
