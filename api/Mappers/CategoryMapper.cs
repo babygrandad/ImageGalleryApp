@@ -19,6 +19,7 @@ namespace api.Mappers
             return new GetCategoryDTO
             {
                 CategoryName = categoryModel.CategoryName,
+                CategoryID = categoryModel.CategoryID,
             };
         }
     }

@@ -44,10 +44,10 @@ namespace api.Repositories
                 .Include(x => x.Comments)
                 .Include(i => i.ImageTags)
                     .ThenInclude(it => it.Tag)
-                .Include(i => i.ImageCategories)
-                    .ThenInclude(ic => ic.Category)
+                .Include(i => i.Category) // Directly include Category
                 .AsQueryable();
 
+            // Filter by image name if provided
             if (!string.IsNullOrWhiteSpace(filterQuery.Name))
             {
                 images = images.Where(x => x.ImageName.Contains(filterQuery.Name));
@@ -60,11 +60,11 @@ namespace api.Repositories
                 images = images.Where(x => x.ImageTags.Any(tag => tag.Tag.TagName.ToLower().Contains(tagLower)));
             }
 
-            // Filter by tag if provided
+            // Filter by category if provided
             if (!string.IsNullOrWhiteSpace(filterQuery.Category))
             {
                 var categoryLower = filterQuery.Category.ToLower(); // Ensure case-insensitive comparison
-                images = images.Where(x => x.ImageCategories.Any(cat => cat.Category.CategoryName.ToLower().Contains(categoryLower)));
+                images = images.Where(x => x.Category.CategoryName.ToLower().Contains(categoryLower));
             }
 
             // Sorting based on SortBy and IsDescending properties
@@ -74,6 +74,7 @@ namespace api.Repositories
                 {
                     images = filterQuery.IsDescending ? images.OrderByDescending(x => x.ImageName) : images.OrderBy(x => x.ImageName);
                 }
+                // Add additional sorting options as needed
             }
 
             var skipNumber = (filterQuery.PageNumber - 1) * filterQuery.PageSize;
@@ -85,20 +86,15 @@ namespace api.Repositories
         {
             var image = await _dbContext.Images
                 .Include(i => i.Comments)
-                    .ThenInclude(c => c.AppUser) // Ensure AppUser is included
+                    .ThenInclude(c => c.AppUser) // Include AppUser for Comments
                 .Include(i => i.ImageTags)
                     .ThenInclude(it => it.Tag)
-                .Include(i => i.ImageCategories)
-                    .ThenInclude(ic => ic.Category)
+                .Include(i => i.Category) // Directly include Category
                 .FirstOrDefaultAsync(i => i.ImageID == id);
-
-            if (image == null)
-            {
-                return null;
-            }
 
             return image;
         }
+
 
         public Task<bool> ImageExit(int id)
         {
@@ -119,7 +115,7 @@ namespace api.Repositories
                 return null;
             }
 
-            if(existingImage.UserID != user.Id)
+            if (existingImage.UserID != user.Id)
             {
                 throw new UnauthorizedAccessException("user not autherized to update this comment");
             }

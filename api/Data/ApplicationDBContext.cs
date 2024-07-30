@@ -14,7 +14,6 @@ namespace api.Data
 
         public DbSet<Image> Images { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<ImageCategory> ImageCategories { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<ImageTag> ImageTags { get; set; }
         public DbSet<Like> Likes { get; set; }
@@ -35,15 +34,10 @@ namespace api.Data
                 .WithMany(u => u.Images)
                 .HasForeignKey(i => i.UserID);
 
-            modelBuilder.Entity<ImageCategory>()
-                .HasOne(ic => ic.Image)
-                .WithMany(i => i.ImageCategories)
-                .HasForeignKey(ic => ic.ImageID);
-
-            modelBuilder.Entity<ImageCategory>()
-                .HasOne(ic => ic.Category)
-                .WithMany(c => c.ImageCategories)
-                .HasForeignKey(ic => ic.CategoryID);
+            modelBuilder.Entity<Image>()
+                .HasOne(i => i.Category)
+                .WithMany(c => c.Images)
+                .HasForeignKey(i => i.CategoryID);
 
             modelBuilder.Entity<ImageTag>()
                 .HasOne(it => it.Image)
