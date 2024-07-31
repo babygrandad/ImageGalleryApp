@@ -9,7 +9,7 @@ import BASE_URL, { IMGBB_KEY, IMGBB_URL } from '../../config';
 
 function UploadSection(props) {
 
-	const [errorMessage, setErrorMessage] = useState(null);
+	const [serverResponse, setServerResponse] = useState(null);
 	const [categories, setCategories] = useState([]);
 	const [image, setImage] = useState(null);
 	const [successErrors, setSuccessErrors] = useState(null);
@@ -91,7 +91,7 @@ function UploadSection(props) {
 	};
 
 	// uploads the image to an image hosting site and returns the url 
-	const handleUploadtoIMGBB = async (image, info) => {
+	const handleUploadToIMGBB = async (image, info) => {
 
 		if (!image) {
 			updateErrors({ imageFile: "Please select an image" });
@@ -105,7 +105,7 @@ function UploadSection(props) {
 				var imageData = await axios.post(IMGBB_URL, {
 					key: IMGBB_KEY,
 					image: image,
-					name: info.imageName
+					name: info.imageName, //info.imageName
 				},
 					{
 						headers: {
@@ -125,8 +125,19 @@ function UploadSection(props) {
 				}
 			}
 			catch (err) { // convert the error to display on the front end as for now it only shows on console
-				console.error("Something went wrong while processing your post: ", err.response.data.error)
+				console.error("Something went wrong while processing your post: ", err.response.data.error.message)
+				setServerResponse(err.response.data.error.message)
+				
 			}
+		}
+	}
+
+	const handleUploadToDB = async () =>{
+		try{
+			const response = await axios.post(`${BASE_URL}/account/login`, formData);
+		}
+		catch (err){
+			console.error(err)
 		}
 	}
 
@@ -157,12 +168,13 @@ function UploadSection(props) {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		setSuccessErrors(null); // Reset errors before validation
+		setServerResponse(null); // Reset server messages
 	
 		// Validate the form and update errors
 		const newErrors = validateForm();
 		if (Object.keys(newErrors).length === 0) {
 			// Proceed with image upload if there are no errors
-			handleUploadtoIMGBB(image, formData);
+			handleUploadToIMGBB(image, formData);
 
 			// reset form and all other states
 
@@ -178,10 +190,10 @@ function UploadSection(props) {
 			<form className={UploadStyle.uploadForm} onSubmit={handleSubmit} autoComplete="off">
 				<h4 className={FormStyles.formText}>Image Upload</h4>
 				<div className={`${FormStyles.formInputsWrapper} ${UploadStyle.inputsWrapper} `}>
-					{errorMessage && <div className="error-message">{errorMessage}</div>}{/*	Come back here to add and show errors*/}
 					<div className={FormStyles.formInfoContainer}>{/*	Image Title */}
 						<label htmlFor="imageName" className={FormStyles.formLable}>Image Title</label>
 						<input type="text" onChange={handleChange} name="imageName" id="imageName" className={`${FormStyles.inputField} inputField`} />
+						<span>//errors here</span>
 					</div>
 					<div className={FormStyles.formInfoContainer}> {/*	Image Category */}
 						<label htmlFor="imageCategory" className={FormStyles.formLable}>Image Category</label>
@@ -192,15 +204,17 @@ function UploadSection(props) {
 							className={`${FormStyles.inputField} inputField`}
 							onChange={handleChange}
 						>
-							<option value="" >--Please choose an option--</option>
+							<option value="">--Please choose an option--</option>
 							{categories.map((category) => (
 								<option key={category.categoryID} value={category.categoryID}>{category.categoryName}</option>
 							))}
 						</select>
+						<span>//errors here</span>
 					</div>
 					<div className={FormStyles.formInfoContainer}> {/*	Image Tags */}
 						<label htmlFor="imageTags" className={FormStyles.formLable}>Image Tags</label>
 						<input type="text" onChange={handleChange} value={formData.imageTags} name="imageTags" id="imageTags" className={`${FormStyles.inputField} inputField`} />
+						<span>//errors here</span>
 					</div>
 					<div className={FormStyles.formInfoContainer}> {/*	Image Description */}
 						<label htmlFor="imageDescription" className={FormStyles.formLable}>Image Description</label>
@@ -212,11 +226,14 @@ function UploadSection(props) {
 							className='inputField'
 							style={{ resize: 'none' }}
 						/>
+						<span>//errors here</span>
 					</div>
 
 					<div className={`${FormStyles.formInfoContainer} `}>
 						<ImageUploader onMetadata={handleMetadata} />
+						<span>//erros here</span>
 					</div>
+					{serverResponse && <div className="error-message">{serverResponse}</div>}{/*	server response here*/}
 					<LoginRegisterSubmitButton
 						id='uploadImage'
 						buttonText='Save'

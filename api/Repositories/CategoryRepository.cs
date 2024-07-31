@@ -17,5 +17,10 @@ namespace api.Repositories
         {
             return await _dbContext.Categories.ToListAsync();
         }
+
+        public async Task<Category> GetByIdAsync(int id)
+        {
+           return await _dbContext.Categories.FindAsync(id);
+        }
     }
 }
