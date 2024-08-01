@@ -12,7 +12,7 @@ namespace api.Models
         public string ImageName { get; set; }
         public string ImageDescription { get; set; }
         public DateTime UploadDate { get; set; } = DateTime.Now;
-        public DateTime LastUpdated { get; set; } = DateTime.Now;
+        public DateTime? LastUpdated { get; set; }
         public string ImageURL { get; set; }
         public string ImageDeleteURL { get; set; }
 
@@ -32,5 +32,6 @@ namespace api.Models
         public List<ImageTag> ImageTags { get; set; } = new List<ImageTag>();
         public List<Like> Likes { get; set; } = new List<Like>();
         public List<Comment> Comments { get; set; } = new List<Comment>();
+
     }
 }

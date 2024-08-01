@@ -95,15 +95,47 @@ namespace api.Repositories
             return image;
         }
 
-
         public Task<bool> ImageExit(int id)
         {
             return _dbContext.Images.AnyAsync(x => x.ImageID == id);
         }
 
-        public Task<Image?> PostImageAsync(Image imageModel)
+        public async Task<Image?> PostImageAsync(Image imageModel, AppUser user) // finsh the tags post then come back here
         {
-            throw new NotImplementedException();
+            /*  Logic plan...
+
+                
+            
+            */
+
+            var tagIds = new List<int>();
+
+            // Ensure all tags are unique and exist in the database
+        foreach (var tag in imageModel.ImageTags)
+        {
+            // Find the existing tag in the database
+            var existingTag = await _dbContext.Tags.FirstOrDefaultAsync(t => t.TagName == tag);
+
+            int tagId;
+
+            if (existingTag != null)
+            {
+                // Tag already exists, use existing ID
+                tagId = existingTag.Id;
+            }
+            else
+            {
+                // Tag doesn't exist, add a new tag
+                var newTag = new Tag { TagName = tag };
+                _dbContext.Tags.Add(newTag);
+                await _dbContext.SaveChangesAsync();
+                tagId = newTag.TagID;
+            }
+
+            tagIds.Add(tagId);
+        }
+            
+            return null;
         }
 
         public async Task<Image?> UpdateImageAsync(int id, UpdateImageDTO updateImageDTO, AppUser user)

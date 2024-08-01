@@ -13,6 +13,7 @@ namespace api.DTOs.Image
         public DateTime UploadDate { get; set; }
         public DateTime LastUpdated { get; set; }
         public string ImageURL { get; set; }
+        public string ImageDeleteURL { get; set; }
         public string FullName { get; set; }
         public string ImageDimensions { get; set; } // Exif Data - Image dimensions
         public string FileSize { get; set; } // Exif Data - Image Size
@@ -34,7 +35,7 @@ namespace api.DTOs.Image
         public DateTime UploadDate { get; set; }
         public string ImageURL { get; set; }
         public string FullName { get; set; }
-        public GetCategoryDTO Category { get; set; } // Single CategoryDTO
+        public GetCategoriesDTO Category { get; set; } // Single CategoryDTO
         public List<GetTagDTO> Tags { get; set; } // List of TagDTOs
         public int LikesCount { get; set; }
         public int CommentCount { get; set; }
