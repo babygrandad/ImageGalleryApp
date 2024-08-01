@@ -4,7 +4,7 @@ using api.DTOs.Tag;
 
 namespace api.DTOs.Image
 {
-    //DTO fo a single image
+    // DTO for a single image
     public class GetImageDTO
     {
         public int ImageID { get; set; }
@@ -13,8 +13,15 @@ namespace api.DTOs.Image
         public DateTime UploadDate { get; set; }
         public DateTime LastUpdated { get; set; }
         public string ImageURL { get; set; }
+        public string ImageDeleteURL { get; set; }
         public string FullName { get; set; }
-        public List<GetCategoryDTO> Categories { get; set; } // List of CategoryDTOs
+        public string ImageDimensions { get; set; } // Exif Data - Image dimensions
+        public string FileSize { get; set; } // Exif Data - Image Size
+        public DateTime? DateCaptured { get; set; } // Exif Data - The day the image was captured
+        public string? Make { get; set; } // Exif Data - The brand of the camera
+        public string? Model { get; set; } // Exif Data - The specific camera model
+        public string? LenseType { get; set; } // Exif Data - The lens used to take the image
+        public GetCategoryDTO Category { get; set; } // Single CategoryDTO
         public List<GetTagDTO> Tags { get; set; } // List of TagDTOs
         public int LikesCount { get; set; }
         public List<GetCommentDTO> Comments { get; set; } // List of comments
@@ -28,7 +35,7 @@ namespace api.DTOs.Image
         public DateTime UploadDate { get; set; }
         public string ImageURL { get; set; }
         public string FullName { get; set; }
-        public List<GetCategoryDTO> Categories { get; set; } // List of CategoryDTOs
+        public GetCategoriesDTO Category { get; set; } // Single CategoryDTO
         public List<GetTagDTO> Tags { get; set; } // List of TagDTOs
         public int LikesCount { get; set; }
         public int CommentCount { get; set; }
@@ -43,7 +50,7 @@ namespace api.DTOs.Image
         public DateTime LastUpdated { get; set; }
         public string ImageURL { get; set; }
         public string FullName { get; set; }
-        public List<GetCategoryDTO> Categories { get; set; } // List of CategoryDTOs
+        public GetCategoryDTO Category { get; set; } // Single CategoryDTO
         public List<GetTagDTO> Tags { get; set; } // List of TagDTOs
         public int LikesCount { get; set; }
         public List<GetCommentDTO> Comments { get; set; } // List of comments
@@ -58,7 +65,7 @@ namespace api.DTOs.Image
         public DateTime LastUpdated { get; set; }
         public string ImageURL { get; set; }
         public string FullName { get; set; }
-        public List<GetCategoryDTO> Categories { get; set; } // List of CategoryDTOs
+        public GetCategoryDTO Category { get; set; } // Single CategoryDTO
         public List<GetTagDTO> Tags { get; set; } // List of TagDTOs
         public int LikesCount { get; set; }
         public List<GetCommentDTO> Comments { get; set; } // List of comments

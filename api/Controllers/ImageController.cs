@@ -19,12 +19,18 @@ namespace api.Controllers
         private readonly ApplicationDBContext _dbContext;
         private readonly IImageRepository _imageRepo;
         private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
 
-        public ImageController(IImageRepository imageRepo, ApplicationDBContext dbContext, UserManager<AppUser> userManager)
+        public ImageController(
+            IImageRepository imageRepo,
+            ApplicationDBContext dbContext,
+            UserManager<AppUser> userManager,
+            SignInManager<AppUser> signInManager)
         {
             _imageRepo = imageRepo;
             _dbContext = dbContext;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [HttpGet]
@@ -34,6 +40,42 @@ namespace api.Controllers
             var imageDTO = image.Select(x => x.ToGetImagesDTO());
             return Ok(imageDTO);
 
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> PostImage([FromBody] CreateImageDTO createImageDTO) // Create interface and repository for this route
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var userId = _userManager.GetUserId(User);
+            var user = await _userManager.FindByIdAsync(userId);
+
+            var newImage = new Image
+            {
+                UserID = user.Id,
+                ImageName = createImageDTO.ImageName,
+                ImageDescription = createImageDTO.ImageDescription,
+                UploadDate = DateTime.Now,
+                ImageURL = createImageDTO.ImageURL,
+                ImageDeleteURL = createImageDTO.ImageDeleteURL,
+                ImageDimensions = createImageDTO.ImageDimensions,
+                FileSize = createImageDTO.FileSize,
+                DateCaptured = createImageDTO.DateCaptured,
+                Make = createImageDTO.Make,
+                Model =  createImageDTO.Model,
+                LenseType = createImageDTO.LenseType,
+                CategoryID = createImageDTO.ImageCategory,
+                ImageTags = createImageDTO.ImageTags,
+            };
+
+            
+
+
+            return null;
         }
 
         [HttpGet("{id:int}")]

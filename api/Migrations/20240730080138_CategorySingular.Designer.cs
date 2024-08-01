@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
@@ -11,9 +12,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240730080138_CategorySingular")]
+    partial class CategorySingular
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +54,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2be0475a-215c-475e-8260-7dd23803f41f",
+                            Id = "05e972f3-2177-462d-a6cd-e8c7bb6d4cdb",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "cc4b36d0-ecb9-4f76-a5b7-91326af3dba2",
+                            Id = "cc28ede0-1b2f-435f-8540-a860c0b363fc",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -314,10 +317,6 @@ namespace api.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FileSize")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageDeleteURL")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
