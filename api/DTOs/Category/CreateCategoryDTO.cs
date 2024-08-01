@@ -7,6 +7,6 @@ namespace api.DTOs.Category
 {
     public class CreateCategoryDTO
     {
-        
+        public string CategoryName { get; set; }
     }
 }

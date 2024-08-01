@@ -25,12 +25,13 @@ namespace api.Mappers
                 UploadDate = imageModel.UploadDate,
                 LastUpdated = imageModel.LastUpdated,
                 ImageURL = imageModel.ImageURL,
+                ImageDeleteURL = imageModel.ImageDeleteURL,
                 ImageDimensions = imageModel.ImageDimensions,
                 FileSize = imageModel.FileSize,
                 Make = imageModel.Make,
                 Model = imageModel.Model,
                 LenseType = imageModel.LenseType,
-                Category = imageModel.Category?.ToGetCategoryDTO(), // Use a method to map the category
+                Category = imageModel.Category?.ToGetCategoriesDTO(),
                 Tags = imageModel.ImageTags?.Select(it => it.Tag.ToGetTagDTO()).ToList() ?? new List<GetTagDTO>(),
                 LikesCount = imageModel.Likes?.Count ?? 0,
                 Comments = imageModel.Comments?.Select(x => x.ToGetCommentDTO()).ToList() ?? new List<GetCommentDTO>()
@@ -55,7 +56,7 @@ namespace api.Mappers
                 ImageDescription = imageModel.ImageDescription,
                 UploadDate = imageModel.UploadDate,
                 ImageURL = imageModel.ImageURL,
-                Category = imageModel.Category?.ToGetCategoryDTO(), // Use a method to map the category
+                Category = imageModel.Category.ToGetCategoryDTO(), // Use a method to map the category
                 Tags = imageModel.ImageTags?.Select(it => it.Tag.ToGetTagDTO()).ToList() ?? new List<GetTagDTO>(),
                 LikesCount = imageModel.Likes?.Count ?? 0,
                 CommentCount = imageModel.Comments?.Count ?? 0,

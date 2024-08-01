@@ -13,6 +13,7 @@ function UploadSection(props) {
 	const [categories, setCategories] = useState([]);
 	const [image, setImage] = useState(null);
 	const [successErrors, setSuccessErrors] = useState(null);
+	const [payload, setPayload] = useState(null)
 	const [formData, setFormData] = useState({
 		imageName: '',
 		imageDescription: '',
@@ -30,9 +31,18 @@ function UploadSection(props) {
 
 	//	to track the state of form data
 	useEffect(() => {
-		console.log("Updated formData:", formData);
+		const updatedPayload = {
+			...formData,
+			imageTags: formData.imageTags.map(tag => tag.trim())
+		};
+		setPayload(updatedPayload);
 	}, [formData]);
-	
+
+	// This useEffect is to log the payload whenever it updates
+	useEffect(() => {
+		console.log("Payload: ", payload);
+	}, [payload]);
+
 	// retrieves and sets the dropdown options for the Categories
 	useEffect(() => {
 		const fetchCategories = async () => {
@@ -64,7 +74,7 @@ function UploadSection(props) {
 		const { name, value } = e.target;
 
 		setFormData((prevData) => {
-			// If the input field is for tags, split the value into an array
+			
 			if (name === "imageTags") {
 				const tagsArray = value.split(",");
 				return { ...prevData, [name]: tagsArray };
@@ -85,7 +95,7 @@ function UploadSection(props) {
 			dateCaptured: metadata["DateTime"]?.description || '',
 			fileSize: file.size || '',
 			lenseType: metadata["Lens"]?.description || '',
-			imageDimensions: `${metadata["Image Height"]?.description || ''} x ${metadata["Image Width"]?.description || ''}`,
+			imageDimensions: `${metadata["Image Height"]?.value || ''}x${metadata["Image Width"]?.value || ''}`,
 		}));
 		setImage(file);
 	};
@@ -108,9 +118,7 @@ function UploadSection(props) {
 					name: info.imageName, //info.imageName
 				},
 					{
-						headers: {
-							'Content-Type': 'multipart/form-data'
-						}
+						headers: {'Content-Type':'multipart/form-data'}
 					}
 				)
 
