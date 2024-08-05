@@ -10,7 +10,7 @@ namespace api.Interfaces
     {
         Task<Image?> GetImageByIdAsync(int id);
         Task<Image?> UpdateImageAsync(int id, UpdateImageDTO updateImageDTO, AppUser user);
-        Task<Image?> PostImageAsync(Image imageModel, AppUser user);
+        Task<Image?> PostImageAsync(CreateImageDTO createImageDTO, AppUser user);
         Task<Image?> DeleteAsync(int id, AppUser user);
         Task<List<Image>> GetAllImagesAsync(QueryObject filterQuery);
         Task<bool> ImageExit(int id);

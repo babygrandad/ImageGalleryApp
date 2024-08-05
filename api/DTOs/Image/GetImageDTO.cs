@@ -14,6 +14,7 @@ namespace api.DTOs.Image
         public DateTime LastUpdated { get; set; }
         public string ImageURL { get; set; }
         public string ImageDeleteURL { get; set; }
+        public string ImageThumbnailURL { get; set; }
         public string FullName { get; set; }
         public string ImageDimensions { get; set; } // Exif Data - Image dimensions
         public string FileSize { get; set; } // Exif Data - Image Size
@@ -32,6 +33,7 @@ namespace api.DTOs.Image
         public int ImageID { get; set; }
         public string ImageName { get; set; }
         public string ImageDescription { get; set; }
+        public string ImageThumbnailURL { get; set; }
         public DateTime UploadDate { get; set; }
         public string ImageURL { get; set; }
         public string FullName { get; set; }

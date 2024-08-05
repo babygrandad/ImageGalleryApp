@@ -19,6 +19,7 @@ function UploadSection(props) {
 		imageDescription: '',
 		imageTags: [],
 		imageURL: '',
+		imageThumbnailURL: '',
 		imageDeleteURL: '',
 		imageDimensions: '',
 		imageCategory: '',
@@ -129,6 +130,7 @@ function UploadSection(props) {
 						...prevData,
 						imageURL: imageData.data.data.display_url,
 						imageDeleteURL: imageData.data.data.delete_url,
+						imageThumbnailURL: imageData.data.data.thumb.url
 					}));
 				}
 			}
@@ -142,7 +144,7 @@ function UploadSection(props) {
 
 	const handleUploadToDB = async () =>{
 		try{
-			const response = await axios.post(`${BASE_URL}/account/login`, formData);
+			const response = await axios.post(`${BASE_URL}/image`, formData);
 		}
 		catch (err){
 			console.error(err)

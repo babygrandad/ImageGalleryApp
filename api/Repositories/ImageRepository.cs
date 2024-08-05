@@ -100,42 +100,70 @@ namespace api.Repositories
             return _dbContext.Images.AnyAsync(x => x.ImageID == id);
         }
 
-        public async Task<Image?> PostImageAsync(Image imageModel, AppUser user) // finsh the tags post then come back here
+        public async Task<Image?> PostImageAsync(CreateImageDTO createImageDTO, AppUser user) // finsh the tags post then come back here
         {
-            /*  Logic plan...
-
-                
-            
-            */
-
             var tagIds = new List<int>();
 
-            // Ensure all tags are unique and exist in the database
-        foreach (var tag in imageModel.ImageTags)
-        {
-            // Find the existing tag in the database
-            var existingTag = await _dbContext.Tags.FirstOrDefaultAsync(t => t.TagName == tag);
-
-            int tagId;
-
-            if (existingTag != null)
+            var image = new Image
             {
-                // Tag already exists, use existing ID
-                tagId = existingTag.Id;
-            }
-            else
+                UserID = user.Id,
+                ImageName = createImageDTO.ImageName,
+                ImageDescription = createImageDTO.ImageDescription,
+                ImageURL = createImageDTO.ImageURL,
+                ImageDeleteURL = createImageDTO.ImageDeleteURL,
+                ImageThumbnailURL = createImageDTO.ImageThumbnailURL,
+                ImageDimensions = createImageDTO.ImageDimensions,
+                CategoryID = createImageDTO.ImageCategory,
+                FileSize = createImageDTO.FileSize,
+                DateCaptured = createImageDTO.DateCaptured,
+                Make = createImageDTO.Make,
+                Model = createImageDTO.Model,
+                LenseType = createImageDTO.LenseType
+            };
+
+            _dbContext.Images.Add(image);
+
+            await _dbContext.SaveChangesAsync();
+
+            foreach (var tagName in createImageDTO.ImageTags)
             {
-                // Tag doesn't exist, add a new tag
-                var newTag = new Tag { TagName = tag };
-                _dbContext.Tags.Add(newTag);
-                await _dbContext.SaveChangesAsync();
-                tagId = newTag.TagID;
+                // Check if the tag already exists in the Tags table
+                var existingTag = await _dbContext.Tags
+                    .FirstOrDefaultAsync(t => t.TagName == tagName);
+
+                int tagId;
+
+                if (existingTag != null)
+                {
+                    // If the tag exists, use its ID
+                    tagId = existingTag.TagID;
+                }
+                else
+                {
+                    // If the tag doesn't exist, add it to the Tags table
+                    var newTag = new Tag { TagName = tagName };
+                    _dbContext.Tags.Add(newTag);
+                    await _dbContext.SaveChangesAsync(); // Save to get the new ID
+                    tagId = newTag.TagID;
+                }
+
+                tagIds.Add(tagId);
             }
 
-            tagIds.Add(tagId);
-        }
-            
-            return null;
+            foreach (var tagId in tagIds)
+            {
+                var imageTag = new ImageTag
+                {
+                    ImageID = image.ImageID, // This will have the assigned ID from SaveChangesAsync
+                    TagID = tagId
+                };
+                _dbContext.ImageTags.Add(imageTag);
+            }
+
+            // Save the ImageTag associations
+            await _dbContext.SaveChangesAsync();
+
+            return image;
         }
 
         public async Task<Image?> UpdateImageAsync(int id, UpdateImageDTO updateImageDTO, AppUser user)

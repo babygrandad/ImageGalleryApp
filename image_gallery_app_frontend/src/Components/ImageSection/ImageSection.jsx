@@ -1,57 +1,38 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ImageSectionStyle from './ImageSection.module.css'
 import SearchArea from '../SubComponents/SearchArea'
 import GridImage from './GridImage'
 import GridPagination from '../SubComponents/GridPagination'
+import axios from 'axios'
+import BASE_URL from '../../config';
 
 function ImageSection() {
+	const [imageData, setImageData] = useState([])
+
+	useEffect(() => {
+		const fetchImages = async () => {
+			try {
+				const response = await axios.get(`${BASE_URL}/image`);
+				setImageData(response.data);
+			} catch (error) {
+				console.error('Error fetching image data:', error);
+			}
+		}
+
+		fetchImages();
+	}, []);
+
+
+
 	return (
 		<div className={ImageSectionStyle.ImageSection}>
-				<SearchArea />
-				<div className={ImageSectionStyle.imagesWrapper}>
-					<GridImage
-						imageID="image1"
-						imageURL="https://picsum.photos/id/237/300/200"
-						imageName="Dog"
-						imageDescription="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel voluptatem nam repellat, aliquam veniam, unde sequi corporis ducimus quidem voluptate quisquam accusamus sit nesciunt. Sequi veritatis iste ut maiores error?"
-					/>
-
-					<GridImage
-						imageID="image2"
-						imageURL="images/palace.jpg"
-						imageName="Palace"
-						imageDescription="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel voluptatem nam repellat, aliquam veniam, unde sequi corporis ducimus quidem voluptate quisquam accusamus sit nesciunt. Sequi veritatis iste ut maiores error?"
-					/>
-
-					<GridImage
-						imageID="image3"
-						imageURL="https://picsum.photos/id/217/300/200"
-						imageName="Dog"
-						imageDescription="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel voluptatem nam repellat, aliquam veniam, unde sequi corporis ducimus quidem voluptate quisquam accusamus sit nesciunt. Sequi veritatis iste ut maiores error?"
-					/>
-
-					<GridImage
-						imageID="image4"
-						imageURL="https://picsum.photos/id/137/300/200"
-						imageName="Dog"
-						imageDescription="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel voluptatem nam repellat, aliquam veniam, unde sequi corporis ducimus quidem voluptate quisquam accusamus sit nesciunt. Sequi veritatis iste ut maiores error?"
-					/>
-
-					<GridImage
-						imageID="image5"
-						imageURL="https://picsum.photos/id/235/300/200"
-						imageName="Dog"
-						imageDescription="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel voluptatem nam repellat, aliquam veniam, unde sequi corporis ducimus quidem voluptate quisquam accusamus sit nesciunt. Sequi veritatis iste ut maiores error?"
-					/>
-
-					<GridImage
-						imageID="image6"
-						imageURL="https://picsum.photos/id/37/300/200"
-						imageName="Dog"
-						imageDescription="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel voluptatem nam repellat, aliquam veniam, unde sequi corporis ducimus quidem voluptate quisquam accusamus sit nesciunt. Sequi veritatis iste ut maiores error?"
-					/>
-				</div>
-				<GridPagination />
+			<SearchArea />
+			<div className={ImageSectionStyle.imagesWrapper}>
+				{imageData.map(image => (
+					<GridImage key={image.imageID} {...image} />
+				))}
+			</div>
+			<GridPagination />
 		</div>
 	)
 }

@@ -46,36 +46,18 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> PostImage([FromBody] CreateImageDTO createImageDTO) // Create interface and repository for this route
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var userId = _userManager.GetUserId(User);
-            var user = await _userManager.FindByIdAsync(userId);
-
-            var newImage = new Image
-            {
-                UserID = user.Id,
-                ImageName = createImageDTO.ImageName,
-                ImageDescription = createImageDTO.ImageDescription,
-                UploadDate = DateTime.Now,
-                ImageURL = createImageDTO.ImageURL,
-                ImageDeleteURL = createImageDTO.ImageDeleteURL,
-                ImageDimensions = createImageDTO.ImageDimensions,
-                FileSize = createImageDTO.FileSize,
-                DateCaptured = createImageDTO.DateCaptured,
-                Make = createImageDTO.Make,
-                Model =  createImageDTO.Model,
-                LenseType = createImageDTO.LenseType,
-                CategoryID = createImageDTO.ImageCategory,
-                ImageTags = createImageDTO.ImageTags,
-            };
-
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             
+            var userEmail = User.GetUserEmail();
+            var user = await _userManager.FindByEmailAsync(userEmail);
 
+            if (user == null) return Unauthorized ("user not found");
 
-            return null;
+            var imageUplad = await _imageRepo.PostImageAsync(createImageDTO, user);
+
+            if (imageUplad == null) return BadRequest("Failed to upload image. Please try again");
+
+            return Ok("Image successfully uploaded.");
         }
 
         [HttpGet("{id:int}")]
