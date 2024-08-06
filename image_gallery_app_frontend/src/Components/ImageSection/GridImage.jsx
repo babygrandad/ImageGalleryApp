@@ -8,7 +8,7 @@ function GridImage({ imageID, imageName, imageDescription, imageURL, imageThumbn
 		data-tags={tags && tags.length > 0 ? tags.map(tag => tag.tagName).join(',') : ''}
 		
 		>
-			<img id={imageID} src={imageThumbnailURL} alt={imageName} className={ImageSectionStyle.image} />
+			<img id={imageID} src={imageURL} alt={imageName} className={ImageSectionStyle.image} />
 			<div className={ImageSectionStyle.imageDetails}>
 				<h5 className={ImageSectionStyle.imageName}>{imageName}</h5>
 				<p className={ImageSectionStyle.imageDescription}>{imageDescription}</p>

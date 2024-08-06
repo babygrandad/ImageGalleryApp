@@ -36,9 +36,20 @@ namespace api.Controllers
         [HttpGet]
         public async Task<IActionResult> Getall([FromQuery] QueryObject filterQuery)
         {
-            var image = await _imageRepo.GetAllImagesAsync(filterQuery);
-            var imageDTO = image.Select(x => x.ToGetImagesDTO());
-            return Ok(imageDTO);
+            var images = await _imageRepo.GetAllImagesAsync(filterQuery);
+            var totalCount = await _imageRepo.GetTotalImagesCountAsync(filterQuery);
+
+            var imageDTO = images.Select(x => x.ToGetImagesDTO());
+
+            var response = new
+            {
+                TotalCount = totalCount,
+                filterQuery.PageNumber,
+                filterQuery.PageSize,
+                Data = imageDTO,
+            };
+
+            return Ok(response);
 
         }
 

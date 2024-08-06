@@ -1,7 +1,41 @@
-.grid_pagination_container{
+/*.grid_pagination_container{
 	background-color: aquamarine;
 	margin-bottom: var(--spacing-lg);
 	text-align: center;
 	margin-top: auto;
 	margin-bottom: 0;
+}*/
+
+/* GridPagination.module.css */
+
+.grid_pagination_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.grid_pagination_container button {
+    margin: 0 5px;
+	height:24px;
+	width: 24px;
+    border: none;
+	border-radius: 50px;
+    background-color: white;
+    /*cursor: pointer;*/
+}
+
+.grid_pagination_container button.active {
+    background-color: #007bff;
+    color: white;
+    cursor: default;
+}
+
+.grid_pagination_container button[disabled] {
+    cursor: not-allowed;
+    /*background-color: #e0e0e0;*/
+}
+
+.grid_pagination_container button:not(.active):not([disabled]):hover {
+    background-color: #d0d0d0;
 }

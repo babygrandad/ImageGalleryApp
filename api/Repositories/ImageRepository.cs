@@ -45,6 +45,7 @@ namespace api.Repositories
                 .Include(i => i.ImageTags)
                     .ThenInclude(it => it.Tag)
                 .Include(i => i.Category) // Directly include Category
+                .AsSplitQuery()  // Apply query splitting here
                 .AsQueryable();
 
             // Filter by image name if provided
@@ -76,10 +77,45 @@ namespace api.Repositories
                 }
                 // Add additional sorting options as needed
             }
+            else
+            {
+                // Default sorting to ensure correct Skip and Take functionality
+                images = images.OrderByDescending(x => x.UploadDate);
+            }
 
             var skipNumber = (filterQuery.PageNumber - 1) * filterQuery.PageSize;
 
             return await images.Skip(skipNumber).Take(filterQuery.PageSize).ToListAsync();
+        }
+
+        public async Task<int> GetTotalImagesCountAsync(QueryObject filterQuery)
+        {
+            var images = _dbContext.Images
+                .Include(c => c.AppUser)
+                .Include(x => x.Comments)
+                .Include(i => i.ImageTags)
+                    .ThenInclude(it => it.Tag)
+                .Include(i => i.Category)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(filterQuery.Name))
+            {
+                images = images.Where(x => x.ImageName.Contains(filterQuery.Name));
+            }
+
+            if (!string.IsNullOrWhiteSpace(filterQuery.Tag))
+            {
+                var tagLower = filterQuery.Tag.ToLower();
+                images = images.Where(x => x.ImageTags.Any(tag => tag.Tag.TagName.ToLower().Contains(tagLower)));
+            }
+
+            if (!string.IsNullOrWhiteSpace(filterQuery.Category))
+            {
+                var categoryLower = filterQuery.Category.ToLower();
+                images = images.Where(x => x.Category.CategoryName.ToLower().Contains(categoryLower));
+            }
+
+            return await images.CountAsync();
         }
 
         public async Task<Image?> GetImageByIdAsync(int id)
