@@ -1,7 +1,7 @@
 import React from 'react'
 import ImageSectionStyle from './ImageSection.module.css'
 
-function GridImage({ imageID, imageName, imageDescription, imageURL, imageThumbnailURL,  category, tags }) {
+function GridImage({ imageID, imageName, imageDescription, imageURL, category, tags }) {
 	return (
 		<div className={ImageSectionStyle.imageContainer}
 		data-category={category.categoryName}

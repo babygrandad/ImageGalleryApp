@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ImageUploaderStyle from './ImageUploader.module.css';
 import * as ExifReader from 'exifreader';
 
-function ImageUploader({ onMetadata }) {
+function ImageUploader({ onMetadata, resetState  }) {
 	const [errorMessage, seterrorMessage] = useState({});
 	const [file, setFile] = useState(null);
 
@@ -32,6 +32,12 @@ function ImageUploader({ onMetadata }) {
 	const handleDragOver = (event) => {
 		event.preventDefault();
 	};
+
+	useEffect(() => {
+		if (resetState) {
+			setFile(null);
+		}
+	  }, [resetState]);
 
 	const handleDrop = (event) => {
 		event.preventDefault();

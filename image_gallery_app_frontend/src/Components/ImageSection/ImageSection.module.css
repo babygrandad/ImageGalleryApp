@@ -23,7 +23,6 @@
 	/*justify-content: space-between;*/
 	gap: var(--spacing-lg);
 	max-width: 100%;
-	background-color: pink;
 }
 
 .imageContainer{
