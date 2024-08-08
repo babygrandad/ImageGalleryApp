@@ -11,7 +11,7 @@ namespace api.DTOs.Image
         public string ImageName { get; set; }
         public string ImageDescription { get; set; }
         public DateTime UploadDate { get; set; }
-        public DateTime LastUpdated { get; set; }
+        public DateTime? LastUpdated { get; set; }
         public string ImageURL { get; set; }
         public string ImageDeleteURL { get; set; }
         public string ImageThumbnailURL { get; set; }

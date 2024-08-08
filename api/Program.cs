@@ -94,10 +94,11 @@ builder.Services.AddAuthentication(options =>{
 
 //dependency injection for the Interfaces, Services and Repositories
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddScoped<IPasswordHistoryService, PasswordHistoryService>();
 
 
 var app = builder.Build();

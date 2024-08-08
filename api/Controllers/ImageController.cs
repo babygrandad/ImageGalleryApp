@@ -72,8 +72,6 @@ namespace api.Controllers
         }
 
         [HttpGet("{id:int}")]
-        [ProducesResponseType(typeof(GetImageDTO), 200)]
-        [ProducesResponseType(404)]
         public async Task<IActionResult> GetImage([FromRoute] int id)
         {
             if (!ModelState.IsValid)

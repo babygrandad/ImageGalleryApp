@@ -121,11 +121,13 @@ namespace api.Repositories
         public async Task<Image?> GetImageByIdAsync(int id)
         {
             var image = await _dbContext.Images
+                .Include(c => c.AppUser)
                 .Include(i => i.Comments)
                     .ThenInclude(c => c.AppUser) // Include AppUser for Comments
                 .Include(i => i.ImageTags)
                     .ThenInclude(it => it.Tag)
                 .Include(i => i.Category) // Directly include Category
+                .AsSplitQuery() // Use query splitting
                 .FirstOrDefaultAsync(i => i.ImageID == id);
 
             return image;

@@ -18,6 +18,7 @@ namespace api.Data
         public DbSet<ImageTag> ImageTags { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<PasswordHistory> PasswordHistories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,6 +28,13 @@ namespace api.Data
             modelBuilder.Entity<AppUser>()
                 .Property(u => u.Id)
                 .HasColumnName("UserID");
+
+            // This table keeps history records of the user's passwords
+            modelBuilder.Entity<PasswordHistory>()
+                .HasOne(p => p.AppUser)
+                .WithMany(u => u.PasswordHistories)
+                .HasForeignKey(p => p.UserID);
+
 
             // Image relationships
             modelBuilder.Entity<Image>()

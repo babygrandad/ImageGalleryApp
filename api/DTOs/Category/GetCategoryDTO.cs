@@ -8,7 +8,7 @@ namespace api.DTOs.Category
         public int CategoryID { get; set; }
     }
 
-        public class GetCategoriesDTO
+    public class GetCategoriesDTO
     {
         public string CategoryName { get; set; }
     }
