@@ -12,7 +12,7 @@ function SearchArea() {
 					</span>
 					<input className={SearchAreaStyle.searchBar} type="search" name="" id="" placeholder='Search for...' />
 				</div>
-				<button className={SearchAreaStyle.searchButton} type="button"><span class="material-symbols-outlined">filter_list</span>Filters</button>
+				<button className={SearchAreaStyle.searchButton} type="button"><span className="material-symbols-outlined">filter_list</span>Filters</button>
 			</form>
 
 		</div>

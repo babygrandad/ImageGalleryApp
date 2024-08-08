@@ -23,17 +23,21 @@ namespace api.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ILogger<AccountController> _logger;
 
+        private readonly IPasswordHistoryService _passwordHistoryService;
+
         public AccountController(
             UserManager<AppUser> userManager,
             ITokenService tokenService,
             SignInManager<AppUser> signInManager,
             IEmailService emailService,
+            IPasswordHistoryService passwordHistoryService,
             ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _signInManager = signInManager;
             _emailService = emailService;
+            _passwordHistoryService = passwordHistoryService;
             _logger = logger;
         }
 
@@ -66,6 +70,10 @@ namespace api.Controllers
 
                 if (createdUser.Succeeded)
                 {
+                    // Save the password history
+                    var passwordHash = _userManager.PasswordHasher.HashPassword(appUser, registerDTO.Password);
+                    await _passwordHistoryService.AddPasswordAsync(appUser.Id, passwordHash);
+
                     var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
                     var confirmationLink = Url.Action("ConfirmEmail",
                                                       "Account",
@@ -235,14 +243,34 @@ namespace api.Controllers
                     return BadRequest("Invalid user.");
                 }
 
+                // Check if the new password matches the current active password
+                var passwordVerificationResult = _userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, resetPasswordDTO.NewPassword);
+                if (passwordVerificationResult == PasswordVerificationResult.Success)
+                {
+                     return BadRequest(new { errors = new[] { "You cannot reuse your current password." } });
+                }
+
+                var reusePeriod = TimeSpan.FromDays(180); // 6 months
+
+                // Check if the password has been reused in the history
+                if (await _passwordHistoryService.IsPasswordReusedAsync(user.Id, resetPasswordDTO.NewPassword, reusePeriod))
+                {
+                    return BadRequest(new { errors = new[] { "You cannot reuse a previous password." } });
+                }
+
                 var result = await _userManager.ResetPasswordAsync(user, resetPasswordDTO.Token, resetPasswordDTO.NewPassword);
                 if (!result.Succeeded)
                 {
                     var errors = result.Errors.Select(e => e.Description);
                     return BadRequest(new { Errors = errors });
                 }
+
+                // Save the new password hash in password history
+                var passwordHash = _userManager.PasswordHasher.HashPassword(user, resetPasswordDTO.NewPassword);
+                await _passwordHistoryService.AddPasswordAsync(user.Id, passwordHash);
+
                 await _userManager.ResetAccessFailedCountAsync(user);
-                return Ok("Password has been reset successfully. You can now log in");
+                return Ok("Password has been reset successfully. You can now log in.");
             }
             catch (Exception ex)
             {
@@ -250,7 +278,6 @@ namespace api.Controllers
                 return StatusCode(500, "An error occurred while processing your request. Please try again later.");
             }
         }
-
 
         // email verification route
         [HttpGet("ConfirmEmail")]

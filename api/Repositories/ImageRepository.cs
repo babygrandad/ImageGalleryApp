@@ -45,6 +45,7 @@ namespace api.Repositories
                 .Include(i => i.ImageTags)
                     .ThenInclude(it => it.Tag)
                 .Include(i => i.Category) // Directly include Category
+                .AsSplitQuery()  // Apply query splitting here
                 .AsQueryable();
 
             // Filter by image name if provided
@@ -76,20 +77,57 @@ namespace api.Repositories
                 }
                 // Add additional sorting options as needed
             }
+            else
+            {
+                // Default sorting to ensure correct Skip and Take functionality
+                images = images.OrderByDescending(x => x.UploadDate);
+            }
 
             var skipNumber = (filterQuery.PageNumber - 1) * filterQuery.PageSize;
 
             return await images.Skip(skipNumber).Take(filterQuery.PageSize).ToListAsync();
         }
 
+        public async Task<int> GetTotalImagesCountAsync(QueryObject filterQuery)
+        {
+            var images = _dbContext.Images
+                .Include(c => c.AppUser)
+                .Include(x => x.Comments)
+                .Include(i => i.ImageTags)
+                    .ThenInclude(it => it.Tag)
+                .Include(i => i.Category)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(filterQuery.Name))
+            {
+                images = images.Where(x => x.ImageName.Contains(filterQuery.Name));
+            }
+
+            if (!string.IsNullOrWhiteSpace(filterQuery.Tag))
+            {
+                var tagLower = filterQuery.Tag.ToLower();
+                images = images.Where(x => x.ImageTags.Any(tag => tag.Tag.TagName.ToLower().Contains(tagLower)));
+            }
+
+            if (!string.IsNullOrWhiteSpace(filterQuery.Category))
+            {
+                var categoryLower = filterQuery.Category.ToLower();
+                images = images.Where(x => x.Category.CategoryName.ToLower().Contains(categoryLower));
+            }
+
+            return await images.CountAsync();
+        }
+
         public async Task<Image?> GetImageByIdAsync(int id)
         {
             var image = await _dbContext.Images
+                .Include(c => c.AppUser)
                 .Include(i => i.Comments)
                     .ThenInclude(c => c.AppUser) // Include AppUser for Comments
                 .Include(i => i.ImageTags)
                     .ThenInclude(it => it.Tag)
                 .Include(i => i.Category) // Directly include Category
+                .AsSplitQuery() // Use query splitting
                 .FirstOrDefaultAsync(i => i.ImageID == id);
 
             return image;
@@ -100,42 +138,70 @@ namespace api.Repositories
             return _dbContext.Images.AnyAsync(x => x.ImageID == id);
         }
 
-        public async Task<Image?> PostImageAsync(Image imageModel, AppUser user) // finsh the tags post then come back here
+        public async Task<Image?> PostImageAsync(CreateImageDTO createImageDTO, AppUser user) // finsh the tags post then come back here
         {
-            /*  Logic plan...
-
-                
-            
-            */
-
             var tagIds = new List<int>();
 
-            // Ensure all tags are unique and exist in the database
-        foreach (var tag in imageModel.ImageTags)
-        {
-            // Find the existing tag in the database
-            var existingTag = await _dbContext.Tags.FirstOrDefaultAsync(t => t.TagName == tag);
-
-            int tagId;
-
-            if (existingTag != null)
+            var image = new Image
             {
-                // Tag already exists, use existing ID
-                tagId = existingTag.Id;
-            }
-            else
+                UserID = user.Id,
+                ImageName = createImageDTO.ImageName,
+                ImageDescription = createImageDTO.ImageDescription,
+                ImageURL = createImageDTO.ImageURL,
+                ImageDeleteURL = createImageDTO.ImageDeleteURL,
+                ImageThumbnailURL = createImageDTO.ImageThumbnailURL,
+                ImageDimensions = createImageDTO.ImageDimensions,
+                CategoryID = createImageDTO.ImageCategory,
+                FileSize = createImageDTO.FileSize,
+                DateCaptured = createImageDTO.DateCaptured,
+                Make = createImageDTO.Make,
+                Model = createImageDTO.Model,
+                LenseType = createImageDTO.LenseType
+            };
+
+            _dbContext.Images.Add(image);
+
+            await _dbContext.SaveChangesAsync();
+
+            foreach (var tagName in createImageDTO.ImageTags)
             {
-                // Tag doesn't exist, add a new tag
-                var newTag = new Tag { TagName = tag };
-                _dbContext.Tags.Add(newTag);
-                await _dbContext.SaveChangesAsync();
-                tagId = newTag.TagID;
+                // Check if the tag already exists in the Tags table
+                var existingTag = await _dbContext.Tags
+                    .FirstOrDefaultAsync(t => t.TagName == tagName);
+
+                int tagId;
+
+                if (existingTag != null)
+                {
+                    // If the tag exists, use its ID
+                    tagId = existingTag.TagID;
+                }
+                else
+                {
+                    // If the tag doesn't exist, add it to the Tags table
+                    var newTag = new Tag { TagName = tagName };
+                    _dbContext.Tags.Add(newTag);
+                    await _dbContext.SaveChangesAsync(); // Save to get the new ID
+                    tagId = newTag.TagID;
+                }
+
+                tagIds.Add(tagId);
             }
 
-            tagIds.Add(tagId);
-        }
-            
-            return null;
+            foreach (var tagId in tagIds)
+            {
+                var imageTag = new ImageTag
+                {
+                    ImageID = image.ImageID, // This will have the assigned ID from SaveChangesAsync
+                    TagID = tagId
+                };
+                _dbContext.ImageTags.Add(imageTag);
+            }
+
+            // Save the ImageTag associations
+            await _dbContext.SaveChangesAsync();
+
+            return image;
         }
 
         public async Task<Image?> UpdateImageAsync(int id, UpdateImageDTO updateImageDTO, AppUser user)

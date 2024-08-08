@@ -36,9 +36,20 @@ namespace api.Controllers
         [HttpGet]
         public async Task<IActionResult> Getall([FromQuery] QueryObject filterQuery)
         {
-            var image = await _imageRepo.GetAllImagesAsync(filterQuery);
-            var imageDTO = image.Select(x => x.ToGetImagesDTO());
-            return Ok(imageDTO);
+            var images = await _imageRepo.GetAllImagesAsync(filterQuery);
+            var totalCount = await _imageRepo.GetTotalImagesCountAsync(filterQuery);
+
+            var imageDTO = images.Select(x => x.ToGetImagesDTO());
+
+            var response = new
+            {
+                TotalCount = totalCount,
+                filterQuery.PageNumber,
+                filterQuery.PageSize,
+                Data = imageDTO,
+            };
+
+            return Ok(response);
 
         }
 
@@ -46,41 +57,21 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> PostImage([FromBody] CreateImageDTO createImageDTO) // Create interface and repository for this route
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var userId = _userManager.GetUserId(User);
-            var user = await _userManager.FindByIdAsync(userId);
-
-            var newImage = new Image
-            {
-                UserID = user.Id,
-                ImageName = createImageDTO.ImageName,
-                ImageDescription = createImageDTO.ImageDescription,
-                UploadDate = DateTime.Now,
-                ImageURL = createImageDTO.ImageURL,
-                ImageDeleteURL = createImageDTO.ImageDeleteURL,
-                ImageDimensions = createImageDTO.ImageDimensions,
-                FileSize = createImageDTO.FileSize,
-                DateCaptured = createImageDTO.DateCaptured,
-                Make = createImageDTO.Make,
-                Model =  createImageDTO.Model,
-                LenseType = createImageDTO.LenseType,
-                CategoryID = createImageDTO.ImageCategory,
-                ImageTags = createImageDTO.ImageTags,
-            };
-
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             
+            var userEmail = User.GetUserEmail();
+            var user = await _userManager.FindByEmailAsync(userEmail);
 
+            if (user == null) return Unauthorized ("user not found");
 
-            return null;
+            var imageUplad = await _imageRepo.PostImageAsync(createImageDTO, user);
+
+            if (imageUplad == null) return BadRequest("Failed to upload image. Please try again");
+
+            return Ok("Image successfully uploaded.");
         }
 
         [HttpGet("{id:int}")]
-        [ProducesResponseType(typeof(GetImageDTO), 200)]
-        [ProducesResponseType(404)]
         public async Task<IActionResult> GetImage([FromRoute] int id)
         {
             if (!ModelState.IsValid)

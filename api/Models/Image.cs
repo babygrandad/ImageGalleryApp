@@ -15,6 +15,7 @@ namespace api.Models
         public DateTime? LastUpdated { get; set; }
         public string ImageURL { get; set; }
         public string ImageDeleteURL { get; set; }
+        public string ImageThumbnailURL { get; set; }
 
         public string ImageDimensions { get; set; } // Exif Data - Image dimensions
         public string FileSize { get; set; } // Exif Data - Image Size

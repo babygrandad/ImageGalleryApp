@@ -20,7 +20,7 @@
 	display: grid;
 	grid-auto-columns: minmax(0, 1fr);
 	grid-template-columns: repeat(3, auto);
-	justify-content: space-between;
+	/*justify-content: space-between;*/
 	gap: var(--spacing-lg);
 	max-width: 100%;
 }

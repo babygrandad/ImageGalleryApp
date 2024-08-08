@@ -9,7 +9,8 @@ namespace api.Mappers
 {
     public static class CategoryMapper
     {
-        public static GetCategoryDTO ToGetCategoriesDTO(this Category categoryModel) 
+        // Method to map Category to GetCategoryDTO (includes CategoryID)
+        public static GetCategoryDTO ToGetCategoryDTO(this Category categoryModel) 
         {
             if (categoryModel == null)
             {
@@ -23,7 +24,8 @@ namespace api.Mappers
             };
         }
 
-        public static GetCategoriesDTO ToGetCategoryDTO(this Category categoryModel)
+        // Method to map Category to GetCategoriesDTO (only includes CategoryName)
+        public static GetCategoriesDTO ToGetCategoriesDTO(this Category categoryModel)
         {
             if (categoryModel == null)
             {
@@ -36,13 +38,12 @@ namespace api.Mappers
             };
         }
     
-        public static Category ToCategoryFromCreate (this CreateCategoryDTO createCategoryDTO )
+        public static Category ToCategoryFromCreate(this CreateCategoryDTO createCategoryDTO)
         {
             return new Category
             {
                 CategoryName = createCategoryDTO.CategoryName,
             };
         }   
-
     }
 }

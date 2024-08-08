@@ -22,6 +22,9 @@ namespace api.DTOs.Image
         public string ImageDeleteURL { get; set; }
 
         [Required]
+        public string ImageThumbnailURL { get; set; }
+
+        [Required]
         public string ImageDimensions { get; set; }
 
         [Required]
@@ -37,6 +40,6 @@ namespace api.DTOs.Image
         public string? LenseType { get; set; }
 
         [Required]
-        public List<ImageTag> ImageTags { get; set; } = new List<ImageTag>();
+        public List<string> ImageTags { get; set; } = new List<string>(); // Change to List<string>
     }
 }

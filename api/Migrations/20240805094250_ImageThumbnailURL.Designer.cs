@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
@@ -11,9 +12,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240805094250_ImageThumbnailURL")]
+    partial class ImageThumbnailURL
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +54,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "35f5fa39-c161-4c9f-bef3-e251c472373d",
+                            Id = "9ba4cc19-8ede-4c37-873d-0f7ee1024e72",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "b299378c-58e4-4c2d-af45-e5591fb400ff",
+                            Id = "51e9ec3a-c8b9-41fa-a609-3c55f31a62ee",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -419,32 +422,6 @@ namespace api.Migrations
                     b.ToTable("Likes");
                 });
 
-            modelBuilder.Entity("api.Models.PasswordHistory", b =>
-                {
-                    b.Property<int>("PasswordID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PasswordID"));
-
-                    b.Property<DateTime>("ChangedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("HashedPassword")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("PasswordID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("PasswordHistories");
-                });
-
             modelBuilder.Entity("api.Models.Tag", b =>
                 {
                     b.Property<int>("TagID")
@@ -592,17 +569,6 @@ namespace api.Migrations
                     b.Navigation("Image");
                 });
 
-            modelBuilder.Entity("api.Models.PasswordHistory", b =>
-                {
-                    b.HasOne("api.Models.AppUser", "AppUser")
-                        .WithMany("PasswordHistories")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-                });
-
             modelBuilder.Entity("api.Models.AppUser", b =>
                 {
                     b.Navigation("Comments");
@@ -610,8 +576,6 @@ namespace api.Migrations
                     b.Navigation("Images");
 
                     b.Navigation("Likes");
-
-                    b.Navigation("PasswordHistories");
                 });
 
             modelBuilder.Entity("api.Models.Category", b =>
