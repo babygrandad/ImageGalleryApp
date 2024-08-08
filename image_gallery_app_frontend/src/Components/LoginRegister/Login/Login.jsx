@@ -73,7 +73,7 @@ function Login() {
         setUser(user);
         
         try {
-          navigate('/feed'); // Use navigate instead of redirect
+          navigate('/home'); // Use navigate instead of redirect
           console.log('i ran');
         } catch (ex) {
           console.log(ex.message);

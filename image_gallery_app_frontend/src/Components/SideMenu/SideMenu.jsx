@@ -6,7 +6,7 @@ function SideMenu() {
 	return (
 		<aside className={SideMenuStyles.sideMenu}>
 			<div className={SideMenuStyles.logoContainer}>
-				<a href="/feed" className={`${SideMenuStyles.topLogoLink} ${SideMenuStyles.sideMenuLinks}`}>
+				<a href="/home" className={`${SideMenuStyles.topLogoLink} ${SideMenuStyles.sideMenuLinks}`}>
 				<img src="https://i.ibb.co/3Mr2PNB/Logo-1-white.png" alt="Logo-1-white" className={`${SideMenuStyles.topLogoImage}`}/>
 				</a>
 			</div>

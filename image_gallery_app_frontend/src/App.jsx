@@ -7,6 +7,7 @@ import ForgotPassword from './Components/LoginRegister/ForgotPassword/ForgotPass
 import ResetPassword from './Components/LoginRegister/ResetPassword/ResetPassword';
 import ImageSection from './Components/ImageSection/ImageSection';
 import UploadSection from './Components/UploadSection/UploadSection';
+import ImagePage from './Components/ImagePage/ImagePage';
 
 
 function App() {
@@ -27,13 +28,17 @@ const router = createBrowserRouter([
     element: <Home />,
     children:[
       {
-        path:"feed",
+        path:"home",
         element: <ImageSection />
       },
       {
         path:"upload",
         element: <UploadSection />
       },
+      {
+        path:"post",
+        element: <ImagePage />
+      }
     ]
   },
   {
