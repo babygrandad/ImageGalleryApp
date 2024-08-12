@@ -51,6 +51,7 @@
 
 .sideMenuListItem > a{
 	padding: var(--spacing-lg) var(--spacing-xs);
+	color: inherit;
 }
 
 .sideMenuLinks {
