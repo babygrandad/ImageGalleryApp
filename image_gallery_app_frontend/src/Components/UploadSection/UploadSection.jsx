@@ -9,44 +9,33 @@ import { getUser } from '../../utils/auth';
 
 function UploadSection(props) {
 
-	const initialState = {
-		formData: {
-		imageName: '',
-        imageDescription: '',
-        imageTags: [],
-        imageURL: '',
-        imageThumbnailURL: '',
-        imageDeleteURL: '',
-        imageDimensions: '',
-        imageCategory: '',
-        fileSize: '',
-        dateCaptured: null,
-        make: null,
-        model: null,
-        lenseType: null,
-		},
-	}
+    const initialState = {
+        formData: {
+            imageName: '',
+            imageDescription: '',
+            imageTags: [],
+            imageURL: '',
+            imageThumbnailURL: '',
+            imageDeleteURL: '',
+            imageDimensions: '',
+            imageCategory: '',
+            fileSize: '',
+            dateCaptured: null,
+            make: null,
+            model: null,
+            lenseType: null,
+        },
+    }
 
     const [serverResponse, setServerResponse] = useState(null);
     const [categories, setCategories] = useState([]);
     const [image, setImage] = useState(null);
     const [successErrors, setSuccessErrors] = useState(null);
-    const [payload, setPayload] = useState(null);
+    const [payload, setPayload] = useState(initialState.formData);
     const [formData, setFormData] = useState(initialState.formData);
-	const [reset, setReset] = useState(false);
+    const [reset, setReset] = useState(false);
+    const [tagInput, setTagInput] = useState('');
     const user = getUser();
-
-    useEffect(() => {
-        const updatedPayload = {
-            ...formData,
-            imageTags: formData.imageTags.map(tag => tag.trim())
-        };
-        setPayload(updatedPayload);
-    }, [formData]);
-
-    useEffect(() => {
-        console.log("Payload: ", payload);
-    }, [payload]);
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -59,6 +48,14 @@ function UploadSection(props) {
         };
         fetchCategories();
     }, []);
+
+    useEffect(() =>{
+        setPayload(formData);
+    }, [formData])
+
+    useEffect(() =>{
+        console.log("Payload: ",payload)
+    }, [payload])
 
     const capitalizeFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -75,12 +72,32 @@ function UploadSection(props) {
         const { name, value } = e.target;
 
         setFormData((prevData) => {
-            if (name === "imageTags") {
-                const tagsArray = value.split(",");
-                return { ...prevData, [name]: tagsArray };
-            }
             return { ...prevData, [name]: value };
         });
+    };
+
+    const handleTagInputChange = (e) => {
+        setTagInput(e.target.value);
+    };
+
+    const handleTagInputKeyDown = (e) => {
+        if (e.key !== 'Enter' && e.key !== ',') return;
+    
+        e.preventDefault(); // Prevents form submission
+        const value = tagInput.trim();
+    
+        if (!value || formData.imageTags.includes(value)) return;
+    
+        const updatedTags = [...formData.imageTags, value];
+        setFormData((prevData) => ({ ...prevData, imageTags: updatedTags }));
+        setTagInput(''); // Clear input
+    };
+    
+    const removeTag = (indexToRemove) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            imageTags: prevData.imageTags.filter((_, index) => index !== indexToRemove)
+        }));
     };
 
     const handleMetadata = ({ metadata, file }) => {
@@ -104,11 +121,12 @@ function UploadSection(props) {
             return;
         } else {
             try {
-                const imageData = await axios.post(IMGBB_URL, {
-                    key: IMGBB_KEY,
-                    image: image,
-                    name: info.imageName,
-                }, {
+                const form = new FormData();
+                form.append('key', IMGBB_KEY);
+                form.append('image', image);
+                form.append('name', info.imageName);
+
+                const imageData = await axios.post(IMGBB_URL, form, {
                     headers: { 'Content-Type': 'multipart/form-data' }
                 });
 
@@ -136,22 +154,20 @@ function UploadSection(props) {
         axios.get(formData.imageDeleteURL);
     };
 
-    const handleUploadToDB = async (updatedFormData) => {
+    const handleUploadToDB = async (payload) => {
         try {
-            const response = await axios.post(`${BASE_URL}/image`, updatedFormData, {
+            const response = await axios.post(`${BASE_URL}/image`, payload, {
                 headers: {
                     'Authorization': `Bearer ${user.token}`
                 }
             });
-            console.log(response.data); // might want to set up an alert 
-			alert(response.data)
-			setFormData(initialState.formData); //reset form to empty
+            console.log(response.data);
+            alert(response.data)
+            setFormData(initialState.formData); //reset form to empty
+            setReset(true);
+            setTimeout(() => setReset(false), 100); // Reset the flag after a short delay to avoid immediate reset issues
 
-			// find a way to reset the image file upload
-			setReset(true);
-			setTimeout(() => setReset(false), 0); // Reset the flag after a short delay to avoid immediate reset issues
-
-		} catch (error) {
+        } catch (error) {
             console.error('Error posting data:', error);
         }
     };
@@ -161,7 +177,7 @@ function UploadSection(props) {
         if (!formData.imageName) newErrors.imageName = "Image Title field cannot be left blank";
         if (!formData.imageDescription) newErrors.imageDescription = "Image Description field cannot be left blank";
         if (!formData.imageCategory) newErrors.imageCategory = "Please select a category from the list";
-        if (formData.imageTags.length < 2) newErrors.imageTags = "You need to give at least 2 tags";
+        if (!formData.imageTags || formData.imageTags.length < 2) newErrors.imageTags = "You need to provide at least 2 tags";
         if (formData.imageTags.length > 5) newErrors.imageTags = "You can only provide a maximum of 5 tags";
         if (!image) newErrors.imageFile = "You have not yet selected an image to upload";
 
@@ -191,68 +207,85 @@ function UploadSection(props) {
         } else {
             console.log(newErrors);
         }
-    };	
+    };
 
-	return (
-		<div className={UploadStyle.uploadSection}>
-			<form className={UploadStyle.uploadForm} onSubmit={handleSubmit} autoComplete="off">
-				<h4 className={FormStyles.formText}>Image Upload</h4>
-				<div className={`${FormStyles.formInputsWrapper} ${UploadStyle.inputsWrapper} `}>
-					<div className={FormStyles.formInfoContainer}>{/*	Image Title */}
-						<label htmlFor="imageName" className={FormStyles.formLable}>Image Title</label>
-						<input type="text" onChange={handleChange} value={formData.imageName} name="imageName" id="imageName" className={`${FormStyles.inputField} inputField`} />
-						<span>//errors here</span>
-					</div>
-					<div className={FormStyles.formInfoContainer}> {/*	Image Category */}
-						<label htmlFor="imageCategory" className={FormStyles.formLable}>Image Category</label>
-						<select
-							type="select"
-							name="imageCategory"
-							id="imageCategory"
-							value={formData.imageCategory}
-							className={`${FormStyles.inputField} inputField`}
-							onChange={handleChange}
-						>
-							<option value="">--Please choose an option--</option>
-							{categories.map((category) => (
-								<option key={category.categoryID} value={category.categoryID}>{category.categoryName}</option>
-							))}
-						</select>
-						<span>//errors here</span>
-					</div>
-					<div className={FormStyles.formInfoContainer}> {/*	Image Tags */}
-						<label htmlFor="imageTags" className={FormStyles.formLable}>Image Tags</label>
-						<input type="text" onChange={handleChange} value={formData.imageTags} name="imageTags" id="imageTags" className={`${FormStyles.inputField} inputField`} />
-						<span>//errors here</span>
-					</div>
-					<div className={FormStyles.formInfoContainer}> {/*	Image Description */}
-						<label htmlFor="imageDescription" className={FormStyles.formLable}>Image Description</label>
-						<textarea
-							name="imageDescription"
-							id="imageDescription"
-							rows="5"
-							value={formData.imageDescription}
-							onChange={handleChange}
-							className='inputField'
-							style={{ resize: 'none' }}
-						/>
-						<span>//errors here</span>
-					</div>
+    return (
+        <div className={UploadStyle.uploadSection}>
+            <form className={UploadStyle.uploadForm} onSubmit={handleSubmit} autoComplete="off">
+                <h4 className={FormStyles.formText}>Image Upload</h4>
+                <div className={`${FormStyles.formInputsWrapper} ${UploadStyle.inputsWrapper} `}>
+                    <div className={FormStyles.formInfoContainer}>{/*	Image Title */}
+                        <label htmlFor="imageName" className={FormStyles.formLable}>Image Title</label>
+                        <input type="text" onChange={handleChange} value={formData.imageName} name="imageName" id="imageName" className={`${FormStyles.inputField} inputField`} />
+                        {successErrors?.imageName && <span className={FormStyles.error}>{successErrors.imageName}</span>}
+                    </div>
+                    <div className={FormStyles.formInfoContainer}> {/*	Image Category */}
+                        <label htmlFor="imageCategory" className={FormStyles.formLable}>Image Category</label>
+                        <select
+                            type="select"
+                            name="imageCategory"
+                            id="imageCategory"
+                            value={formData.imageCategory}
+                            className={`${FormStyles.inputField} inputField`}
+                            onChange={handleChange}
+                        >
+                            <option value="">--Please choose an option--</option>
+                            {categories.length > 0 && categories.map((category) => (
+                                <option key={category.categoryID} value={category.categoryID}>{category.categoryName}</option>
+                            ))}
+                        </select>
+                        {successErrors?.imageCategory && <span className={FormStyles.error}>{successErrors.imageCategory}</span>}
+                    </div>
+                    <div className={FormStyles.formInfoContainer}> {/*	Image Tags */}
+                        <label htmlFor="imageTags" className={FormStyles.formLable}>Image Tags</label>
+                        <div className={`${UploadStyle.tagsContainer}`}>
+                            {formData.imageTags.length > 0 && formData.imageTags.map((tag, index) => (
+                                <div key={tag} className={UploadStyle.tagItem}>
+                                    <span className={UploadStyle.tagText}>{tag}</span>
+                                    <span onClick={() => removeTag(index)} className={`${UploadStyle.tagClose} material-symbols-outlined`}>close</span>
+                                </div>
+                            ))}
+                            <input
+                                type="text"
+                                value={tagInput}
+                                onChange={handleTagInputChange}
+                                onKeyDown={handleTagInputKeyDown}
+                                name="imageTags"
+                                id="imageTags"
+                                className={UploadStyle.tagsInput}
+                                placeholder='Type in tags and press Enter'
+                            />
+                        </div>
+                        {successErrors?.imageTags && <span className={FormStyles.error}>{successErrors.imageTags}</span>}
+                    </div>
+                    <div className={FormStyles.formInfoContainer}> {/*	Image Description */}
+                        <label htmlFor="imageDescription" className={FormStyles.formLable}>Image Description</label>
+                        <textarea
+                            name="imageDescription"
+                            id="imageDescription"
+                            rows="5"
+                            value={formData.imageDescription}
+                            onChange={handleChange}
+                            className='inputField'
+                            style={{ resize: 'none' }}
+                        />
+                        {successErrors?.imageDescription && <span className={FormStyles.error}>{successErrors.imageDescription}</span>}
+                    </div>
 
-					<div className={`${FormStyles.formInfoContainer} `}>
-						<ImageUploader onMetadata={handleMetadata} resetState={reset}/>
-						<span>//erros here</span>
-					</div>
+                    <div className={`${FormStyles.formInfoContainer} `}>
+                        <ImageUploader onMetadata={handleMetadata} resetState={reset} />
+                        {successErrors?.imageFile && <span className={FormStyles.error}>{successErrors.imageFile}</span>}
+                    </div>
 
-					{serverResponse && <div className="error-message">{serverResponse}</div>}{/*	server response here*/}
-					<LoginRegisterSubmitButton
-						id='uploadImage'
-						buttonText='Save'
-					/>
-				</div>
-			</form>
-		</div>
-	)
+                    {serverResponse && <div className="error-message">{serverResponse}</div>}{/*	server response here*/}
+                    <LoginRegisterSubmitButton
+                        id='uploadImage'
+                        buttonText='Save'
+                    />
+                </div>
+            </form>
+        </div>
+    )
 }
 
-export default UploadSection
+export default UploadSection;

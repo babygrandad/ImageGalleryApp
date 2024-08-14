@@ -23,7 +23,7 @@ namespace api.Controllers
         public async Task<IActionResult> GetCategories()
         {
             var categories = await _categoryRepo.GetAllCategoriesAsync();
-            var categoriesDTO = categories.Select(c => c.ToGetCategoriesDTO());
+            var categoriesDTO = categories.Select(c => c.ToGetCategoryDTO());
             return Ok(categoriesDTO);
         }
 

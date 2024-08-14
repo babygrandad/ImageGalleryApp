@@ -64,9 +64,9 @@ namespace api.Controllers
 
             if (user == null) return Unauthorized ("user not found");
 
-            var imageUplad = await _imageRepo.PostImageAsync(createImageDTO, user);
+            var imageUpload = await _imageRepo.PostImageAsync(createImageDTO, user);
 
-            if (imageUplad == null) return BadRequest("Failed to upload image. Please try again");
+            if (imageUpload == null) return BadRequest("Failed to upload image. Please try again");
 
             return Ok("Image successfully uploaded.");
         }

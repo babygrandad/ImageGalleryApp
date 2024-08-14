@@ -13,5 +13,40 @@
 	align-items: center;
 }
 
+.tagsContainer{
+	border: 1px solid var(--text);
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacing-xxs);
+	padding: var(--spacing-xs);
+	border-radius: var(--spacing-xxs);
+}
+
+.tagsInput{
+	border: none;
+	outline: none;
+	flex-grow: 1;
+}
 
 
+.tagItem{
+	background-color: var(--primary);
+	color: var(--white-on-bg);
+	display: flex;
+	align-items: center;
+	width: fit-content;
+	padding: var(--spacing-xxs) var(--spacing-xs);
+	border-radius: var(--spacing-xs);
+	font-size: var(--small);
+	font-weight: 700;
+}
+
+.tagClose{
+	background-color: var(--white-on-bg);
+	color: var(--primary);
+	margin-left: var(--spacing-xs);
+	font-size: var(--base-size);
+	border-radius: 50%;
+	display: inline-flex;
+	cursor: pointer;
+}

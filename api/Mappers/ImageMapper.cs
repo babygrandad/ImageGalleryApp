@@ -44,27 +44,27 @@ namespace api.Mappers
 
         // Plural
         public static GetImagesDTO ToGetImagesDTO(this Image imageModel)
-{
-    if (imageModel == null)
-    {
-        return null;
-    }
+        {
+            if (imageModel == null)
+            {
+                return null;
+            }
 
-    return new GetImagesDTO
-    {
-        ImageID = imageModel.ImageID,
-        FullName = imageModel.AppUser?.FullName,
-        ImageName = imageModel.ImageName,
-        ImageDescription = imageModel.ImageDescription,
-        ImageThumbnailURL = imageModel.ImageThumbnailURL,
-        UploadDate = imageModel.UploadDate,
-        ImageURL = imageModel.ImageURL,
-        Category = imageModel.Category?.ToGetCategoriesDTO(), // Ensure this matches GetImagesDTO
-        Tags = imageModel.ImageTags?.Select(it => it.Tag.ToGetTagDTO()).ToList() ?? new List<GetTagDTO>(),
-        LikesCount = imageModel.Likes?.Count ?? 0,
-        CommentCount = imageModel.Comments?.Count ?? 0
-    };
-}
+            return new GetImagesDTO
+            {
+                ImageID = imageModel.ImageID,
+                FullName = imageModel.AppUser?.FullName,
+                ImageName = imageModel.ImageName,
+                ImageDescription = imageModel.ImageDescription,
+                ImageThumbnailURL = imageModel.ImageThumbnailURL,
+                UploadDate = imageModel.UploadDate,
+                ImageURL = imageModel.ImageURL,
+                Category = imageModel.Category?.ToGetCategoriesDTO(), // Ensure this matches GetImagesDTO
+                Tags = imageModel.ImageTags?.Select(it => it.Tag.ToGetTagDTO()).ToList() ?? new List<GetTagDTO>(),
+                LikesCount = imageModel.Likes?.Count ?? 0,
+                CommentCount = imageModel.Comments?.Count ?? 0
+            };
+        }
 
     }
 }
