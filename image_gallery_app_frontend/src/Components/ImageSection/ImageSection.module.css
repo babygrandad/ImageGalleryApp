@@ -3,7 +3,6 @@
 	height: 100vh;
 	max-height: 100vh;
 	padding: var(--spacing-lg) var(--spacing-lg);
-	/* if you want to moe pagination up remove the margin bottom 0 on the Image section */
 	display: flex;
 	overflow-y: scroll;
 	flex-direction: column;
@@ -15,7 +14,6 @@
 	max-width: 100%;
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
-	/* Distributes columns evenly */
 	gap: var(--spacing-md);
 	padding-bottom: var(--spacing-md);
 	margin-top: var(--spacing-md);
@@ -51,6 +49,17 @@
 	color: var(--white-on-bg);
 }
 
-.engagementButtonsContainer {
-	margin-top: var(--spacing-xxs);
+.socialWrapper{
+	margin-top: var(--spacing-xs);
+	display: flex;
+	gap: var(--spacing-xs)
+}
+
+.socialButtoncontainer{
+	display: flex;
+	align-items: center;
+}
+
+.socialButton:hover{
+	cursor: pointer;
 }

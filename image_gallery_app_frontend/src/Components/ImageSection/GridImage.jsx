@@ -1,11 +1,14 @@
 import React from 'react'
 import ImageSectionStyle from './ImageSection.module.css'
+import { useNavigate } from 'react-router-dom';
 
-function GridImage({ imageID, imageName, imageURL, category, tags }) {
+function GridImage({ imageID, imageName, imageURL, category, tags, likesCount, commentCount }) {
 
-	const handleClick = (e) => {
-		//	implement logic
-	}
+	const navigate = useNavigate();
+
+	const handleClick = () => {
+		navigate(`/post/${imageID}`);
+	};
 
 	return (
 		<div className={ImageSectionStyle.imageContainer}
@@ -19,9 +22,15 @@ function GridImage({ imageID, imageName, imageURL, category, tags }) {
 				</div>
 			</div>
 
-			<div className={ImageSectionStyle.engagementButtonsContainer}>
-				<span className="material-symbols-outlined">favorite</span>
-				<span className="material-symbols-outlined">chat_bubble</span>
+			<div className={ImageSectionStyle.socialWrapper}>
+			<div className={ImageSectionStyle.socialButtoncontainer}>
+						<span className={`${ImageSectionStyle.socialButton} material-symbols-outlined`}>favorite</span>
+						<span className={`${ImageSectionStyle.socialCount} ${ImageSectionStyle.likesCount}`}>{likesCount}</span>
+					</div>
+					<div className={ImageSectionStyle.socialButtoncontainer}>
+						<span className={`${ImageSectionStyle.socialButton} material-symbols-outlined`}>chat_bubble</span>
+						<span className={`${ImageSectionStyle.socialCount} ${ImageSectionStyle.commentCount}`}>{commentCount}</span>
+					</div>
 			</div>
 		</div>
 

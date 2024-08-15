@@ -4,6 +4,7 @@
 	background-color: var(--primary);
 	padding: var(--spacing-sm) var(--spacing-xs);
 	max-height: 100svh;
+	min-width: 250px;
 	display: flex;
 	flex-direction: column;
 	width: 100%;

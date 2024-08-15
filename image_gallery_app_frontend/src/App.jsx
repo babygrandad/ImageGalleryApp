@@ -36,7 +36,7 @@ const router = createBrowserRouter([
         element: <UploadSection />
       },
       {
-        path:"post",
+        path:"post/:imageID",
         element: <ImagePage />
       }
     ]
