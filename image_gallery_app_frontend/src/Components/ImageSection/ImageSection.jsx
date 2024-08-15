@@ -52,25 +52,24 @@ function ImageSection() {
         }
     }, []);
 
-    return (
-        <div className={ImageSectionStyle.ImageSection} id="ImageSection">
-            <SearchArea />
-            <InfiniteScroll
-                dataLength={imageData.length}
-                next={fetchImages}
-                hasMore={hasMore}
-                loader={<div>Loading more images...</div>}
-                endMessage={<div>No more images to load.</div>}
-                scrollableTarget="ImageSection"
-            >
-                <div className={ImageSectionStyle.imagesWrapper} id="ImageWrapper">
-                    {imageData.map(image => (
-                        <GridImage key={image.imageID} {...image} />
-                    ))}
-                </div>
-            </InfiniteScroll>
-        </div>
-    );
+  return (
+    <div className={ImageSectionStyle.ImageSection} id="ImageSection">
+      <SearchArea />
+      <InfiniteScroll
+        className={ImageSectionStyle.infiniteScroll}
+        dataLength={imageData.length}
+        next={fetchImages}
+        hasMore={hasMore}
+        loader={<div>Loading more images...</div>}
+        endMessage={<div>No more images to load.</div>}
+        scrollableTarget="ImageSection"
+      >
+        {imageData.map(image => (
+          <GridImage key={image.imageID} {...image} />
+        ))}
+      </InfiniteScroll>
+    </div>
+  );
 }
 
 export default ImageSection;
