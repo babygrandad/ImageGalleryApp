@@ -111,7 +111,6 @@ namespace api.Controllers
             return Ok(image.ToGetImageDTO());
         }
 
-        // Continue to make the update route for image details
         [HttpPatch]
         [Route("{id:int}")]
         [Authorize]

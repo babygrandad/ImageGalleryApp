@@ -5,6 +5,7 @@ import GridImage from './GridImage';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import axios from 'axios';
 import BASE_URL from '../../config';
+import { getUser } from '../../utils/auth';
 
 function ImageSection() {
     const [imageData, setImageData] = useState([]);
@@ -12,6 +13,7 @@ function ImageSection() {
     const [hasMore, setHasMore] = useState(true);
     const [PageSize, setPageSize] = useState(9)
     const hasFetched = useRef(false);
+    const user = getUser();
 
     const fetchImages = async () => {
         try {
@@ -20,6 +22,9 @@ function ImageSection() {
               PageNumber: pageNumber,
               PageSize: PageSize,
             },
+            headers: {
+              'Authorization': `Bearer ${user.token}`
+          }
           });
       
           // Log the response for debugging (optional)
