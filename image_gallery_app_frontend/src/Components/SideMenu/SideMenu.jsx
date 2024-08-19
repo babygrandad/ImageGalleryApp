@@ -24,9 +24,9 @@ function SideMenu() {
                             <span className={`${SideMenuStyles.sideMenuIcons} material-symbols-outlined`}>add_a_photo</span>Image Upload
                         </a>
                     </li>
-                    <li className={`${SideMenuStyles.sideMenuListItem} ${location.pathname === '/profile' ? SideMenuStyles.active : ''}`}>
-                        <a href='/profile' className={SideMenuStyles.sideMenuLinks}>
-                            <span className={`${SideMenuStyles.sideMenuIcons} material-symbols-outlined`}>person</span>Profile
+                    <li className={`${SideMenuStyles.sideMenuListItem} ${location.pathname === '/mylibrary' ? SideMenuStyles.active : ''}`}>
+                        <a href='/mylibrary' className={SideMenuStyles.sideMenuLinks}>
+                            <span className={`${SideMenuStyles.sideMenuIcons} material-symbols-outlined`}>person</span>My Library
                         </a>
                     </li>
                 </ul>

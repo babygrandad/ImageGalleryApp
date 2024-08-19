@@ -2,11 +2,16 @@
 	width: 100%;
 	height: 100vh;
 	max-height: 100vh;
-	padding: 0 var(--spacing-lg);
+	padding: 0 var(--spacing-lg) var(--spacing-lg);
 	display: flex;
 	overflow-y: scroll;
 	flex-direction: column;
 
+}
+
+h4{
+	text-align: center;
+	padding-bottom: var(--spacing-sm);
 }
 
 .infiniteScroll {
@@ -22,6 +27,8 @@
 .imageContainer {
 	width: 100%;
 	max-width: 100%;
+	display: flex;
+	flex-direction: column;
 }
 
 .image {
@@ -49,10 +56,18 @@
 	color: var(--white-on-bg);
 }
 
-.socialWrapper{
+.actionButtonsWrapper{
+	display: flex;
+	justify-content: space-between;
+}
+
+.socialWrapper,
+.crudWrapper
+{
 	margin-top: var(--spacing-xs);
 	display: flex;
-	gap: var(--spacing-xs)
+	gap: var(--spacing-xs);
+
 }
 
 .socialButtoncontainer{
@@ -60,6 +75,20 @@
 	align-items: center;
 }
 
-.socialButton:hover{
+.actionButton:hover{
 	cursor: pointer;
 }
+
+.crudButtoncontainer{
+	display: flex;
+	align-items: center;
+}
+
+.actionButtonAccent:hover{
+	color: var(--accent);
+}
+
+.actionButtonPrimary:hover{
+	color: var(--primary);
+}
+

@@ -18,6 +18,7 @@ namespace api.Controllers
     {
         private readonly ApplicationDBContext _dbContext;
         private readonly IImageRepository _imageRepo;
+        private readonly ILikeRepository _likeRepo;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
 
@@ -25,12 +26,14 @@ namespace api.Controllers
             IImageRepository imageRepo,
             ApplicationDBContext dbContext,
             UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager)
+            SignInManager<AppUser> signInManager,
+            ILikeRepository likeRepo)
         {
             _imageRepo = imageRepo;
             _dbContext = dbContext;
             _userManager = userManager;
             _signInManager = signInManager;
+            _likeRepo = likeRepo;
         }
 
         [HttpGet]
@@ -102,13 +105,24 @@ namespace api.Controllers
             }
 
             var image = await _imageRepo.GetImageByIdAsync(id);
-
             if (image == null)
             {
                 return NotFound();
             }
 
-            return Ok(image.ToGetImageDTO());
+            var likeCount = await _likeRepo.GetLikesByIdAsync(id);
+            if (likeCount == null)
+            {
+                return NotFound();
+            }
+
+            var response = new ImageWithLikesDTO
+            {
+                Image = image.ToGetImageDTO(),
+                LikeCount = likeCount // Add likeCount here
+            };
+
+            return Ok(response);
         }
 
         [HttpPatch]

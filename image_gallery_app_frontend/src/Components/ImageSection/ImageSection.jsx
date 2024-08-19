@@ -58,8 +58,9 @@ function ImageSection() {
     }, []);
 
   return (
+    <>
+    <SearchArea />
     <div className={ImageSectionStyle.ImageSection} id="ImageSection">
-      <SearchArea />
       <InfiniteScroll
         className={ImageSectionStyle.infiniteScroll}
         dataLength={imageData.length}
@@ -74,6 +75,7 @@ function ImageSection() {
         ))}
       </InfiniteScroll>
     </div>
+    </>
   );
 }
 

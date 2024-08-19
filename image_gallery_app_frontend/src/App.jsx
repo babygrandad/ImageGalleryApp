@@ -8,6 +8,8 @@ import ResetPassword from './Components/LoginRegister/ResetPassword/ResetPasswor
 import ImageSection from './Components/ImageSection/ImageSection';
 import UploadSection from './Components/UploadSection/UploadSection';
 import ImagePage from './Components/ImagePage/ImagePage';
+import MyLibrary from './Components/MyLibrary/MyLibrary';
+
 
 
 function App() {
@@ -34,6 +36,10 @@ const router = createBrowserRouter([
       {
         path:"upload",
         element: <UploadSection />
+      },
+      {
+        path:"mylibrary",
+        element: <MyLibrary />
       },
       {
         path:"post/:imageID",

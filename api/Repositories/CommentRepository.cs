@@ -11,7 +11,7 @@ namespace api.Repositories
         private readonly ApplicationDBContext _dbContext;
         private readonly UserManager<AppUser> _userManager;
 
-         public CommentRepository(ApplicationDBContext dbContext, UserManager<AppUser> userManager)
+        public CommentRepository(ApplicationDBContext dbContext, UserManager<AppUser> userManager)
         {
             _dbContext = dbContext;
         }
