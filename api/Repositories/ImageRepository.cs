@@ -88,6 +88,59 @@ namespace api.Repositories
             return await images.Skip(skipNumber).Take(filterQuery.PageSize).ToListAsync();
         }
 
+        public async Task<List<Image>> GetMyImagesAsync(QueryObject filterQuery, AppUser user)
+        {
+            // Initialize the queryable images including the necessary navigational properties
+            var images = _dbContext.Images
+                .Include(c => c.AppUser)
+                .Include(x => x.Comments)
+                .Include(i => i.ImageTags)
+                    .ThenInclude(it => it.Tag)
+                .Include(i => i.Category) // Directly include Category
+                .AsSplitQuery()  // Apply query splitting here
+                .Where(i => i.UserID == user.Id)
+                .AsQueryable();
+
+            // Filter by image name if provided
+            if (!string.IsNullOrWhiteSpace(filterQuery.Name))
+            {
+                images = images.Where(x => x.ImageName.Contains(filterQuery.Name));
+            }
+
+            // Filter by tag if provided
+            if (!string.IsNullOrWhiteSpace(filterQuery.Tag))
+            {
+                var tagLower = filterQuery.Tag.ToLower(); // Ensure case-insensitive comparison
+                images = images.Where(x => x.ImageTags.Any(tag => tag.Tag.TagName.ToLower().Contains(tagLower)));
+            }
+
+            // Filter by category if provided
+            if (!string.IsNullOrWhiteSpace(filterQuery.Category))
+            {
+                var categoryLower = filterQuery.Category.ToLower(); // Ensure case-insensitive comparison
+                images = images.Where(x => x.Category.CategoryName.ToLower().Contains(categoryLower));
+            }
+
+            // Sorting based on SortBy and IsDescending properties
+            if (!string.IsNullOrWhiteSpace(filterQuery.SortBy))
+            {
+                if (filterQuery.SortBy.Equals("ImageName", StringComparison.OrdinalIgnoreCase))
+                {
+                    images = filterQuery.IsDescending ? images.OrderByDescending(x => x.ImageName) : images.OrderBy(x => x.ImageName);
+                }
+                // Add additional sorting options as needed
+            }
+            else
+            {
+                // Default sorting to ensure correct Skip and Take functionality
+                images = images.OrderByDescending(x => x.UploadDate);
+            }
+
+            var skipNumber = (filterQuery.PageNumber - 1) * filterQuery.PageSize;
+
+            return await images.Skip(skipNumber).Take(filterQuery.PageSize).ToListAsync();
+        }
+
         public async Task<int> GetTotalImagesCountAsync(QueryObject filterQuery)
         {
             var images = _dbContext.Images
@@ -96,6 +149,38 @@ namespace api.Repositories
                 .Include(i => i.ImageTags)
                     .ThenInclude(it => it.Tag)
                 .Include(i => i.Category)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(filterQuery.Name))
+            {
+                images = images.Where(x => x.ImageName.Contains(filterQuery.Name));
+            }
+
+            if (!string.IsNullOrWhiteSpace(filterQuery.Tag))
+            {
+                var tagLower = filterQuery.Tag.ToLower();
+                images = images.Where(x => x.ImageTags.Any(tag => tag.Tag.TagName.ToLower().Contains(tagLower)));
+            }
+
+            if (!string.IsNullOrWhiteSpace(filterQuery.Category))
+            {
+                var categoryLower = filterQuery.Category.ToLower();
+                images = images.Where(x => x.Category.CategoryName.ToLower().Contains(categoryLower));
+            }
+
+            return await images.CountAsync();
+        }
+
+        public async Task<int> GetMyImagesCountAsync(QueryObject filterQuery, AppUser user)
+        {
+            var images = _dbContext.Images
+                .Include(c => c.AppUser)
+                .Include(x => x.Comments)
+                .Include(i => i.ImageTags)
+                    .ThenInclude(it => it.Tag)
+                .Include(i => i.Category)
+                .AsSplitQuery()
+                .Where(i => i.UserID == user.Id)
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(filterQuery.Name))

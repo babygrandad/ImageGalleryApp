@@ -34,11 +34,32 @@ namespace api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Getall([FromQuery] QueryObject filterQuery)
         {
             var images = await _imageRepo.GetAllImagesAsync(filterQuery);
             var totalCount = await _imageRepo.GetTotalImagesCountAsync(filterQuery);
+            var imageDTO = images.Select(x => x.ToGetImagesDTO());
 
+            var response = new
+            {
+                TotalCount = totalCount,
+                filterQuery.PageNumber,
+                filterQuery.PageSize,
+                Data = imageDTO,
+            };
+
+            return Ok(response);
+        }
+
+        [HttpGet("mylibrary")]
+        [Authorize]
+        public async Task<IActionResult> GetMyImages([FromQuery] QueryObject filterQuery)
+        {
+            var userEmail = User.GetUserEmail();
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            var images = await _imageRepo.GetMyImagesAsync(filterQuery, user);
+            var totalCount = await _imageRepo.GetMyImagesCountAsync(filterQuery, user);
             var imageDTO = images.Select(x => x.ToGetImagesDTO());
 
             var response = new
@@ -72,6 +93,7 @@ namespace api.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> GetImage([FromRoute] int id)
         {
             if (!ModelState.IsValid)
