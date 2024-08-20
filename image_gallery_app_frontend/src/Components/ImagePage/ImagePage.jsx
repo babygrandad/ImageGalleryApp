@@ -1,4 +1,4 @@
-import React, { useState ,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import BASE_URL from '../../config'
 import axios from 'axios';
@@ -7,29 +7,31 @@ import ImagePageStyle from './ImagePage.module.css'
 
 function ImagePage() {
 	const { imageID } = useParams();
+	const user = getUser();
+	console.log(user)
 
 	const initialState = {
-	imageID	:	'',
-	imageName	:	'',
-	imageDescription	:	'',
-	uploadDate	:	'',
-	lastUpdated	:	'',
-	imageURL	:	'',
-	imageDeleteURL	:	'',
-	imageThumbnailURL	:	'',
-	fullName	:	'',
-	imageDimensions	:	'',
-	fileSize	:	'',
-	dateCaptured	:	'',
-	make	:	'',
-	model	:	'',
-	lenseType	:	'',
-	category		:{},
-	tags		:[],
-	likesCount	:	'',
-	comments		:[]
+		imageID: '',
+		imageName: '',
+		imageDescription: '',
+		uploadDate: '',
+		lastUpdated: '',
+		imageURL: '',
+		imageDeleteURL: '',
+		imageThumbnailURL: '',
+		fullName: '',
+		imageDimensions: '',
+		fileSize: '',
+		dateCaptured: '',
+		make: '',
+		model: '',
+		lenseType: '',
+		category: {},
+		tags: [],
+		likesCount: '',
+		comments: []
 	}
-	
+
 
 	const [image, setImage] = useState(initialState);
 	const [comments, setComments] = useState([])
@@ -38,7 +40,11 @@ function ImagePage() {
 	useEffect(() => {
 		const imageData = async () => {
 			try {
-				const response = await axios.get(`http://localhost:5086/api/Image/${imageID}`);
+				const response = await axios.get(`http://localhost:5086/api/Image/${imageID}`, {
+					headers: {
+						'Authorization': `Bearer ${user.token}`
+					}
+				});
 				console.log('Response:', response.data);
 				setImage(response.data)
 			} catch (error) {

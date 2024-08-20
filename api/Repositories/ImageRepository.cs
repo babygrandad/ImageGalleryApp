@@ -93,6 +93,7 @@ namespace api.Repositories
         {
             // Initialize the queryable images including the necessary navigational properties
             var images = _dbContext.Images
+                .Include(i => i.Likes)
                 .Include(c => c.AppUser)
                 .Include(x => x.Comments)
                 .Include(i => i.ImageTags)
