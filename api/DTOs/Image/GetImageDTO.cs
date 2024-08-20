@@ -1,5 +1,6 @@
 using api.DTOs.Category;
 using api.DTOs.Comment;
+using api.DTOs.Like;
 using api.DTOs.Tag;
 
 namespace api.DTOs.Image
@@ -26,11 +27,8 @@ namespace api.DTOs.Image
         public List<GetTagDTO> Tags { get; set; } // List of TagDTOs
         public int LikesCount { get; set; }
         public List<GetCommentDTO> Comments { get; set; } // List of comments
+        public List<GetLikeDTO> Likes { get; set; }
 
-        public static implicit operator GetImageDTO(Models.Image v)
-        {
-            throw new NotImplementedException();
-        }
     }
 
     public class GetImagesDTO
@@ -76,12 +74,6 @@ namespace api.DTOs.Image
         public List<GetTagDTO> Tags { get; set; } // List of TagDTOs
         public int LikesCount { get; set; }
         public List<GetCommentDTO> Comments { get; set; } // List of comments
-    }
-
-    public class ImageWithLikesDTO
-    {
-        public GetImageDTO Image { get; set; }
-        public int LikeCount { get; set; }
     }
 
 }

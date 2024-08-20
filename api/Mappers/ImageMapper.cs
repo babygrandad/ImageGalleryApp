@@ -3,6 +3,7 @@ using System.Linq;
 using api.DTOs.Category;
 using api.DTOs.Comment;
 using api.DTOs.Image;
+using api.DTOs.Like;
 using api.DTOs.Tag;
 using api.Models;
 
@@ -36,7 +37,8 @@ namespace api.Mappers
                 LenseType = imageModel?.LenseType,
                 Category = imageModel.Category?.ToGetCategoryDTO(), // Use ToGetCategoryDTO for full category details
                 Tags = imageModel.ImageTags?.Select(it => it.Tag.ToGetTagDTO()).ToList() ?? new List<GetTagDTO>(),
-                LikesCount = imageModel.Likes?.Count ?? 0,
+                LikesCount = imageModel.Likes?.Select(l => l.ToGetLikeDTO()).ToList().Count ?? 0,
+                Likes = imageModel.Likes?.Select(l => l.ToGetLikeDTO()).ToList() ?? new List<GetLikeDTO>(),
                 Comments = imageModel.Comments?.Select(x => x.ToGetCommentDTO()).ToList() ?? new List<GetCommentDTO>()
                 // Populate other properties as needed
             };
@@ -61,6 +63,7 @@ namespace api.Mappers
                 ImageURL = imageModel.ImageURL,
                 Category = imageModel.Category?.ToGetCategoriesDTO(), // Ensure this matches GetImagesDTO
                 Tags = imageModel.ImageTags?.Select(it => it.Tag.ToGetTagDTO()).ToList() ?? new List<GetTagDTO>(),
+                //LikesCount = imageModel.Likes?.Select(l => l.ToGetLikeDTO()).ToList().Count ?? 0,
                 LikesCount = imageModel.Likes?.Count ?? 0,
                 CommentCount = imageModel.Comments?.Count ?? 0
             };

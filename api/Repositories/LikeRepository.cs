@@ -18,13 +18,13 @@ namespace api.Repositories
         {
             _dbContext = dbContext;
         }
-        public async Task<int> GetLikesByIdAsync(int imageId)
+        public async Task<List<Like>> GetLikesByIdAsync(int imageId)
         {
-            // Count the number of likes with the specified imageId
-            var likeCount = await _dbContext.Likes
-                .CountAsync(l => l.ImageID == imageId);
-
-            return likeCount;
+            var likes = await _dbContext.Likes
+            .Where(x => x.ImageID == imageId)
+            .ToListAsync();
+            
+            return likes;
         }
         
         public async Task<Like?> ToggleLikeAsync(string userId, int imageId)

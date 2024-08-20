@@ -116,13 +116,7 @@ namespace api.Controllers
                 return NotFound();
             }
 
-            var response = new ImageWithLikesDTO
-            {
-                Image = image.ToGetImageDTO(),
-                LikeCount = likeCount // Add likeCount here
-            };
-
-            return Ok(response);
+            return Ok(image.ToGetImageDTO());
         }
 
         [HttpPatch]
