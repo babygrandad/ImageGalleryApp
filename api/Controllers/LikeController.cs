@@ -17,7 +17,7 @@ namespace api.Controllers
     public class LikeController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly ILikeRepository _likeReop; 
+        private readonly ILikeRepository _likeReop;
 
         public LikeController(
             UserManager<AppUser> userManager,
@@ -30,15 +30,21 @@ namespace api.Controllers
 
         [HttpPost("{imageId:int}")]
         [Authorize]
-        public async Task<IActionResult> LikeToggle([FromRoute]int imageId)
+        public async Task<IActionResult> LikeToggle([FromRoute] int imageId)
         {
             var userEmail = User.GetUserEmail();
             var user = await _userManager.FindByEmailAsync(userEmail);
-            var like = await _likeReop.ToggleLikeAsync(user.Id, imageId);
+            var isLiked = await _likeReop.ToggleLikeAsync(user.Id, imageId);
 
-            if (like == null) return BadRequest("Error processing the \"Like\" request. please try again.");
-            
-            return Ok();                 
+            if (isLiked)
+            {
+                return Ok("Image liked.");
+            }
+            else
+            {
+                return Ok("Image unliked.");
+            }
         }
+
     }
 }

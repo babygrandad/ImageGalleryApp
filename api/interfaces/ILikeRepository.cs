@@ -8,7 +8,7 @@ namespace api.Interfaces
 {
     public interface ILikeRepository
     {
-        Task<Like?> ToggleLikeAsync(string userId, int imageId);
+        Task<bool>  ToggleLikeAsync(string userId, int imageId);
         Task<List<Like>> GetLikesByIdAsync(int imageId);
     }
 }

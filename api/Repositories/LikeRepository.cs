@@ -27,35 +27,34 @@ namespace api.Repositories
             return likes;
         }
         
-        public async Task<Like?> ToggleLikeAsync(string userId, int imageId)
+public async Task<bool> ToggleLikeAsync(string userId, int imageId)
+{
+    // Check if a like already exists
+    var existingLike = await _dbContext.Likes
+        .FirstOrDefaultAsync(l => l.UserID == userId && l.ImageID == imageId);
+
+    if (existingLike != null)
+    {
+        // If it exists, remove the like (unlike)
+        _dbContext.Likes.Remove(existingLike);
+        await _dbContext.SaveChangesAsync();
+        return false; // Indicate that the image was unliked
+    }
+    else
+    {
+        // If it doesn't exist, create a new like
+        var newLike = new Like
         {
-            // Check if a like already exists
-            var existingLike = await _dbContext.Likes
-                .FirstOrDefaultAsync(l => l.UserID == userId && l.ImageID == imageId);
+            UserID = userId,
+            ImageID = imageId,
+            LikeDate = DateTime.Now,
+        };
 
-            if (existingLike != null)
-            {
-                // If it exists, remove the like (unlike)
-                _dbContext.Likes.Remove(existingLike);
-            }
-            else
-            {
-                // If it doesn't exist, create a new like
-                existingLike = new Like
-                {
-                    UserID = userId,
-                    ImageID = imageId,
-                    LikeDate = DateTime.Now,
-                };
-
-                await _dbContext.Likes.AddAsync(existingLike);
-            }
-
-            // Save changes regardless of whether we added or removed a like
-            await _dbContext.SaveChangesAsync();
-
-            return existingLike;
-        }
+        await _dbContext.Likes.AddAsync(newLike);
+        await _dbContext.SaveChangesAsync();
+        return true; // Indicate that the image was liked
+    }
+}
 
     }
 }

@@ -40,13 +40,14 @@ function ImagePage() {
 	useEffect(() => {
 		const imageData = async () => {
 			try {
-				const response = await axios.get(`http://localhost:5086/api/Image/${imageID}`, {
+				const response = await axios.get(`${BASE_URL}/Image/${imageID}`, {
 					headers: {
 						'Authorization': `Bearer ${user.token}`
 					}
 				});
 				console.log('Response:', response.data);
 				setImage(response.data)
+				setLikes(response.data.likesCount)
 			} catch (error) {
 				console.error('Error posting data:', error);
 			}
@@ -56,6 +57,27 @@ function ImagePage() {
 			imageData();
 		}
 	}, [imageID]);
+
+
+
+	const handleLikes = async () => {
+		try {
+			const response = await axios.post(`${BASE_URL}/like/${imageID}`, {}, {
+				headers: {
+					'Authorization': `Bearer ${user.token}`
+				}
+			});
+
+			if (response.data === "Image liked.") {
+				setLikes(prevLikes => prevLikes + 1);  // Increment the likes count
+			} else if (response.data === "Image unliked.") {
+				setLikes(prevLikes => prevLikes - 1);  // Decrement the likes count
+			}
+		} catch (error) {
+			console.error('Error processing like data:', error);
+		}
+	};
+
 
 	return (
 		<div className={ImagePageStyle.wrapper}>
@@ -78,8 +100,8 @@ function ImagePage() {
 				</div>
 				<div className={ImagePageStyle.socialWrapper}>
 					<div className={ImagePageStyle.socialButtoncontainer}>
-						<span className={`${ImagePageStyle.socialButton} material-symbols-outlined`}>favorite</span>
-						<span className={`${ImagePageStyle.socialCount} ${ImagePageStyle.likesCount}`}>{image.likesCount}</span>
+						<span className={`${ImagePageStyle.socialButton} material-symbols-outlined`} onClick={handleLikes}>favorite</span>
+						<span className={`${ImagePageStyle.socialCount} ${ImagePageStyle.likesCount}`}>{likes}</span>{console.log("Likes: ",likes)}
 					</div>
 					<div className={ImagePageStyle.socialButtoncontainer}>
 						<span className={`${ImagePageStyle.socialButton} material-symbols-outlined`}>chat_bubble</span>
