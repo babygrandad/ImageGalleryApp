@@ -1,15 +1,11 @@
 /*	Side menu Styles*/
 .sideMenu{
-	flex: 2;
 	background-color: var(--primary);
 	padding: var(--spacing-sm) var(--spacing-xs);
-	max-height: 100svh;
-	min-width: 250px;
+	max-height: max(100svh, 100%);
 	display: flex;
 	flex-direction: column;
-	width: 100%;
 	gap: var(--spacing-xxl);
-	overflow-y: scroll;
 }
 
 .sideMenuLinks{
@@ -89,4 +85,34 @@
 
 .menuLogoutLink:hover{
 	color: var(--Text);
+}
+
+
+@media (max-width: 720px) {
+	.sideMenu{
+		
+	}
+
+	.hidden{
+		max-width: 73px;
+		min-width: 73px;
+		overflow-x: hidden;
+	}
+
+	.pathnameText{
+		display: none;
+	}
+
+	.sideMenuList{
+		width: 100%;
+	}
+
+	.sideMenuLinks{
+		justify-content: center;
+		min-width: 100%;
+	}
+
+	.sideMenuIcons{
+		margin: 0;
+	}
 }

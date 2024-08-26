@@ -9,7 +9,7 @@ function ContentContainer() {
 	const [currentUser, setCurrentUser] = useState(null);
 	
 	useEffect(() => {
-		setCurrentUser(getUser().fullName);
+		setCurrentUser(getUser().email);
 	}, [currentUser]);
 
 

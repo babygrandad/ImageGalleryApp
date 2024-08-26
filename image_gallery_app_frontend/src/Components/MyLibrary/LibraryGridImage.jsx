@@ -2,7 +2,7 @@ import React from 'react'
 import ImageSectionStyle from './MyLibrary.module.css'
 import { useNavigate } from 'react-router-dom';
 
-function LibraryGridImage({ imageID, imageName, imageURL, category, tags, likesCount, commentCount }) {
+function LibraryGridImage({ imageID, imageName, imageURL, category, tags, likesCount, commentCount, handleLikes, handleDelete }) {
 
 	const navigate = useNavigate();
 
@@ -25,7 +25,7 @@ function LibraryGridImage({ imageID, imageName, imageURL, category, tags, likesC
 			<div className={ImageSectionStyle.actionButtonsWrapper}>
 				<div className={ImageSectionStyle.socialWrapper}>
 					<div className={ImageSectionStyle.socialButtoncontainer}>
-						<span className={`${ImageSectionStyle.actionButton} material-symbols-outlined`}>favorite</span>
+						<span className={`${ImageSectionStyle.actionButton} material-symbols-outlined`} onClick={() => handleLikes(imageID)}>favorite</span>
 						<span className={`${ImageSectionStyle.socialCount} ${ImageSectionStyle.likesCount}`}>{likesCount}</span>
 					</div>
 					<div className={ImageSectionStyle.socialButtoncontainer}>
@@ -38,7 +38,7 @@ function LibraryGridImage({ imageID, imageName, imageURL, category, tags, likesC
 						<span className={`${ImageSectionStyle.actionButton} ${ImageSectionStyle.actionButtonPrimary} material-symbols-outlined`}>edit</span>
 					</div>
 					<div className={ImageSectionStyle.crudButtoncontainer}>
-						<span className={`${ImageSectionStyle.actionButton} ${ImageSectionStyle.actionButtonAccent} material-symbols-outlined`}>delete</span>
+						<span className={`${ImageSectionStyle.actionButton} ${ImageSectionStyle.actionButtonAccent} material-symbols-outlined`} onClick={() => handleDelete(imageID)}>delete</span>
 					</div>
 				</div>
 			</div>

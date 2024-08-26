@@ -54,6 +54,45 @@ function MyLibrary() {
     }
   }, []);
 
+  const handleLikes = async (imageID) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/like/${imageID}`, {}, {
+        headers: {
+          'Authorization': `Bearer ${user.token}`
+        }
+      });
+
+      // Update the image data with the new like count
+      setImageData(prevData => prevData.map(image => {
+        if (image.imageID === imageID) {
+          return {
+            ...image,
+            likesCount: response.data === "Image liked." ? image.likesCount + 1 : image.likesCount - 1
+          };
+        }
+        return image;
+      }));
+    } catch (error) {
+      console.error('Error processing like:', error);
+    }
+  };
+
+  const handleDelete = async (imageID) => {
+    try {
+      await axios.delete(`${BASE_URL}/Image/${imageID}`, {
+        headers: {
+          'Authorization': `Bearer ${user.token}`
+        }
+      });
+      
+      // Filter out the deleted image
+      setImageData((prevData) => prevData.filter(image => image.imageID !== imageID));
+    } catch (error) {
+      console.error('Error processing delete:', error);
+    }
+  };
+  
+
   return (
     <>
       <SearchArea />
@@ -69,7 +108,7 @@ function MyLibrary() {
           scrollableTarget="ImageSection"
         >
           {imageData.map(image => (
-            <LibraryGridImage key={image.imageID} {...image} />
+            <LibraryGridImage key={image.imageID} {...image} handleLikes={handleLikes} handleDelete={handleDelete} />
           ))}
         </InfiniteScroll>
       </div>

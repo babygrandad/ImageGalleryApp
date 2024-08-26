@@ -6,4 +6,21 @@
 	align-items: center;
 	justify-content: space-between;
 	padding: 0 var(--spacing-xl);
+	font-size: var(--h5);
+	font-weight: 500;
+}
+
+.currentPage{
+	display: flex;
+	align-items: center;
+}
+
+.topBarProfileContainer{
+	display: flex;
+	align-items: center;
+}
+
+.dropdownIcon:hover{
+	cursor: pointer;
+	scale: 1.5;
 }

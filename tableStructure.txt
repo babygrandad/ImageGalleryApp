@@ -128,3 +128,4 @@ Common Html structure
 </div>
 
 <a href="https://ibb.co/yYftxyW"><img src="https://i.ibb.co/3Mr2PNB/Logo-1-white.png" alt="Logo-1-white" style="height: 75px;"></a>
+small logo : https://i.ibb.co/vwsskQK/Logo-1-white.gif

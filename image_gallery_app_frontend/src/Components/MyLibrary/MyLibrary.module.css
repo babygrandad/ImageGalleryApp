@@ -22,6 +22,7 @@ h4{
 	gap: var(--spacing-md);
 	padding-bottom: var(--spacing-md);
 	margin-top: var(--spacing-md);
+	justify-content: center;
 }
 
 .imageContainer {
@@ -32,7 +33,7 @@ h4{
 }
 
 .image {
-	max-width: 462.406px;
+	/*max-width: 462.406px;*/
 	width: 100%;
 	max-height: 312.25px;
 	height: 100%;
@@ -46,6 +47,7 @@ h4{
 	position: relative;
 	width: 100%;
 	max-width: 100%;
+	display: flex;
 }
 
 .imageDetails {
@@ -92,3 +94,15 @@ h4{
 	color: var(--primary);
 }
 
+@media (max-width: 1200px) {
+	.infiniteScroll{
+	  grid-template-columns: repeat(2, 1fr); /* 2 columns */
+	}
+  }
+  
+  /* Small screens (mobile phones) */
+  @media (max-width: 920px) {
+	.infiniteScroll {
+	  grid-template-columns: 1fr; /* 1 column */
+	}
+  }

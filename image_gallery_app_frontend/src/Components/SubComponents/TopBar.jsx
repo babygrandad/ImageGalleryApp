@@ -16,11 +16,12 @@ function TopBar({ fullName }) {
 
 	return (
 		<div className={TopbarStyle.container}>
-			<div className="currentPage">
-				{breadcrum}
+			<div className={TopbarStyle.currentPage}>
+				<span>{breadcrum}</span>
 			</div>
-			<div className="topBarProfileContainer">
-				{fullName}
+			<div className={TopbarStyle.topBarProfileContainer}>
+				<span>{fullName}</span>
+				<span className={`${TopbarStyle.dropdownIcon} material-symbols-outlined`}>keyboard_arrow_down</span>
 			</div>
 		</div>
 	)
