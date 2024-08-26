@@ -1,24 +1,46 @@
 .wrapper{
-	height: 100%;
 	display: flex;
-	flex-direction: column;
-	align-items: center;
+	justify-content: center;
+	padding: var(--spacing-lg);
 	overflow-y: scroll;
-	align-items: center;
-	padding: var(--spacing-xl);
+	height: 100%;
 }
 
 .ImageContainer{
-	height: 75vh;
-	text-align: center;
 	position: relative;
-	border-radius: var(--spacing-xs);
+	display: flex;
+	border-radius: var(--spacing-xxs);
 	overflow: clip;
-	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
-.Image{
+/*	Dynamic Classes for horizontal images*/
+
+.wideWrapper{
+	width: min(90%, 60vw);
+}
+
+.wideContainer{
+	width: 100%;
+}
+
+.wideImage{
+	width: 100%;
+	height: auto;
+}
+
+/*	Dynamic Classes for vertical images*/
+
+.tallWrapper{
+	height: min-content;
+}
+
+.tallContainer{
 	height: 100%;
+}
+
+.tallImage{
+	height: 100%;
+	width: auto;
 }
 
 .tags{
@@ -75,3 +97,53 @@
 .socialButton:hover{
 	cursor: pointer;
 }
+
+@media (max-width: 900px) {
+	.tags{
+		display: none;
+	}
+	
+	.tallWrapper{
+		width: 90%;
+		height: min-content;
+	}
+	
+	.tallContainer{
+		width: 100%;
+		height: auto;
+	}
+	
+	.tallImage{
+		height: auto;
+		width: 100%;
+	}	
+}
+
+@media (max-width: 500px) {
+	.imageDetailsWrapper{
+		display: none;
+	}
+  }
+
+/*.wrapper{
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	overflow-y: scroll;
+	align-items: center;
+	padding: var(--spacing-xl);
+}*/
+
+/*.ImageContainer{
+	height: 75vh;
+	text-align: center;
+	position: relative;
+	border-radius: var(--spacing-xs);
+	overflow: clip;
+	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}*/
+
+/*.Image{
+	height: 100%;
+}*/

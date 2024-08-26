@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import BASE_URL from '../../config'
 import axios from 'axios';
@@ -9,6 +9,7 @@ function ImagePage() {
 	const { imageID } = useParams();
 	const user = getUser();
 	console.log(user)
+	const imgRef = useRef(null);
 
 	const initialState = {
 		imageID: '',
@@ -32,10 +33,14 @@ function ImagePage() {
 		comments: []
 	}
 
-
 	const [image, setImage] = useState(initialState);
 	const [comments, setComments] = useState([])
 	const [likes, setLikes] = useState(null)
+	const [imageClasses, setImageClasses] = useState({
+		wrapper: '',
+		container: '',
+		image: ''
+	  });
 
 	useEffect(() => {
 		const imageData = async () => {
@@ -58,7 +63,17 @@ function ImagePage() {
 		}
 	}, [imageID]);
 
-
+	const handleImageLoad = () => {
+		if (imgRef.current) {
+			const naturalWidth = imgRef.current.naturalWidth;
+			const naturalHeight = imgRef.current.naturalHeight;
+			setImageClasses({
+				wrapper: naturalWidth > naturalHeight ? ImagePageStyle.wideWrapper : ImagePageStyle.tallWrapper,
+				container: naturalWidth > naturalHeight ? ImagePageStyle.wideContainer : ImagePageStyle.tallContainer, 
+				image: naturalWidth > naturalHeight ? ImagePageStyle.wideImage : ImagePageStyle.tallImage
+			})
+		}
+	};
 
 	const handleLikes = async () => {
 		try {
@@ -81,12 +96,12 @@ function ImagePage() {
 
 	return (
 		<div className={ImagePageStyle.wrapper}>
-			<div className={ImagePageStyle.ImageWrapper}>
-				<div className={`${ImagePageStyle.ImageContainer}`}>
+			<div className={`${ImagePageStyle.ImageWrapper} ${imageClasses.wrapper}`}>
+				<div className={`${ImagePageStyle.ImageContainer} ${imageClasses.container}`}>
 					<div className={ImagePageStyle.closingContainer}>
 						<span className={`${ImagePageStyle.closingIcon} material-symbols-outlined`}>close</span>
 					</div>
-					<img className={ImagePageStyle.Image} src={image.imageURL} alt={image.imageName} />
+					<img ref={imgRef} className={`${ImagePageStyle.Image} ${imageClasses.image}`} src={image.imageURL} alt={image.imageName} onLoad={handleImageLoad}/>
 					<div className={ImagePageStyle.imageDetailsWrapper}>
 						{image.tags.length > 0 && image.tags.map((tag) => (
 							<span className={ImagePageStyle.tags} key={tag.tagName}>{tag.tagName.trim()}</span>
