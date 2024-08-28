@@ -53,6 +53,7 @@ function ImagePage() {
 				console.log('Response:', response.data);
 				setImage(response.data)
 				setLikes(response.data.likesCount)
+				setComments(response.data.comments)
 			} catch (error) {
 				console.error('Error posting data:', error);
 			}
@@ -93,7 +94,6 @@ function ImagePage() {
 		}
 	};
 
-
 	return (
 		<div className={ImagePageStyle.wrapper}>
 			<div className={`${ImagePageStyle.ImageWrapper} ${imageClasses.wrapper}`}>
@@ -122,6 +122,28 @@ function ImagePage() {
 						<span className={`${ImagePageStyle.socialButton} material-symbols-outlined`}>chat_bubble</span>
 						<span className={`${ImagePageStyle.socialCount} ${ImagePageStyle.commentCount}`}>{image.comments.length}</span>
 					</div>
+				</div>
+
+				<div className={ImagePageStyle.commentsContainer}>
+					{comments.length > 0 && comments.map((comment) => (
+						<div className={ImagePageStyle.commentWrapper} key={comment.commentID}>
+							<div className={ImagePageStyle.nameAndActions}>
+								<h5>
+									{comment.fullName}
+									{comment.isEdited ? <span className={ImagePageStyle.editedComment}>Edited</span> : ""}
+								</h5>
+								<div className={ImagePageStyle.crudWrapper}>
+									<div className={ImagePageStyle.crudButtoncontainer}>
+										<span className={`${ImagePageStyle.actionButton} ${ImagePageStyle.actionButtonPrimary} material-symbols-outlined`}>edit</span>
+									</div>
+									<div className={ImagePageStyle.crudButtoncontainer}>
+										<span className={`${ImagePageStyle.actionButton} ${ImagePageStyle.actionButtonAccent} material-symbols-outlined`} onClick={() => handleDelete(imageID)}>delete</span>
+									</div>
+								</div>
+							</div>
+							<p className={ImagePageStyle.commentText}>{comment.commentContent}</p>
+						</div>
+					))}
 				</div>
 			</div>
 		</div>
