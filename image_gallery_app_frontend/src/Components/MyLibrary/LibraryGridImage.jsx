@@ -35,9 +35,6 @@ function LibraryGridImage({ imageID, imageName, imageURL, category, tags, likesC
 				</div>
 				<div className={ImageSectionStyle.crudWrapper}>
 					<div className={ImageSectionStyle.crudButtoncontainer}>
-						<span className={`${ImageSectionStyle.actionButton} ${ImageSectionStyle.actionButtonPrimary} material-symbols-outlined`}>edit</span>
-					</div>
-					<div className={ImageSectionStyle.crudButtoncontainer}>
 						<span className={`${ImageSectionStyle.actionButton} ${ImageSectionStyle.actionButtonAccent} material-symbols-outlined`} onClick={() => handleDelete(imageID)}>delete</span>
 					</div>
 				</div>

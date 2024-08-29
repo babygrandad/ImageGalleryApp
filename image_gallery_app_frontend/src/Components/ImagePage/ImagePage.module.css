@@ -72,12 +72,14 @@
 	position: absolute;
 	right: 0;
 	padding: var(--spacing-sm);
-	color: black;
+	color: #000;
+	display: flex;
+	gap: var(--spacing-xs);
+	cursor: pointer;
 }
 
-.closingIcon{
+.detailsEditIcons{
 	background-color: rgba(123, 119, 119, 0.2);
-	font-weight: 700;
 	font-size: 36px;
 }
 
@@ -101,8 +103,38 @@
 	cursor: pointer;
 }
 
+.liked{
+	color: var(--accent);
+}
+
 
 /*	Move the comments to their own componenet*/
+
+/* code below deals with the input area for the coments*/
+
+.commentForm{
+	margin-bottom: var(--spacing-md);
+	display: flex;
+	gap: var(--spacing-xs);
+	border: 1px solid var(--text);
+	padding: var(--spacing-xs);
+	border-radius: var(--spacing-xxs);
+	justify-content: space-between;
+}
+
+.commentInputField{
+	flex-grow: 1;
+	border: none;
+	outline: none;
+	font-size: 0.925rem;
+}
+
+.sendCommentIcon:hover{
+	cursor: pointer;
+	color: var(--primary);
+}
+
+/* The code below deals with the actual comments themselves */
 
 .commentsContainer{
 	margin-top: var(--spacing-sm);

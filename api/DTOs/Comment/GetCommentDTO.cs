@@ -13,6 +13,7 @@ namespace api.DTOs.Comment
         public DateTime? LastUpdate { get; set; }
         public bool IsEdited { get; set; }
         public string FullName { get; set; }
+        public string Email { get; set; }
         // Other properties as needed
     }
 }

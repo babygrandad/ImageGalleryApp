@@ -22,6 +22,7 @@ namespace api.Mappers
                 LastUpdate = commentModel.LastUpdate,
                 IsEdited = commentModel.IsEdited,
                 FullName = commentModel.AppUser.FullName,
+                Email = commentModel.AppUser.Email,
             };
         }
 
@@ -32,7 +33,6 @@ namespace api.Mappers
                 CommentContent = createCommentDTO.CommentContent,
                 CommentDate = createCommentDTO.CommentDate,
                 LastUpdate = createCommentDTO.LastUpdate,
-
             };
         }
 
