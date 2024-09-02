@@ -22,6 +22,7 @@ namespace api.Mappers
             {
                 ImageID = imageModel.ImageID,
                 FullName = imageModel.AppUser?.FullName,
+                Email = imageModel.AppUser?.Email,
                 ImageName = imageModel.ImageName,
                 ImageDescription = imageModel.ImageDescription,
                 UploadDate = imageModel.UploadDate,

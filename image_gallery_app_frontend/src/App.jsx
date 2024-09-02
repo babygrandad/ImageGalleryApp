@@ -9,6 +9,7 @@ import ImageSection from './Components/ImageSection/ImageSection';
 import UploadSection from './Components/UploadSection/UploadSection';
 import ImagePage from './Components/ImagePage/ImagePage';
 import MyLibrary from './Components/MyLibrary/MyLibrary';
+import Modal from './Components/SubComponents/Modal';
 
 
 
@@ -25,8 +26,13 @@ const router = createBrowserRouter([
     path: "register",
     element: <Register />
   },
+
   {
-    path:"",
+    path: "modal",
+    element: <Modal />
+  },
+  {
+    path: "",
     element: <Home />,
     children:[
       {

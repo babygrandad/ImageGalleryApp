@@ -17,6 +17,7 @@ namespace api.DTOs.Image
         public string ImageDeleteURL { get; set; }
         public string ImageThumbnailURL { get; set; }
         public string FullName { get; set; }
+        public string Email { get; set; }
         public string ImageDimensions { get; set; } // Exif Data - Image dimensions
         public string FileSize { get; set; } // Exif Data - Image Size
         public DateTime? DateCaptured { get; set; } // Exif Data - The day the image was captured
