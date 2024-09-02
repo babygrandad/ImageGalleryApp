@@ -11,9 +11,10 @@ function ImageSection() {
   const [imageData, setImageData] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const [PageSize, setPageSize] = useState(9);
+//  const [PageSize, setPageSize] = useState(9);
   const hasFetched = useRef(false);
   const user = getUser();
+  const PageSize = 9
 
   const fetchImages = async () => {
       try {

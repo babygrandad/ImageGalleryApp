@@ -4,24 +4,24 @@ import { Outlet } from 'react-router-dom'
 import TopBar from '../SubComponents/TopBar'
 import { getUser } from '../../utils/auth'
 
-
 function ContentContainer() {
-	const [currentUser, setCurrentUser] = useState(null);
-	
+	const [currentUser, setCurrentUser] = useState({});
+
 	useEffect(() => {
-		setCurrentUser(getUser().email);
-	}, [currentUser]);
+		// Fetch the user data and set it to state
+		const user = getUser();
+		setCurrentUser(user);
+	}, []);
 
-
-  return (
-	<div className={ContentContainerStyle.contentContainer}>
-		<TopBar 
-		breadcrum={'Home'}
-		fullName={currentUser}
-		/>
-		<Outlet />
-	</div>
-  )
+	return (
+		<div className={ContentContainerStyle.contentContainer}>
+			<TopBar 
+				breadcrum={'Home'} // Pass default breadcrumb value
+				user={currentUser} // Pass currentUser object to TopBar
+			/>
+			<Outlet />
+		</div>
+	)
 }
 
-export default ContentContainer
+export default ContentContainer;

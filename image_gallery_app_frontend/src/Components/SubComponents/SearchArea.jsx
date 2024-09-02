@@ -1,7 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SearchAreaStyle from './SearchArea.module.css'
 
 function SearchArea() {
+
+	const [searchQuery, setSearchQuery] = useState('');
+
+	const handleInputChange = (e) => {
+		setSearchQuery(e.target.value);
+	};
+
+	const handleSearch = () => {
+		onSearch(searchQuery);
+	};
+
 	return (
 		<div className={SearchAreaStyle.searchAreaContainer}>
 
@@ -10,9 +21,19 @@ function SearchArea() {
 					<span className={`${SearchAreaStyle.searchIcon} material-symbols-outlined`}>
 						search
 					</span>
-					<input className={SearchAreaStyle.searchBar} type="search" name="" id="" placeholder='Search for...' />
+
+					<input
+						type="text"
+						value={searchQuery}
+						onChange={handleInputChange}
+						placeholder="Search by tags, category, or name"
+						className={SearchAreaStyle.searchBar}
+					/>
+
 				</div>
-				<button className={SearchAreaStyle.searchButton} type="button"><span className="material-symbols-outlined">filter_list</span>Filters</button>
+				<button onClick={handleSearch} className={SearchAreaStyle.searchButton}>
+					<span className="material-symbols-outlined">filter_list</span>Filters
+				</button>
 			</form>
 
 		</div>
