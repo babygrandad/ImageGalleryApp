@@ -34,7 +34,7 @@ function TopBar({ breadcrum, user }) { // Accept 'breadcrum' and 'user' as props
 				{openDropdown && (
 					<ul className={TopbarStyle.dropdownMenu}>
 					<li className={TopbarStyle.dropdownLink} onClick={() =>{handleDropdown(false)}}>{user?.email}</li>
-					<li className={TopbarStyle.dropdownLink} onClick={() =>{handleDropdown(false)}}>Reset Password</li>
+					<li className={TopbarStyle.dropdownLink} onClick={() =>{handleDropdown(false)}}><a href='/changepassword'>Change Password</a></li>
 				</ul>
 				)}
 			</div>

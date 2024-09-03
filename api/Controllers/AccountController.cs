@@ -221,10 +221,59 @@ namespace api.Controllers
 
         // Password change route 
         [HttpPost("changePassword")]
+        [Authorize]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO changePasswordDTO)
         {
-            // Implement logic to change password
-            return null;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var userEmail = User.GetUserEmail();
+                var user = await _userManager.FindByEmailAsync(userEmail);
+                if (user == null)
+                {
+                    return BadRequest("Invalid user.");
+                }
+
+                var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                // Check if the new password matches the current active password
+                var passwordVerificationResult = _userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, changePasswordDTO.NewPassword);
+                if (passwordVerificationResult == PasswordVerificationResult.Success)
+                {
+                     return BadRequest(new { errors = new[] { "You cannot reuse your current password." } });
+                }
+
+                var reusePeriod = TimeSpan.FromDays(180); // 6 months
+
+                // Check if the password has been reused in the history
+                if (await _passwordHistoryService.IsPasswordReusedAsync(user.Id, changePasswordDTO.NewPassword, reusePeriod))
+                {
+                    return BadRequest(new { errors = new[] { "You cannot reuse a previous password." } });
+                }
+
+                var result = await _userManager.ResetPasswordAsync(user, resetToken, changePasswordDTO.NewPassword);
+                if (!result.Succeeded)
+                {
+                    var errors = result.Errors.Select(e => e.Description);
+                    return BadRequest(new { Errors = errors });
+                }
+
+                // Save the new password hash in password history
+                var passwordHash = _userManager.PasswordHasher.HashPassword(user, changePasswordDTO.NewPassword);
+                await _passwordHistoryService.AddPasswordAsync(user.Id, passwordHash);
+
+                await _userManager.ResetAccessFailedCountAsync(user);
+                return Ok("Password has been changed successfully.");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (consider using a logging framework like Serilog, NLog, etc.)
+                return StatusCode(500, "An error occurred while processing your request. Please try again later.");
+            }
         }
 
         [HttpPost("resetPassword")]

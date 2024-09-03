@@ -46,10 +46,14 @@
 .dropdownLink{
 	padding:var(--spacing-xs)  var(--spacing-sm) ;
 	cursor: pointer;
-	
 }
 .dropdownLink:hover{
 	background-color: #eeeeee;
+}
+
+.dropdownLink a{
+	text-decoration: none;
+	color: inherit;
 }
 
 @media (max-width: 500px) {

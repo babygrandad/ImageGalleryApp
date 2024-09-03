@@ -10,6 +10,7 @@ import UploadSection from './Components/UploadSection/UploadSection';
 import ImagePage from './Components/ImagePage/ImagePage';
 import MyLibrary from './Components/MyLibrary/MyLibrary';
 import Modal from './Components/SubComponents/Modal';
+import ChangePassword from './Components/LoginRegister/ChangePassword/ChangePassword';
 
 
 
@@ -28,8 +29,8 @@ const router = createBrowserRouter([
   },
 
   {
-    path: "modal",
-    element: <Modal />
+    path: "changePassword",
+    element: <ChangePassword />
   },
   {
     path: "",
