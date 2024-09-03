@@ -8,6 +8,7 @@
 	padding: 0 var(--spacing-xl);
 	font-size: clamp(var(--small), var(--base-size), var(--h5));
 	font-weight: 500;
+	/*color: var(--primary);*/
 }
 
 .currentPage{

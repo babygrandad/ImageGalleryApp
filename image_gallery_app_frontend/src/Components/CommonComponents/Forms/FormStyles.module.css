@@ -24,6 +24,7 @@
 .formLable {
 	font-weight: bold;
 	font-size: small;
+	margin-bottom: var(--spacing-xxs);
 }
 
 .inputField {

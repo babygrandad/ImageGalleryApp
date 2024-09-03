@@ -3,6 +3,10 @@
 	
 }
 
+.headings{
+	color: var(--primary);
+}
+
 .uploadForm{
 	box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.20);
 	margin: var(--spacing-xl);
@@ -27,7 +31,6 @@
 	outline: none;
 	flex-grow: 1;
 }
-
 
 .tagItem{
 	background-color: var(--primary);

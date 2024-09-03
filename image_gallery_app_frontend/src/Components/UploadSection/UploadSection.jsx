@@ -212,7 +212,7 @@ function UploadSection(props) {
     return (
         <div className={UploadStyle.uploadSection}>
             <form className={UploadStyle.uploadForm} onSubmit={handleSubmit} autoComplete="off">
-                <h4 className={FormStyles.formText}>Image Upload</h4>
+                <h4 className={`${FormStyles.formText} ${UploadStyle.headings}`}>Image Upload</h4>
                 <div className={`${FormStyles.formInputsWrapper} ${UploadStyle.inputsWrapper} `}>
                     <div className={FormStyles.formInfoContainer}>{/*	Image Title */}
                         <label htmlFor="imageName" className={FormStyles.formLable}>Image Title</label>

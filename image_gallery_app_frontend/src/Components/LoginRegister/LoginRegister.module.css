@@ -42,7 +42,7 @@ aside{
 	font-weight: bold;
 	font-size: small;
 	color: var(--form-lable-text);
-	margin-bottom: var(--spacing-xxs);
+
 }
 
 .errorText{

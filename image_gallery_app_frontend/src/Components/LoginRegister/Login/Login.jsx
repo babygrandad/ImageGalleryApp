@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import LoginRegister from '../LoginRegister.module.css';
 import LoginStyle from './Login.module.css';
+import FormStyles from '../../CommonComponents/Forms/FormStyles.module.css'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import BASE_URL from '../../../config';
@@ -141,7 +142,7 @@ function Login() {
         </div>
         <div className={LoginRegister.formInputsWrapper}>
           <div className={LoginRegister.formInfoContainer}>
-            <label htmlFor="loginEmail" className={LoginRegister.formLable}>Email</label>
+            <label htmlFor="loginEmail" className={FormStyles.formLable}>Email</label>
             <div className={LoginStyle.formFieldWrapper}>
               <i className={`${LoginStyle.inputIcon} fas fa-user`}></i>
               <input
@@ -157,7 +158,7 @@ function Login() {
             <span id='loginEmailError' className={LoginRegister.errorText}>{successErrors.email}</span>
           </div>
           <div className={LoginRegister.formInfoContainer}>
-            <label htmlFor="loginPassword" className={LoginRegister.formLable}>Password</label>
+            <label htmlFor="loginPassword" className={FormStyles.formLable}>Password</label>
             <div className={LoginStyle.formFieldWrapper}>
               <i className={`${LoginStyle.inputIcon} fas fa-lock`}></i>
               <input
