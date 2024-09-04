@@ -35,6 +35,7 @@
 
 .searchIcon{
 	color: var(--search-placeholder-grey);
+	cursor: pointer;
 }
 
 .searchButton{

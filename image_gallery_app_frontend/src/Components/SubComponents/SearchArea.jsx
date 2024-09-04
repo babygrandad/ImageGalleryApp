@@ -42,7 +42,7 @@ function SearchArea({ onSearch }) {
     <div className={SearchAreaStyle.searchAreaContainer}>
       <form className={SearchAreaStyle.searchForm} onSubmit={(e) => e.preventDefault()}>
         <div className={SearchAreaStyle.searchBarContainer}>
-          <span className={`${SearchAreaStyle.searchIcon} material-symbols-outlined`}>
+          <span className={`${SearchAreaStyle.searchIcon} material-symbols-outlined`} onClick={handleSearch}>
             search
           </span>
 
