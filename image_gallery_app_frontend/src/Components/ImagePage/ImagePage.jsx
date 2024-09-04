@@ -272,7 +272,7 @@ function ImagePage() {
         <div className={ImagePageStyle.commentsContainer}>
           <h4>Comments</h4>
           <form autoComplete='off' className={`${ImagePageStyle.commentForm}`} onSubmit={handleSendComment}>
-            <input className={ImagePageStyle.commentInputField} value={newComment} placeholder='Write your comment...' type="text" onChange={handleChange} />
+            <input className={ImagePageStyle.commentInputField} value={newComment} placeholder='Write your comment...' type="text" maxLength="100" onChange={handleChange} />
             <span className={`${ImagePageStyle.sendCommentIcon} material-symbols-outlined`} onClick={handleSendComment}>send</span>
           </form>
           {comments.length > 0 && comments.map((comment) => (

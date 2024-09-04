@@ -1,43 +1,127 @@
-import React, { useState } from 'react'
-import SearchAreaStyle from './SearchArea.module.css'
+import React, { useState } from 'react';
+import SearchAreaStyle from './SearchArea.module.css';
 
-function SearchArea() {
+function SearchArea({ onSearch }) {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [openFilters, setOpenFilters] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState('name'); // Default to 'name'
+  const [sortOrder, setSortOrder] = useState(true); // Default to ascending
 
-	const [searchQuery, setSearchQuery] = useState('');
+  const handleInputChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
-	const handleInputChange = (e) => {
-		setSearchQuery(e.target.value);
-	};
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevent the form from submitting
+      handleSearch(); // Trigger the search function
+    }
+  };
 
-	const handleSearch = () => {
-		onSearch(searchQuery);
-	};
+  const handleSearch = () => {
+    onSearch(searchQuery, selectedFilter, sortOrder); // Call the onSearch function with the current filter and sort order
+  };
 
-	return (
-		<div className={SearchAreaStyle.searchAreaContainer}>
+  const handleOpenFilter = () => {
+    setOpenFilters(!openFilters);
+  };
 
-			<form action="" className={SearchAreaStyle.searchForm}>
-				<div className={SearchAreaStyle.searchBarContainer}>
-					<span className={`${SearchAreaStyle.searchIcon} material-symbols-outlined`}>
-						search
-					</span>
+  const handleFilterChange = (e) => {
+    setSelectedFilter(e.target.value);
+  };
 
-					<input
-						type="text"
-						value={searchQuery}
-						onChange={handleInputChange}
-						placeholder="Search by tags, category, or name"
-						className={SearchAreaStyle.searchBar}
-					/>
+  const handleSortChange = (e) => {
+    setSortOrder(e.target.value === 'true'); // Convert to boolean
+  };
 
-				</div>
-				<button onClick={handleSearch} className={SearchAreaStyle.searchButton}>
-					<span className="material-symbols-outlined">filter_list</span>Filters
-				</button>
-			</form>
+  const handleFormClick = (event) => {
+    event.stopPropagation();
+  };
 
-		</div>
-	)
+  return (
+    <div className={SearchAreaStyle.searchAreaContainer}>
+      <form className={SearchAreaStyle.searchForm} onSubmit={(e) => e.preventDefault()}>
+        <div className={SearchAreaStyle.searchBarContainer}>
+          <span className={`${SearchAreaStyle.searchIcon} material-symbols-outlined`}>
+            search
+          </span>
+
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown} // Call the handleKeyDown function
+            placeholder="Search by tags, category, or name"
+            className={SearchAreaStyle.searchBar}
+          />
+        </div>
+        <div onClick={handleOpenFilter} className={SearchAreaStyle.searchButton}>
+          <span className="material-symbols-outlined">filter_list</span>Filters
+          {openFilters && (
+            <div className={SearchAreaStyle.filterMenu} onClick={handleFormClick}>
+              <div className={`${SearchAreaStyle.filterDivider} ${SearchAreaStyle.searchOptionsWrapper}`}>
+                <span>Search By:</span>
+                <div className={SearchAreaStyle.filterWrapper}>
+                  <input
+                    type="radio"
+                    checked={selectedFilter === 'name'}
+                    name="search"
+                    value="name"
+                    onChange={handleFilterChange}
+                  />
+                  <label htmlFor="name">Name</label>
+                </div>
+                <div className={SearchAreaStyle.filterWrapper}>
+                  <input
+                    type="radio"
+                    checked={selectedFilter === 'category'}
+                    name="search"
+                    value="category"
+                    onChange={handleFilterChange}
+                  />
+                  <label htmlFor="category">Category</label>
+                </div>
+                <div className={SearchAreaStyle.filterWrapper}>
+                  <input
+                    type="radio"
+                    checked={selectedFilter === 'tag'}
+                    name="search"
+                    value="tag"
+                    onChange={handleFilterChange}
+                  />
+                  <label htmlFor="tag">Tag</label>
+                </div>
+              </div>
+
+              <div className={`${SearchAreaStyle.filterDivider} ${SearchAreaStyle.sortOptionsWrapper}`}>
+                <span>Sort By:</span>
+                <div className={SearchAreaStyle.filterWrapper}>
+                  <input
+                    type="radio"
+                    checked={sortOrder === true}
+                    name="order"
+                    value="true"
+                    onChange={handleSortChange}
+                  />
+                  <label htmlFor="asc">ASC</label>
+                </div>
+                <div className={SearchAreaStyle.filterWrapper}>
+                  <input
+                    type="radio"
+                    checked={sortOrder === false}
+                    name="order"
+                    value="false"
+                    onChange={handleSortChange}
+                  />
+                  <label htmlFor="desc">DSC</label>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </form>
+    </div>
+  );
 }
 
-export default SearchArea
+export default SearchArea;

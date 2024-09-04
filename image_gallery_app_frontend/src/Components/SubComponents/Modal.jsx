@@ -63,6 +63,7 @@ function Modal({ item, ItemContent, imageName, onUpdate, setIsModalOpen }) {
               name="ItemContent"
               id="ItemContent"
               rows="5"
+              maxLength={imageName ? '100' : '50'}
               value={updatedItemContent}
               onChange={handleChange}
               className="inputField"

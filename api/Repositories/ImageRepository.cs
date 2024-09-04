@@ -45,7 +45,7 @@ namespace api.Repositories
                 .Include(x => x.Comments)
                 .Include(i => i.ImageTags)
                     .ThenInclude(it => it.Tag)
-                .Include(i => i.Category) // Directly include Category
+                .Include(i => i.Category)
                 .AsSplitQuery()  // Apply query splitting here
                 .AsQueryable();
 
@@ -72,11 +72,19 @@ namespace api.Repositories
             // Sorting based on SortBy and IsDescending properties
             if (!string.IsNullOrWhiteSpace(filterQuery.SortBy))
             {
-                if (filterQuery.SortBy.Equals("ImageName", StringComparison.OrdinalIgnoreCase))
+                switch (filterQuery.SortBy.ToLower())
                 {
-                    images = filterQuery.IsDescending ? images.OrderByDescending(x => x.ImageName) : images.OrderBy(x => x.ImageName);
+                    case "imagename":
+                        images = filterQuery.IsDescending ? images.OrderByDescending(x => x.ImageName) : images.OrderBy(x => x.ImageName);
+                        break;
+                    case "uploaddate":
+                        images = filterQuery.IsDescending ? images.OrderByDescending(x => x.UploadDate) : images.OrderBy(x => x.UploadDate);
+                        break;
+                    // Add additional sorting options as needed
+                    default:
+                        images = images.OrderByDescending(x => x.UploadDate); // Default sort if no matching SortBy option
+                        break;
                 }
-                // Add additional sorting options as needed
             }
             else
             {
@@ -84,8 +92,8 @@ namespace api.Repositories
                 images = images.OrderByDescending(x => x.UploadDate);
             }
 
+            // Apply pagination
             var skipNumber = (filterQuery.PageNumber - 1) * filterQuery.PageSize;
-
             return await images.Skip(skipNumber).Take(filterQuery.PageSize).ToListAsync();
         }
 

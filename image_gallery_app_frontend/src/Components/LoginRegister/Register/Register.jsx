@@ -44,6 +44,15 @@ const Register = () => {
     setFormErrors({ ...formErrors, [id]: '' })
   };
 
+  const validateEmail = (email) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!regex.test(email)) {
+        return 'invalid email address.';
+    } else {
+        return true;
+    }
+};
+
   const validateForm = () => {
     const newErrors = {};
     if (!formData.userName) newErrors.userName = 'Username field cannot be left empty.';
@@ -60,45 +69,54 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSuccessErrors(initialState.successErrors)
+    setSuccessErrors(initialState.successErrors);
+  
+    // Validate email before other validations
+    const emailValidationResult = validateEmail(formData.email);
+    if (emailValidationResult !== true) {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        email: emailValidationResult, // Set the email error message
+      }));
+      return; // Stop submission if the email is invalid
+    }
+  
+    // Validate the rest of the form
     const newErrors = validateForm();
-
+  
     if (Object.keys(newErrors).length > 0) {
       setFormErrors(newErrors);
-    }
-    else {
+    } else {
       try {
         const response = await axios.post(`${BASE_URL}/account/register`, formData);
         console.log('Registration successful', response.data);
-
+  
         // Show alert with response message
         alert(response.data.message);
-
+  
         // Navigate after alert confirmation
         navigate('/');
-
-
       } catch (err) {
         let errorMessage = 'An unexpected error occurred.';
-
+  
         if (err.response) {
           console.error('Registration failed', err);
-
+  
           // Initialize a new errors object
           const newFormErrors = { ...initialState.formErrors };
-
+  
           const errors = err.response?.data?.errors || [`${err.response.data}`];
-
+  
           errors.forEach((error) => {
             if (error.toLowerCase().includes('username')) {
               newFormErrors.userName = error;
             } else if (error.toLowerCase().includes('email')) {
-              if (!error.includes("confirmation email")) {
+              if (!error.includes('confirmation email')) {
                 newFormErrors.email = error;
               } else {
                 setSuccessErrors({
                   success: '',
-                  errors: [error]
+                  errors: [error],
                 });
               }
             } else if (error.toLowerCase().includes('password')) {
@@ -106,31 +124,30 @@ const Register = () => {
             } else {
               setSuccessErrors({
                 success: '',
-                errors: [error]
+                errors: [error],
               });
             }
           });
-
+  
           // Set the form errors state
           setFormErrors(newFormErrors);
-        }
-        else if (err.request) {
+        } else if (err.request) {
           // No response was received
           console.error('No response received:', err.request);
           errorMessage = 'Cannot connect to server.';
           setSuccessErrors((prevErrors) => ({
             ...prevErrors,
-            errors: [errorMessage]
+            errors: [errorMessage],
           }));
-        }
-        else {
+        } else {
           // Something happened in setting up the request
           console.error('Error message:', err.message);
           errorMessage = err.message;
         }
       }
     }
-  }
+  };
+  
 
   return (
     <div className={RegisterStyle.registerContainer}>
@@ -222,8 +239,5 @@ const Register = () => {
     </div>
   )
 }
-
-
-
 
 export default Register;

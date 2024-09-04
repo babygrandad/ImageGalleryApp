@@ -264,6 +264,7 @@ function UploadSection(props) {
                             name="imageDescription"
                             id="imageDescription"
                             rows="5"
+                            maxLength="50"
                             value={formData.imageDescription}
                             onChange={handleChange}
                             className='inputField'
