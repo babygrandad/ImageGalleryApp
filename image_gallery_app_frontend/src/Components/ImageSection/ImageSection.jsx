@@ -119,15 +119,6 @@ function ImageSection() {
       fetchImages(searchQuery, selectedSearchBy, sortOrder);
     }
   }, [searchQuery, selectedSearchBy, sortOrder, pageNumber]);
-  
-  
-
-//  useEffect(() => {
-//    if (!hasFetched.current) {
-//      fetchImages(searchQuery, selectedSearchBy, sortOrder);
-//      hasFetched.current = true;
-//    }
-//  }, [searchQuery, selectedSearchBy, sortOrder]); // Re-fetch when search or filters change
 
   return (
     <>
