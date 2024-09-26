@@ -124,4 +124,4 @@ Users can like or unlike images, and view real-time feedback on the number of li
 
 ---
 
-For more information, visit the [GitHub Repository](https://github.com/babygrandad/ImageGalleryApp).
+For more information, see the documentaion the [Documentation](./Documentation/IGA%20Documentaion.pdf).
